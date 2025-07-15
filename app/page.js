@@ -110,13 +110,13 @@ export default function Home() {
       </div>
       <div>
         <div className="my-5">Your Transactions</div>
-        <div className="flex flex-col gap-2">
+        <div className="flex flex-col gap-4">
           {transactions.map((expense) => (
             <Card className={"p-5 rounded-sm"}>
               <CardContent>
                 <div className="grid grid-cols-2">
                   <div className="text-sm">{expense.description}</div>
-                  <div className="text-sm">{expense.amount}</div>
+                  <div className="text-sm text-center">{expense.amount}</div>
                 </div>
               </CardContent>
             </Card>
