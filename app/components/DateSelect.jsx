@@ -22,19 +22,17 @@ const DateSelect = () => {
     { value: 11, name: "Dec" },
   ];
   return (
-    <div className="flex w-full">
-      <div className="ml-auto m-2">
-        <Select onValueChange={(value) => console.log(value)}>
-          <SelectTrigger className="w-[80px]">
-            <SelectValue placeholder="June" />
-          </SelectTrigger>
-          <SelectContent className={"text-base"}>
-            {months.map((month) => (
-              <SelectItem value={month.value}>{month.name}</SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
-      </div>
+    <div className=" ml-auto">
+      <Select onValueChange={(value) => console.log(value)}>
+        <SelectTrigger className="w-[80px]">
+          <SelectValue placeholder="June" />
+        </SelectTrigger>
+        <SelectContent className={"text-base"}>
+          {months.map((month) => (
+            <SelectItem value={month.value}>{month.name}</SelectItem>
+          ))}
+        </SelectContent>
+      </Select>
     </div>
   );
 };

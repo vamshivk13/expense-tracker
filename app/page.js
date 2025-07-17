@@ -7,7 +7,11 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
 import DateSelect from "./components/DateSelect";
+import { Badge } from "@/components/ui/badge";
+import { Plus } from "lucide-react";
+
 export default function Home() {
   const transactions = [
     {
@@ -83,30 +87,59 @@ export default function Home() {
   ];
   return (
     <div className="w-full px-10 py-3 flex flex-col gap-4">
-      <DateSelect />
+      <div className="flex items-center my-3">
+        <div>
+          Hi, <span className="text-xl">Vamshi Thatikonda</span>
+        </div>
+        <DateSelect />
+      </div>
       <div className="flex gap-5 ">
-        <Card className={"flex-1/6"}>
+        {/* <Card className={"flex-1/6"}>
           <CardHeader>
             <CardTitle>Monthly Income</CardTitle>
           </CardHeader>
           <CardContent>
             <div>50,000</div>
           </CardContent>
+        </Card> */}
+        <Card className={"rounded-[5px] relative flex-1/2"}>
+          <Badge className={"absolute -top-2 left-5"}>Overview</Badge>
+          <CardContent>
+            <div className="grid grid-cols-4 gap-3">
+              <div className="">
+                <h3 className="text-sm text-gray-700 dark:text-gray-400">
+                  Monthly Income
+                </h3>
+                <div className="mt-2">Rs 96,000</div>
+              </div>
+              <div>
+                <h3 className="text-sm text-gray-700 dark:text-gray-400">
+                  Monthly Expense
+                </h3>
+                <div className="mt-2">Rs 96,000</div>
+              </div>
+              <div>
+                <h3 className="text-sm text-gray-700 dark:text-gray-400">
+                  Todays's Expense
+                </h3>
+                <div className="mt-2">Rs 96,000</div>
+              </div>
+              <div className={"flex items-center justify-center"} size="icon">
+                <Button className={"rounded-4xl"}>
+                  <Plus></Plus>Add Expense
+                </Button>
+              </div>
+            </div>
+          </CardContent>
         </Card>
-        <Card className={"flex-1/2"}>
-          <CardHeader>
-            <CardTitle>Add Expense</CardTitle>
-          </CardHeader>
-          <CardContent></CardContent>
-        </Card>
-        <Card className={"flex-1/6"}>
+        {/* <Card className={"flex-1/6"}>
           <CardHeader>
             <CardTitle>Expenses</CardTitle>
           </CardHeader>
           <CardContent>
             <div>30,000</div>
           </CardContent>
-        </Card>
+        </Card> */}
       </div>
       <div>
         <div className="my-5">Your Transactions</div>
