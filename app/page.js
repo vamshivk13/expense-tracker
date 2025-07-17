@@ -8,9 +8,12 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { Separator } from "@/components/ui/separator";
 import DateSelect from "./components/DateSelect";
 import { Badge } from "@/components/ui/badge";
 import { Plus } from "lucide-react";
+import { getFormattedAmount, getFormattedDate } from "./util/DateUtility";
+import { Utensils } from "lucide-react";
 
 export default function Home() {
   const transactions = [
@@ -86,26 +89,18 @@ export default function Home() {
     },
   ];
   return (
-    <div className="w-full px-10 py-3 flex flex-col gap-4">
+    <div className="sm:container mx-auto px-8 sm:px-16 lg:px-16 py-3 flex flex-col gap-4">
       <div className="flex items-center my-3">
         <div>
           Hi, <span className="text-xl">Vamshi Thatikonda</span>
         </div>
         <DateSelect />
       </div>
-      <div className="flex gap-5 ">
-        {/* <Card className={"flex-1/6"}>
-          <CardHeader>
-            <CardTitle>Monthly Income</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div>50,000</div>
-          </CardContent>
-        </Card> */}
-        <Card className={"rounded-[5px] relative flex-1/2"}>
+      <div className="flex gap-5 my-5">
+        <Card className={"rounded-[5px] relative flex-1/2 sm:py-10"}>
           <Badge className={"absolute -top-2 left-5"}>Overview</Badge>
           <CardContent>
-            <div className="grid grid-cols-4 gap-3">
+            <div className="grid md:grid-cols-4 grid-cols-2 gap-x-3 gap-y-5">
               <div className="">
                 <h3 className="text-sm text-gray-700 dark:text-gray-400">
                   Monthly Income
@@ -124,35 +119,54 @@ export default function Home() {
                 </h3>
                 <div className="mt-2">Rs 96,000</div>
               </div>
-              <div className={"flex items-center justify-center"} size="icon">
+              <div
+                className={"flex items-center md:justify-center"}
+                size="icon"
+              >
                 <Button className={"rounded-4xl"}>
-                  <Plus></Plus>Add Expense
+                  <Plus></Plus>
+                  <div>Add Expense</div>
                 </Button>
               </div>
             </div>
           </CardContent>
         </Card>
-        {/* <Card className={"flex-1/6"}>
-          <CardHeader>
-            <CardTitle>Expenses</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div>30,000</div>
-          </CardContent>
-        </Card> */}
       </div>
       <div>
-        <div className="my-5">Your Transactions</div>
+        <div className="my-7">Your Transactions</div>
         <div className="flex flex-col gap-4">
+          <div className="grid grid-cols-4 gap-x-3 text-gray-700 dark:text-gray-400">
+            <div className="text-sm col-span-3 sm:col-span-2">Expense</div>
+            <div className="text-sm hidden sm:block">Date</div>
+            <div className="text-sm">Amount</div>
+          </div>
+          <Separator />
           {transactions.map((expense) => (
-            <Card className={"p-5 rounded-sm"}>
-              <CardContent>
-                <div className="grid grid-cols-2">
-                  <div className="text-sm">{expense.description}</div>
-                  <div className="text-sm text-center">{expense.amount}</div>
+            <div key={expense.date}>
+              <div className="grid gap-x-3 grid-cols-4  mb-3">
+                <div className=" col-span-3 sm:col-span-2">
+                  <div className="flex items-center gap-4">
+                    <Utensils className="flex-shrink-0" />
+                    <div className="flex flex-col truncate">
+                      <div className="truncate">{expense.description}</div>
+                      <div className="text-sm text-gray-700 dark:text-gray-400">
+                        {expense.category}
+                      </div>
+                    </div>
+                  </div>
                 </div>
-              </CardContent>
-            </Card>
+                <div className="hidden sm:block">
+                  {getFormattedDate(expense.date)}
+                </div>
+                <div className="flex flex-col">
+                  <div>{getFormattedAmount(expense.amount)}</div>
+                  <div className="text-sm block sm:hidden text-gray-700 dark:text-gray-400">
+                    {getFormattedDate(expense.date)}
+                  </div>
+                </div>
+              </div>
+              <Separator />
+            </div>
           ))}
         </div>
       </div>
