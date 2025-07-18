@@ -88,6 +88,51 @@ export default function Home() {
       category: "Personal",
     },
   ];
+
+  const budgets = [
+    {
+      category: "Groceries",
+      budget: 12000,
+      spent: 8500,
+      tags: ["vegetables", "snacks", "milk", "fruits", "meat"],
+    },
+    {
+      category: "Transport",
+      budget: 4000,
+      spent: 2900,
+      tags: ["fuel", "cab", "metro", "parking", "toll"],
+    },
+    {
+      category: "Dining Out",
+      budget: 6000,
+      spent: 4800,
+      tags: ["restaurants", "coffee", "fast food", "desserts", "takeout"],
+    },
+    {
+      category: "Utilities",
+      budget: 5000,
+      spent: 4200,
+      tags: ["electricity", "water", "internet", "gas", "mobile recharge"],
+    },
+    {
+      category: "Entertainment",
+      budget: 3000,
+      spent: 2700,
+      tags: ["movies", "subscriptions", "games", "music", "events"],
+    },
+    {
+      category: "Shopping",
+      budget: 8000,
+      spent: 6200,
+      tags: ["clothing", "electronics", "gifts", "home decor", "accessories"],
+    },
+    {
+      category: "Health",
+      budget: 3500,
+      spent: 1800,
+      tags: ["medicines", "doctor", "gym", "supplements", "therapy"],
+    },
+  ];
   return (
     <div className="sm:container mx-auto px-8 sm:px-16 lg:px-16 py-3 flex flex-col gap-4">
       <div className="flex items-center my-3">
@@ -132,16 +177,26 @@ export default function Home() {
           </CardContent>
         </Card>
       </div>
-      <div>
-        <div className="my-7">Your Transactions</div>
-        <div className="flex flex-col gap-4">
-          <div className="grid grid-cols-4 gap-x-3 text-gray-700 dark:text-gray-400">
-            <div className="text-sm col-span-3 sm:col-span-2">Expense</div>
-            <div className="text-sm hidden sm:block">Date</div>
-            <div className="text-sm">Amount</div>
+      <div className={"flex flex-col my-3"}>
+        <div className="my-5 text-lg z-20 sticky top-[50px] bg-(--background) h-[55px] gap-x-3 grid grid-cols-4 items-center">
+          <div className={"col-span-3"}>Your Transactions</div>
+          <div
+            className={
+              "text-center mx-auto text-sm text-gray-700 dark:text-gray-400 border-b-2 border-blue-500 pb-1 cursor-pointer"
+            }
+          >
+            view all
           </div>
-          <Separator />
-          {transactions.map((expense) => (
+        </div>
+        <div className="flex flex-col gap-4">
+          <div className="grid grid-cols-4 gap-x-3 h-[34px] flex items-center text-gray-700 dark:text-gray-400 bg-(--background) sticky top-[105px]">
+            <div className="text-sm col-span-3 sm:col-span-2">Expense</div>
+            <div className="text-sm hidden sm:block text-center">Date</div>
+            <div className="text-sm text-center">Amount</div>
+            <Separator className={"absolute bottom-0"} />
+          </div>
+
+          {transactions.slice(0, 5).map((expense) => (
             <div key={expense.date}>
               <div className="grid gap-x-3 grid-cols-4  mb-3">
                 <div className=" col-span-3 sm:col-span-2">
@@ -155,20 +210,79 @@ export default function Home() {
                     </div>
                   </div>
                 </div>
-                <div className="hidden sm:block">
+                <div className="hidden sm:block text-center">
                   {getFormattedDate(expense.date)}
                 </div>
-                <div className="flex flex-col">
+                <div className="flex flex-col text-center">
                   <div>{getFormattedAmount(expense.amount)}</div>
                   <div className="text-sm block sm:hidden text-gray-700 dark:text-gray-400">
                     {getFormattedDate(expense.date)}
                   </div>
                 </div>
               </div>
-              <Separator />
+              {/* <Separator /> */}
             </div>
           ))}
         </div>
+        <Button
+          variant="outline"
+          className={"mr-auto mt-7 p-1 rounded-none border-0"}
+        >
+          <div className={"border-1 border-(--foreground) p-1"}>View All</div>
+        </Button>
+      </div>
+
+      <div className={"flex flex-col my-3"}>
+        <div className="my-5 text-lg z-20 sticky top-[50px] bg-(--background) h-[55px] gap-x-3 grid grid-cols-4 items-center">
+          <div className={"col-span-3"}>Budgets</div>
+          <div
+            className={
+              "text-center mx-auto text-sm text-gray-700 dark:text-gray-400 border-b-2 border-blue-500 pb-1 cursor-pointer"
+            }
+          >
+            view all
+          </div>
+        </div>
+        <div className="flex flex-col gap-4">
+          <div className="grid grid-cols-4 gap-x-3 h-[34px] flex items-center text-gray-700 dark:text-gray-400 bg-(--background) sticky top-[105px]">
+            <div className="text-sm col-span-3">Category</div>
+            <div className="text-sm text-center">Amount</div>
+            <Separator className={"absolute bottom-0"} />
+          </div>
+
+          {budgets.slice(0, 5).map((budget) => (
+            <div key={budget.category}>
+              <div className="grid gap-x-3 grid-cols-4  mb-3">
+                <div className=" col-span-3">
+                  <div className="flex items-center gap-4">
+                    <Utensils className="flex-shrink-0" />
+                    <div className="flex flex-col truncate gap-1">
+                      <div className="truncate">{budget.category}</div>
+                      <div className="text-sm overflow-x-auto flex gap-2 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden text-gray-700 dark:text-gray-400">
+                        {budget.tags.map((tag) => (
+                          <Badge>{tag}</Badge>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div className="flex flex-col text-center">
+                  <div className="text-gray-700 dark:text-gray-400 text-sm">
+                    {getFormattedAmount(budget.spent)} /
+                  </div>
+                  <div className="block">{budget.budget}</div>
+                </div>
+              </div>
+              {/* <Separator /> */}
+            </div>
+          ))}
+        </div>
+        <Button
+          variant="outline"
+          className={"mr-auto mt-7 p-1 rounded-none border-0"}
+        >
+          <div className={"border-1 border-(--foreground) p-1"}>View All</div>
+        </Button>
       </div>
     </div>
   );
