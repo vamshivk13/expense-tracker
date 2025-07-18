@@ -143,7 +143,9 @@ export default function Home() {
       </div>
       <div className="flex gap-5 my-5">
         <Card className={"rounded-[5px] relative flex-1/2 sm:py-10"}>
-          <Badge className={"absolute -top-2 left-5"}>Overview</Badge>
+          <Badge className={"absolute -top-2 left-5 bg-blue-500"}>
+            Overview
+          </Badge>
           <CardContent>
             <div className="grid md:grid-cols-4 grid-cols-2 gap-x-3 gap-y-5">
               <div className="">
@@ -168,7 +170,11 @@ export default function Home() {
                 className={"flex items-center md:justify-center"}
                 size="icon"
               >
-                <Button className={"rounded-4xl"}>
+                <Button
+                  className={
+                    "rounded-4xl bg-blue-500 hover:bg-blue-700 dark:hover:bg-blue-300"
+                  }
+                >
                   <Plus></Plus>
                   <div>Add Expense</div>
                 </Button>
@@ -233,33 +239,44 @@ export default function Home() {
       </div>
 
       <div className={"flex flex-col my-3"}>
-        <div className="my-5 text-lg z-20 sticky top-[50px] bg-(--background) h-[55px] gap-x-3 grid grid-cols-5 items-center">
+        <div className="my-5 text-lg z-20 sticky top-[50px] bg-(--background) h-[55px] gap-x-3 grid grid-cols-4 items-center">
           <div className={"col-span-3"}>Budgets</div>
           <div
             className={
-              "text-center col-span-2 mx-auto text-sm text-gray-700 dark:text-gray-400 border-b-2 border-blue-500 pb-1 cursor-pointer"
+              "text-center mx-auto text-sm text-gray-700 dark:text-gray-400 border-b-2 border-blue-500 pb-1 cursor-pointer"
             }
           >
             view all
           </div>
         </div>
         <div className="flex flex-col gap-4">
-          <div className="grid grid-cols-5 gap-x-3 h-[34px] flex items-center text-gray-700 dark:text-gray-400 bg-(--background) sticky top-[105px]">
+          <div className="grid grid-cols-4 gap-x-3 h-[34px] flex items-center text-gray-700 dark:text-gray-400 bg-(--background) sticky top-[105px]">
             <div className="text-sm col-span-3">Category</div>
-            <div className="text-sm  col-span-2 text-center">Amount</div>
+            <div className="text-sm text-center">Amount</div>
             <Separator className={"absolute bottom-0"} />
           </div>
 
           {budgets.slice(0, 5).map((budget) => (
             <div key={budget.category}>
-              <div className="grid gap-x-3 grid-cols-5  mb-3">
+              <div className="grid gap-x-3 grid-cols-4  mb-3">
                 <div className="col-span-3">
-                  <div className="flex  items-center gap-4">
-                    <Utensils className="flex-shrink-0" />
+                  <div className="flex items-center gap-4">
+                    <div
+                      style={{
+                        "--progress": `${
+                          String((budget.spent / budget.budget) * 100) + "%"
+                        }`,
+                      }}
+                      className={`h-10 w-10 flex-shrink-0 rounded-4xl  bg-[conic-gradient(#3b82f6_var(--progress),#e5e7eb_0%)] relative`}
+                    >
+                      <div className="h-8 w-8 rounded-4xl bg-(--background) flex justify-center items-center absolute top-[50%] left-[50%] transform translate-x-[-50%] translate-y-[-50%]">
+                        <Utensils className="flex-shrink-0" />
+                      </div>
+                    </div>
 
                     <div className="flex flex-col truncate gap-1">
                       <div className="truncate">{budget.category}</div>
-                      <div className="text-sm overflow-x-auto flex gap-2 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden text-gray-700 dark:text-gray-400">
+                      <div className="rounded-2xl text-sm overflow-x-auto flex gap-2 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden text-gray-700 dark:text-gray-400">
                         {budget.tags.map((tag) => (
                           <Badge>{tag}</Badge>
                         ))}
@@ -267,11 +284,7 @@ export default function Home() {
                     </div>
                   </div>
                 </div>
-                <div className="flex gap-2 col-span-2 flex-row justify-center">
-                  <div className="h-10 w-10 rounded-4xl  bg-[conic-gradient(#3b82f6_60%,#e5e7eb_0%)] relative">
-                    <div className="h-8 w-8 rounded-4xl bg-white absolute top-[50%] left-[50%] transform translate-x-[-50%] translate-y-[-50%]"></div>
-                  </div>
-
+                <div className="flex flex-row justify-center">
                   <div>
                     <div className="flex flex-col text-gray-700 dark:text-gray-400 text-sm">
                       {getFormattedAmount(budget.spent)} /
