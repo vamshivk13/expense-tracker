@@ -14,6 +14,8 @@ import { Badge } from "@/components/ui/badge";
 import { Plus } from "lucide-react";
 import { getFormattedAmount, getFormattedDate } from "./util/DateUtility";
 import { Utensils } from "lucide-react";
+import { BadgeDollarSign, NotepadTextDashed, HandCoins } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
 
 export default function Home() {
   const transactions = [
@@ -133,6 +135,60 @@ export default function Home() {
       tags: ["medicines", "doctor", "gym", "supplements", "therapy"],
     },
   ];
+  const [isVisible, setIsVisible] = useState(null);
+  const [isBudgetsVisible, setIsBudgetsVisible] = useState(null);
+  const [isExpensesVisible, setIsExpensesVisible] = useState(null);
+
+  const transactionRef = useRef();
+  const expensesRef = useRef();
+
+  const budgetsRef = useRef();
+  console.log("isVisible", isVisible);
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        setIsVisible(entry.isIntersecting);
+      },
+      { threshold: 0.7 } // Adjust based on how much should be visible
+    );
+
+    if (transactionRef.current) observer.observe(transactionRef.current);
+
+    return () => {
+      if (transactionRef.current) observer.unobserve(transactionRef.current);
+    };
+  }, []);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        setIsBudgetsVisible(entry.isIntersecting);
+      },
+      { threshold: 0.5 } // Adjust based on how much should be visible
+    );
+
+    if (budgetsRef.current) observer.observe(budgetsRef.current);
+
+    return () => {
+      if (budgetsRef.current) observer.unobserve(budgetsRef.current);
+    };
+  }, []);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        setIsExpensesVisible(entry.isIntersecting);
+      },
+      { threshold: 0.5 } // Adjust based on how much should be visible
+    );
+
+    if (expensesRef.current) observer.observe(expensesRef.current);
+
+    return () => {
+      if (expensesRef.current) observer.unobserve(expensesRef.current);
+    };
+  }, []);
+
   return (
     <div className="sm:container mx-auto px-8 sm:px-16 lg:px-16 py-3 flex flex-col gap-4">
       <div className="flex items-center my-3">
@@ -183,8 +239,45 @@ export default function Home() {
           </CardContent>
         </Card>
       </div>
-      <div className={"flex flex-col my-3"}>
-        <div className="my-5 text-lg z-20 sticky top-[50px] bg-(--background) h-[55px] gap-x-3 grid grid-cols-4 items-center">
+      {/* Menu */}
+      <div className="sticky top-[50px] h-[75px] py-3 z-30 bg-(--background) flex items-center justify-around my-3 text-sm text-gray-700 dark:text-gray-400">
+        <div
+          className={
+            `flex flex-col items-center cursor-pointer` +
+            (isVisible
+              ? " text-(--foreground) border-b-3 border-(--foreground)"
+              : "")
+          }
+        >
+          <BadgeDollarSign />
+          <div>Transactions</div>
+        </div>
+        <div
+          className={
+            `flex flex-col items-center cursor-pointer` +
+            (isBudgetsVisible
+              ? " text-(--foreground)  border-b-3 border-(--foreground)"
+              : "")
+          }
+        >
+          <NotepadTextDashed />
+          <div>Budgets</div>
+        </div>
+        <div
+          className={
+            `flex flex-col items-center cursor-pointer` +
+            (isExpensesVisible
+              ? " text-(--foreground)  border-b-3 border-(--foreground)"
+              : "")
+          }
+        >
+          <HandCoins />
+          <div>Expenses</div>
+        </div>
+      </div>
+      {/* Transactions  */}
+      <div className={"flex flex-col my-3"} ref={transactionRef}>
+        <div className="my-5 text-lg z-20  bg-(--background) h-[55px] gap-x-3 grid grid-cols-4 items-center">
           <div className={"col-span-3"}>Your Transactions</div>
           <div
             className={
@@ -195,7 +288,7 @@ export default function Home() {
           </div>
         </div>
         <div className="flex flex-col gap-4">
-          <div className="grid grid-cols-4 gap-x-3 h-[34px] flex items-center text-gray-700 dark:text-gray-400 bg-(--background) sticky top-[105px]">
+          <div className="grid grid-cols-4 gap-x-3 h-[34px] flex items-center text-gray-700 dark:text-gray-400 bg-(--background) sticky top-[125px]">
             <div className="text-sm col-span-3 sm:col-span-2">Expense</div>
             <div className="text-sm hidden sm:block text-center">Date</div>
             <div className="text-sm text-center">Amount</div>
@@ -238,8 +331,9 @@ export default function Home() {
         </Button>
       </div>
 
-      <div className={"flex flex-col my-3"}>
-        <div className="my-5 text-lg z-20 sticky top-[50px] bg-(--background) h-[55px] gap-x-3 grid grid-cols-4 items-center">
+      {/* Budgets  */}
+      <div className={"flex flex-col my-3"} ref={budgetsRef}>
+        <div className="my-5 text-lg z-20 bg-(--background) h-[55px] gap-x-3 grid grid-cols-4 items-center">
           <div className={"col-span-3"}>Budgets</div>
           <div
             className={
@@ -250,7 +344,7 @@ export default function Home() {
           </div>
         </div>
         <div className="flex flex-col gap-4">
-          <div className="z-20 grid grid-cols-4 gap-x-3 h-[34px] flex items-center text-gray-700 dark:text-gray-400 bg-(--background) sticky top-[105px]">
+          <div className="z-20 grid grid-cols-4 gap-x-3 h-[34px] flex items-center text-gray-700 dark:text-gray-400 bg-(--background) sticky top-[125px]">
             <div className="text-sm col-span-3">Category</div>
             <div className="text-sm text-center">Amount</div>
             <Separator className={"absolute bottom-0"} />
@@ -290,6 +384,61 @@ export default function Home() {
                       {getFormattedAmount(budget.spent)} /
                     </div>
                     <div className="block">{budget.budget}</div>
+                  </div>
+                </div>
+              </div>
+              {/* <Separator /> */}
+            </div>
+          ))}
+        </div>
+        <Button
+          variant="outline"
+          className={"mr-auto mt-7 p-1 rounded-none border-0"}
+        >
+          <div className={"border-1 border-(--foreground) p-1"}>View All</div>
+        </Button>
+      </div>
+      {/* Fixed Expenses  */}
+      <div className={"flex flex-col my-3"} ref={expensesRef}>
+        <div className="my-5 text-lg z-20  bg-(--background) h-[55px] gap-x-3 grid grid-cols-4 items-center">
+          <div className={"col-span-3"}>Fixed Expenses</div>
+          <div
+            className={
+              "text-center mx-auto text-sm text-gray-700 dark:text-gray-400 border-b-2 border-blue-500 pb-1 cursor-pointer"
+            }
+          >
+            view all
+          </div>
+        </div>
+        <div className="flex flex-col gap-4">
+          <div className="grid grid-cols-4 gap-x-3 h-[34px] flex items-center text-gray-700 dark:text-gray-400 bg-(--background) sticky top-[125px]">
+            <div className="text-sm col-span-3 sm:col-span-2">Expense</div>
+            <div className="text-sm hidden sm:block text-center">Date</div>
+            <div className="text-sm text-center">Amount</div>
+            <Separator className={"absolute bottom-0"} />
+          </div>
+
+          {transactions.slice(0, 5).map((expense) => (
+            <div key={expense.date}>
+              <div className="grid gap-x-3 grid-cols-4  mb-3">
+                <div className=" col-span-3 sm:col-span-2">
+                  <div className="flex items-center gap-4">
+                    <Utensils className="flex-shrink-0" />
+                    <div className="flex flex-col truncate">
+                      <div className="truncate">{expense.description}</div>
+                      <div className="text-sm text-gray-700 dark:text-gray-400">
+                        {expense.category}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div className="hidden sm:block text-center">
+                  {getFormattedDate(expense.date)}
+                </div>
+                <div className="flex flex-col text-center">
+                  <div>{getFormattedAmount(expense.amount)}</div>
+                  <div className="text-sm block sm:hidden text-gray-700 dark:text-gray-400">
+                    {getFormattedDate(expense.date)}
                   </div>
                 </div>
               </div>
