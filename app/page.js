@@ -322,13 +322,13 @@ export default function Home() {
           QUICK ACTIONS
         </div>
         <div className="rounded-2xl overflow-x-auto flex gap-2 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden text-gray-700 dark:text-gray-400">
-          <Badge variant={"outline"} className={"p-2 rounded-2xl"}>
+          <Badge variant={"secondary"} className={"p-2 rounded-2xl"}>
             Add Expenses
           </Badge>
-          <Badge variant={"outline"} className={"p-2 rounded-2xl"}>
+          <Badge variant={"secondary"} className={"p-2 rounded-2xl"}>
             Update Budgets
           </Badge>
-          <Badge variant={"outline"} className={"p-2 rounded-2xl"}>
+          <Badge variant={"secondary"} className={"p-2 rounded-2xl"}>
             Modify Fixed Expenses
           </Badge>
         </div>
