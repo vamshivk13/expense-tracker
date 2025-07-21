@@ -1,4 +1,10 @@
-import { Geist, Geist_Mono } from "next/font/google";
+import {
+  Geist,
+  Geist_Mono,
+  Montserrat,
+  Oswald,
+  Raleway,
+} from "next/font/google";
 import "./globals.css";
 import Header from "./components/Header";
 import { ThemeProvider } from "next-themes";
@@ -6,6 +12,12 @@ import { ThemeProvider } from "next-themes";
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
+});
+
+const montserrat = Raleway({
+  subsets: ["latin"],
+  weight: ["600"],
+  display: "swap",
 });
 
 const geistMono = Geist_Mono({
@@ -21,12 +33,10 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
+      <body className={montserrat.className}>
         <ThemeProvider
           attribute={"class"}
-          defaultTheme="system"
+          defaultTheme="light"
           enableSystem
           disableTransitionOnChange
         >

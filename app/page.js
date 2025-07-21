@@ -250,7 +250,7 @@ export default function Home() {
           </div>
         </div>
         <div className="flex flex-col gap-4">
-          <div className="grid grid-cols-4 gap-x-3 h-[34px] flex items-center text-gray-700 dark:text-gray-400 bg-(--background) sticky top-[105px]">
+          <div className="z-20 grid grid-cols-4 gap-x-3 h-[34px] flex items-center text-gray-700 dark:text-gray-400 bg-(--background) sticky top-[105px]">
             <div className="text-sm col-span-3">Category</div>
             <div className="text-sm text-center">Amount</div>
             <Separator className={"absolute bottom-0"} />
@@ -275,7 +275,7 @@ export default function Home() {
                     </div>
 
                     <div className="flex flex-col truncate gap-1">
-                      <div className="truncate">{budget.category}</div>
+                      <div className="truncate text">{budget.category}</div>
                       <div className="rounded-2xl text-sm overflow-x-auto flex gap-2 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden text-gray-700 dark:text-gray-400">
                         {budget.tags.map((tag) => (
                           <Badge>{tag}</Badge>
