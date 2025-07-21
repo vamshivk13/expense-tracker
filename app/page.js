@@ -273,10 +273,10 @@ export default function Home() {
       </div>
 
       {/* Menu */}
-      <div className="sticky top-[50px] h-[75px] py-3 z-30 bg-(--background) flex items-center justify-around my-1 text-sm text-gray-700 dark:text-gray-400">
+      <div className="sticky top-[50px] h-[75px] py-3 z-30 bg-(--background) grid grid-cols-3 mt-2 mb-4 text-sm text-gray-700 dark:text-gray-400">
         <div
           className={
-            `flex flex-col items-center cursor-pointer` +
+            `flex flex-col items-center cursor-pointer mx-auto` +
             (isVisible
               ? " text-(--foreground) border-b-3 border-(--foreground)"
               : "")
@@ -289,7 +289,7 @@ export default function Home() {
         <div
           onClick={handleScrollToBudgets}
           className={
-            `flex flex-col items-center cursor-pointer` +
+            `flex flex-col items-center cursor-pointer mx-auto` +
             (isBudgetsVisible
               ? " text-(--foreground)  border-b-3 border-(--foreground)"
               : "")
@@ -301,7 +301,7 @@ export default function Home() {
         <div
           onClick={handleScrollToExpenses}
           className={
-            `flex flex-col items-center cursor-pointer` +
+            `flex flex-col items-center cursor-pointer mx-auto` +
             (isExpensesVisible
               ? " text-(--foreground)  border-b-3 border-(--foreground)"
               : "")
@@ -424,11 +424,11 @@ export default function Home() {
 
                     <div className="flex flex-col truncate gap-1">
                       <div className="truncate text">{budget.category}</div>
-                      <div className="rounded-2xl text-sm overflow-x-auto flex gap-2 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden text-gray-700 dark:text-gray-400">
+                      {/* <div className="rounded-2xl text-sm overflow-x-auto flex gap-2 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden text-gray-700 dark:text-gray-400">
                         {budget.tags.map((tag) => (
                           <Badge>{tag}</Badge>
                         ))}
-                      </div>
+                      </div> */}
                     </div>
                   </div>
                 </div>
