@@ -164,7 +164,7 @@ export default function Home() {
       ([entry]) => {
         setIsBudgetsVisible(entry.isIntersecting);
       },
-      { threshold: 0.5 } // Adjust based on how much should be visible
+      { threshold: 0.6 } // Adjust based on how much should be visible
     );
 
     if (budgetsRef.current) observer.observe(budgetsRef.current);
@@ -179,7 +179,7 @@ export default function Home() {
       ([entry]) => {
         setIsExpensesVisible(entry.isIntersecting);
       },
-      { threshold: 0.5 } // Adjust based on how much should be visible
+      { threshold: 0.2 } // Adjust based on how much should be visible
     );
 
     if (expensesRef.current) observer.observe(expensesRef.current);
@@ -188,6 +188,36 @@ export default function Home() {
       if (expensesRef.current) observer.unobserve(expensesRef.current);
     };
   }, []);
+
+  const handleScrollToTransactions = () => {
+    const yOffset = -125; // scroll 100px above
+    const y =
+      transactionRef.current.getBoundingClientRect().top +
+      window.pageYOffset +
+      yOffset;
+
+    window.scrollTo({ top: y, behavior: "smooth" });
+  };
+
+  const handleScrollToBudgets = () => {
+    const yOffset = -125; // scroll 100px above
+    const y =
+      budgetsRef.current.getBoundingClientRect().top +
+      window.pageYOffset +
+      yOffset;
+
+    window.scrollTo({ top: y, behavior: "smooth" });
+  };
+
+  const handleScrollToExpenses = () => {
+    const yOffset = -125; // scroll 100px above
+    const y =
+      expensesRef.current.getBoundingClientRect().top +
+      window.pageYOffset +
+      yOffset;
+
+    window.scrollTo({ top: y, behavior: "smooth" });
+  };
 
   return (
     <div className="sm:container mx-auto px-8 sm:px-16 lg:px-16 py-3 flex flex-col gap-4">
@@ -248,11 +278,13 @@ export default function Home() {
               ? " text-(--foreground) border-b-3 border-(--foreground)"
               : "")
           }
+          onClick={handleScrollToTransactions}
         >
           <BadgeDollarSign />
           <div>Transactions</div>
         </div>
         <div
+          onClick={handleScrollToBudgets}
           className={
             `flex flex-col items-center cursor-pointer` +
             (isBudgetsVisible
@@ -264,6 +296,7 @@ export default function Home() {
           <div>Budgets</div>
         </div>
         <div
+          onClick={handleScrollToExpenses}
           className={
             `flex flex-col items-center cursor-pointer` +
             (isExpensesVisible
