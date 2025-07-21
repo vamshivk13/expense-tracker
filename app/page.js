@@ -233,7 +233,7 @@ export default function Home() {
             Overview
           </Badge>
           <CardContent>
-            <div className="grid md:grid-cols-5 grid-cols-2 gap-x-3 gap-y-5">
+            <div className="grid md:grid-cols-4 grid-cols-2 gap-x-3 gap-y-5">
               <div className="">
                 <h3 className="text-sm text-gray-700 dark:text-gray-400">
                   Monthly Income
@@ -258,19 +258,15 @@ export default function Home() {
                 </h3>
                 <div className="mt-2">Rs 96,000</div>
               </div>
-              <div
-                className={"flex items-center md:justify-center"}
-                size="icon"
+
+              <Button
+                className={
+                  "absolute bottom-0 left-[50%] transform translate-y-[50%] translate-x-[-50%] rounded-full bg-blue-500 hover:bg-blue-700 dark:hover:bg-blue-300"
+                }
+                size={"icon"}
               >
-                <Button
-                  className={
-                    "rounded-4xl bg-blue-500 hover:bg-blue-700 dark:hover:bg-blue-300"
-                  }
-                >
-                  <Plus></Plus>
-                  <div>Add Expense</div>
-                </Button>
-              </div>
+                <Plus></Plus>
+              </Button>
             </div>
           </CardContent>
         </Card>
