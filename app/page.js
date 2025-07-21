@@ -227,13 +227,13 @@ export default function Home() {
         </div>
         <DateSelect />
       </div>
-      <div className="flex gap-5 my-5">
+      <div className="flex gap-5 mt-5 mb-2">
         <Card className={"rounded-[5px] relative flex-1/2 sm:py-10"}>
           <Badge className={"absolute -top-2 left-5 bg-blue-500"}>
             Overview
           </Badge>
           <CardContent>
-            <div className="grid md:grid-cols-4 grid-cols-2 gap-x-3 gap-y-5">
+            <div className="grid md:grid-cols-5 grid-cols-2 gap-x-3 gap-y-5">
               <div className="">
                 <h3 className="text-sm text-gray-700 dark:text-gray-400">
                   Monthly Income
@@ -249,6 +249,12 @@ export default function Home() {
               <div>
                 <h3 className="text-sm text-gray-700 dark:text-gray-400">
                   Todays's Expense
+                </h3>
+                <div className="mt-2">Rs 96,000</div>
+              </div>
+              <div>
+                <h3 className="text-sm text-gray-700 dark:text-gray-400">
+                  Fixed Expenses
                 </h3>
                 <div className="mt-2">Rs 96,000</div>
               </div>
@@ -269,8 +275,9 @@ export default function Home() {
           </CardContent>
         </Card>
       </div>
+
       {/* Menu */}
-      <div className="sticky top-[50px] h-[75px] py-3 z-30 bg-(--background) flex items-center justify-around my-3 text-sm text-gray-700 dark:text-gray-400">
+      <div className="sticky top-[50px] h-[75px] py-3 z-30 bg-(--background) flex items-center justify-around my-1 text-sm text-gray-700 dark:text-gray-400">
         <div
           className={
             `flex flex-col items-center cursor-pointer` +
@@ -308,8 +315,26 @@ export default function Home() {
           <div>Expenses</div>
         </div>
       </div>
+
+      {/* Quick Actions */}
+      <div className="flex flex-col gap-2 mt-2 mb-2">
+        <div className={"mr-auto text-sm text-gray-700 dark:text-gray-400"}>
+          QUICK ACTIONS
+        </div>
+        <div className="rounded-2xl overflow-x-auto flex gap-2 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden text-gray-700 dark:text-gray-400">
+          <Badge variant={"outline"} className={"p-2 rounded-2xl"}>
+            Add Expenses
+          </Badge>
+          <Badge variant={"outline"} className={"p-2 rounded-2xl"}>
+            Update Budgets
+          </Badge>
+          <Badge variant={"outline"} className={"p-2 rounded-2xl"}>
+            Modify Fixed Expenses
+          </Badge>
+        </div>
+      </div>
       {/* Transactions  */}
-      <div className={"flex flex-col my-3"} ref={transactionRef}>
+      <div className={"flex flex-col mt-1 mb-3"} ref={transactionRef}>
         <div className="my-5 text-lg z-20  bg-(--background) h-[55px] gap-x-3 grid grid-cols-4 items-center">
           <div className={"col-span-3"}>Your Transactions</div>
           <div
