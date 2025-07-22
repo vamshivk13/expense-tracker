@@ -227,7 +227,7 @@ export default function Home() {
 
         if (newOpacity < 0.5 && !hasScrolledToTarget) {
           console.log("Scrolling to view ", hasScrolledToTarget);
-          const yOffset = -55; // scroll 100px above
+          const yOffset = -105; // scroll 100px above
           const y =
             menuRef.current?.getBoundingClientRect().top +
             window.pageYOffset +
@@ -260,7 +260,10 @@ export default function Home() {
 
   return (
     <div className="sm:container mx-auto px-8 sm:px-16 lg:px-16 py-3 flex flex-col gap-4">
-      <div className="flex items-center my-3" ref={greetingRef}>
+      <div
+        className="flex items-center my-3 sticky top-[50px] h-[50px] bg-(--background) z-60"
+        ref={greetingRef}
+      >
         <div>
           Hi, <span className="text-xl">Vamshi Thatikonda</span>
         </div>
@@ -323,7 +326,7 @@ export default function Home() {
       {/* Menu */}
       <div
         ref={menuRef}
-        className="sticky top-[50px] h-[75px] py-3 z-30 bg-(--background) grid grid-cols-3 mt-2 mb-4 text-sm text-gray-700 dark:text-gray-400"
+        className="sticky top-[100px] h-[75px] py-3 z-30 bg-(--background) grid grid-cols-3 mt-2 mb-4 text-sm text-gray-700 dark:text-gray-400"
       >
         <div
           className={
@@ -397,7 +400,7 @@ export default function Home() {
           </div>
         </div>
         <div className="flex flex-col gap-4">
-          <div className="grid grid-cols-4 gap-x-3 h-[34px] flex items-center text-gray-700 dark:text-gray-400 bg-(--background) sticky top-[125px]">
+          <div className="grid grid-cols-4 gap-x-3 h-[34px] flex items-center text-gray-700 dark:text-gray-400 bg-(--background) sticky top-[175px]">
             <div className="text-sm col-span-3 sm:col-span-2">Expense</div>
             <div className="text-sm hidden sm:block text-center">Date</div>
             <div className="text-sm text-center">Amount</div>
@@ -457,7 +460,7 @@ export default function Home() {
           </div>
         </div>
         <div className="flex flex-col gap-4">
-          <div className="z-20 grid grid-cols-4 gap-x-3 h-[34px] flex items-center text-gray-700 dark:text-gray-400 bg-(--background) sticky top-[125px]">
+          <div className="z-20 grid grid-cols-4 gap-x-3 h-[34px] flex items-center text-gray-700 dark:text-gray-400 bg-(--background) sticky top-[175px]">
             <div className="text-sm col-span-3">Category</div>
             <div className="text-sm text-center">Amount</div>
             <Separator className={"absolute bottom-0"} />
@@ -528,7 +531,7 @@ export default function Home() {
           </div>
         </div>
         <div className="flex flex-col gap-4">
-          <div className="grid grid-cols-4 gap-x-3 h-[34px] flex items-center text-gray-700 dark:text-gray-400 bg-(--background) sticky top-[125px]">
+          <div className="grid grid-cols-4 gap-x-3 h-[34px] flex items-center text-gray-700 dark:text-gray-400 bg-(--background) sticky top-[175px]">
             <div className="text-sm col-span-3 sm:col-span-2">Expense</div>
             <div className="text-sm hidden sm:block text-center">Date</div>
             <div className="text-sm text-center">Amount</div>
