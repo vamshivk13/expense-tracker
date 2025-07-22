@@ -137,6 +137,7 @@ export default function Home() {
   ];
 
   const sectionRefs = useRef([]);
+  const menuRef = useRef();
   const [activeSection, setActiveSection] = useState(null);
 
   console.log("active session", activeSection);
@@ -191,17 +192,85 @@ export default function Home() {
     window.scrollTo({ top: y, behavior: "smooth" });
   };
 
+  const [opacity, setOpacity] = useState(1);
+  const [hasScrolledToTarget, setHasScrolledToTarget] = useState(false);
+  const greetingRef = useRef();
+  useEffect(() => {
+    const handleScroll = () => {
+      if (sectionRefs.current[0]) {
+        const rect = sectionRefs.current[0].getBoundingClientRect();
+        const fadeStart = 50; // px from top where fade starts
+        const fadeEnd = 300; // px from top where fade ends
+
+        const currentScroll = window.scrollY;
+
+        let newOpacity = 1;
+        if (currentScroll <= fadeStart) {
+          newOpacity = 1;
+        } else if (currentScroll >= fadeEnd) {
+          newOpacity = 0;
+        } else {
+          const scrolled = currentScroll - fadeStart;
+          newOpacity = 1 - scrolled / (fadeEnd - fadeStart);
+        }
+
+        setOpacity(newOpacity);
+
+        console.log(
+          "REF",
+          sectionRefs.current[0],
+          rect,
+          newOpacity,
+          hasScrolledToTarget
+        );
+        setOpacity(newOpacity);
+
+        if (newOpacity < 0.5 && !hasScrolledToTarget) {
+          console.log("Scrolling to view ", hasScrolledToTarget);
+          const yOffset = -55; // scroll 100px above
+          const y =
+            menuRef.current?.getBoundingClientRect().top +
+            window.pageYOffset +
+            yOffset;
+
+          window.scrollTo({ top: y, behavior: "smooth" });
+          setHasScrolledToTarget(true);
+        }
+
+        console.log("Scrolling to view ---", hasScrolledToTarget, newOpacity);
+        // Optional: Reset the flag when scrolled back up
+        if (newOpacity >= 0.6 && hasScrolledToTarget) {
+          console.log("Scrolling to view ", hasScrolledToTarget);
+          const yOffset = -60; // scroll 100px above
+          const y =
+            greetingRef.current?.getBoundingClientRect().top +
+            window.pageYOffset +
+            yOffset;
+          window.scrollTo({ top: y, behavior: "smooth" });
+          setHasScrolledToTarget(false);
+        }
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, [hasScrolledToTarget]);
+
+  console.log("Opactity", opacity);
+
   return (
     <div className="sm:container mx-auto px-8 sm:px-16 lg:px-16 py-3 flex flex-col gap-4">
-      <div className="flex items-center my-3">
+      <div className="flex items-center my-3" ref={greetingRef}>
         <div>
           Hi, <span className="text-xl">Vamshi Thatikonda</span>
         </div>
         <DateSelect />
       </div>
       <div
+        data-section="overview"
         ref={(el) => (sectionRefs.current[0] = el)}
-        className="flex gap-5 mt-5 mb-2"
+        className="flex gap-5 mt-5 mb-2 transition-opacity duration-700"
+        style={{ opacity }}
       >
         <Card className={"rounded-[5px] relative flex-1/2 sm:py-10"}>
           <Badge
@@ -252,7 +321,10 @@ export default function Home() {
       </div>
 
       {/* Menu */}
-      <div className="sticky top-[50px] h-[75px] py-3 z-30 bg-(--background) grid grid-cols-3 mt-2 mb-4 text-sm text-gray-700 dark:text-gray-400">
+      <div
+        ref={menuRef}
+        className="sticky top-[50px] h-[75px] py-3 z-30 bg-(--background) grid grid-cols-3 mt-2 mb-4 text-sm text-gray-700 dark:text-gray-400"
+      >
         <div
           className={
             `flex flex-col items-center cursor-pointer mx-auto` +
@@ -263,7 +335,7 @@ export default function Home() {
           onClick={handleScrollToTransactions}
         >
           <BadgeDollarSign />
-          <div>Transactions</div>
+          <div className="pointer-events-none select-none">Transactions</div>
         </div>
         <div
           onClick={handleScrollToBudgets}
@@ -275,7 +347,7 @@ export default function Home() {
           }
         >
           <NotepadTextDashed />
-          <div>Budgets</div>
+          <div className="pointer-events-none select-none">Budgets</div>
         </div>
         <div
           onClick={handleScrollToExpenses}
@@ -287,7 +359,7 @@ export default function Home() {
           }
         >
           <HandCoins />
-          <div>Expenses</div>
+          <div className="pointer-events-none select-none">Expenses</div>
         </div>
       </div>
 
