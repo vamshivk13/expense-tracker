@@ -141,58 +141,38 @@ export default function Home() {
 
   const transactionRef = useRef();
   const expensesRef = useRef();
-
   const budgetsRef = useRef();
-  console.log("isVisible", isVisible);
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        setIsVisible(entry.isIntersecting);
-      },
-      { threshold: 0.7 } // Adjust based on how much should be visible
-    );
 
-    if (transactionRef.current) observer.observe(transactionRef.current);
-
-    return () => {
-      if (transactionRef.current) observer.unobserve(transactionRef.current);
-    };
-  }, []);
+  const sectionRefs = useRef([]);
+  const [activeSection, setActiveSection] = useState(null);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
-      ([entry]) => {
-        setIsBudgetsVisible(entry.isIntersecting);
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setActiveSection(entry.target.dataset.section);
+          } else {
+            setActiveSection(null);
+          }
+        });
       },
-      { threshold: 0.6 } // Adjust based on how much should be visible
+      {
+        threshold: 0.5, // Adjust based on how much visibility you want
+      }
     );
 
-    if (budgetsRef.current) observer.observe(budgetsRef.current);
+    sectionRefs.current.forEach((ref) => {
+      if (ref) observer.observe(ref);
+    });
 
-    return () => {
-      if (budgetsRef.current) observer.unobserve(budgetsRef.current);
-    };
-  }, []);
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        setIsExpensesVisible(entry.isIntersecting);
-      },
-      { threshold: 0.2 } // Adjust based on how much should be visible
-    );
-
-    if (expensesRef.current) observer.observe(expensesRef.current);
-
-    return () => {
-      if (expensesRef.current) observer.unobserve(expensesRef.current);
-    };
+    return () => observer.disconnect();
   }, []);
 
   const handleScrollToTransactions = () => {
     const yOffset = -125; // scroll 100px above
     const y =
-      transactionRef.current.getBoundingClientRect().top +
+      sectionRefs.current[0].getBoundingClientRect().top +
       window.pageYOffset +
       yOffset;
 
@@ -202,7 +182,7 @@ export default function Home() {
   const handleScrollToBudgets = () => {
     const yOffset = -125; // scroll 100px above
     const y =
-      budgetsRef.current.getBoundingClientRect().top +
+      sectionRefs.current[1].getBoundingClientRect().top +
       window.pageYOffset +
       yOffset;
 
@@ -212,7 +192,7 @@ export default function Home() {
   const handleScrollToExpenses = () => {
     const yOffset = -125; // scroll 100px above
     const y =
-      expensesRef.current.getBoundingClientRect().top +
+      sectionRefs.current[2].getBoundingClientRect().top +
       window.pageYOffset +
       yOffset;
 
@@ -281,7 +261,7 @@ export default function Home() {
         <div
           className={
             `flex flex-col items-center cursor-pointer mx-auto` +
-            (isVisible
+            (activeSection == "transactions"
               ? " text-(--foreground) border-b-3 border-(--foreground)"
               : "")
           }
@@ -294,7 +274,7 @@ export default function Home() {
           onClick={handleScrollToBudgets}
           className={
             `flex flex-col items-center cursor-pointer mx-auto` +
-            (isBudgetsVisible
+            (activeSection == "budgets"
               ? " text-(--foreground)  border-b-3 border-(--foreground)"
               : "")
           }
@@ -306,7 +286,7 @@ export default function Home() {
           onClick={handleScrollToExpenses}
           className={
             `flex flex-col items-center cursor-pointer mx-auto` +
-            (isExpensesVisible
+            (activeSection == "expenses"
               ? " text-(--foreground)  border-b-3 border-(--foreground)"
               : "")
           }
@@ -334,7 +314,11 @@ export default function Home() {
         </div>
       </div>
       {/* Transactions  */}
-      <div className={"flex flex-col mt-1 mb-3"} ref={transactionRef}>
+      <div
+        className={"flex flex-col mt-1 mb-3"}
+        ref={(el) => (sectionRefs.current[0] = el)}
+        data-section={"transactions"}
+      >
         <div className="my-5 text-lg z-20  bg-(--background) h-[55px] gap-x-3 grid grid-cols-4 items-center">
           <div className={"col-span-3"}>Your Transactions</div>
           <div
@@ -390,7 +374,11 @@ export default function Home() {
       </div>
 
       {/* Budgets  */}
-      <div className={"flex flex-col my-3"} ref={budgetsRef}>
+      <div
+        className={"flex flex-col my-3"}
+        ref={(el) => (sectionRefs.current[1] = el)}
+        data-section={"budgets"}
+      >
         <div className="my-5 text-lg z-20 bg-(--background) h-[55px] gap-x-3 grid grid-cols-4 items-center">
           <div className={"col-span-3"}>Budgets</div>
           <div
@@ -457,7 +445,11 @@ export default function Home() {
         </Button>
       </div>
       {/* Fixed Expenses  */}
-      <div className={"flex flex-col my-3"} ref={expensesRef}>
+      <div
+        className={"flex flex-col my-3"}
+        ref={(el) => (sectionRefs.current[2] = el)}
+        data-section={"expenses"}
+      >
         <div className="my-5 text-lg z-20  bg-(--background) h-[55px] gap-x-3 grid grid-cols-4 items-center">
           <div className={"col-span-3"}>Fixed Expenses</div>
           <div
