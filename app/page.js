@@ -229,7 +229,11 @@ export default function Home() {
       </div>
       <div className="flex gap-5 mt-5 mb-2">
         <Card className={"rounded-[5px] relative flex-1/2 sm:py-10"}>
-          <Badge className={"absolute -top-2 left-5 bg-blue-500"}>
+          <Badge
+            className={
+              "absolute top-0 transform translate-y-[-50%] left-5 bg-blue-500"
+            }
+          >
             Overview
           </Badge>
           <CardContent>
