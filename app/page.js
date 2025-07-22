@@ -139,14 +139,13 @@ export default function Home() {
   const sectionRefs = useRef([]);
   const [activeSection, setActiveSection] = useState(null);
 
+  console.log("active session", activeSection);
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
             setActiveSection(entry.target.dataset.section);
-          } else {
-            setActiveSection(null);
           }
         });
       },
@@ -165,7 +164,7 @@ export default function Home() {
   const handleScrollToTransactions = () => {
     const yOffset = -125; // scroll 100px above
     const y =
-      sectionRefs.current[0].getBoundingClientRect().top +
+      sectionRefs.current[1].getBoundingClientRect().top +
       window.pageYOffset +
       yOffset;
 
@@ -175,7 +174,7 @@ export default function Home() {
   const handleScrollToBudgets = () => {
     const yOffset = -125; // scroll 100px above
     const y =
-      sectionRefs.current[1].getBoundingClientRect().top +
+      sectionRefs.current[2].getBoundingClientRect().top +
       window.pageYOffset +
       yOffset;
 
@@ -185,7 +184,7 @@ export default function Home() {
   const handleScrollToExpenses = () => {
     const yOffset = -125; // scroll 100px above
     const y =
-      sectionRefs.current[2].getBoundingClientRect().top +
+      sectionRefs.current[3].getBoundingClientRect().top +
       window.pageYOffset +
       yOffset;
 
@@ -200,7 +199,10 @@ export default function Home() {
         </div>
         <DateSelect />
       </div>
-      <div className="flex gap-5 mt-5 mb-2">
+      <div
+        ref={(el) => (sectionRefs.current[0] = el)}
+        className="flex gap-5 mt-5 mb-2"
+      >
         <Card className={"rounded-[5px] relative flex-1/2 sm:py-10"}>
           <Badge
             className={
@@ -309,7 +311,7 @@ export default function Home() {
       {/* Transactions  */}
       <div
         className={"flex flex-col mt-1 mb-3"}
-        ref={(el) => (sectionRefs.current[0] = el)}
+        ref={(el) => (sectionRefs.current[1] = el)}
         data-section={"transactions"}
       >
         <div className="my-5 text-lg z-20  bg-(--background) h-[55px] gap-x-3 grid grid-cols-4 items-center">
@@ -369,7 +371,7 @@ export default function Home() {
       {/* Budgets  */}
       <div
         className={"flex flex-col my-3"}
-        ref={(el) => (sectionRefs.current[1] = el)}
+        ref={(el) => (sectionRefs.current[2] = el)}
         data-section={"budgets"}
       >
         <div className="my-5 text-lg z-20 bg-(--background) h-[55px] gap-x-3 grid grid-cols-4 items-center">
@@ -440,7 +442,7 @@ export default function Home() {
       {/* Fixed Expenses  */}
       <div
         className={"flex flex-col my-3"}
-        ref={(el) => (sectionRefs.current[2] = el)}
+        ref={(el) => (sectionRefs.current[3] = el)}
         data-section={"expenses"}
       >
         <div className="my-5 text-lg z-20  bg-(--background) h-[55px] gap-x-3 grid grid-cols-4 items-center">
