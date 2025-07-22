@@ -135,13 +135,6 @@ export default function Home() {
       tags: ["medicines", "doctor", "gym", "supplements", "therapy"],
     },
   ];
-  const [isVisible, setIsVisible] = useState(null);
-  const [isBudgetsVisible, setIsBudgetsVisible] = useState(null);
-  const [isExpensesVisible, setIsExpensesVisible] = useState(null);
-
-  const transactionRef = useRef();
-  const expensesRef = useRef();
-  const budgetsRef = useRef();
 
   const sectionRefs = useRef([]);
   const [activeSection, setActiveSection] = useState(null);
