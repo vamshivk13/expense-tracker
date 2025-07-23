@@ -162,17 +162,24 @@ export default function Home() {
     return () => observer.disconnect();
   }, []);
 
+  const [isClicked, setIsClicked] = useState(false);
+
   const handleScrollToTransactions = () => {
-    const yOffset = -175; // scroll 100px above
+    setIsClicked(true);
+    const yOffset = -165; // scroll 100px above
     const y =
       sectionRefs.current[1].getBoundingClientRect().top +
       window.pageYOffset +
       yOffset;
 
     window.scrollTo({ top: y, behavior: "smooth" });
+    setTimeout(() => {
+      setIsClicked(false);
+    }, 2000);
   };
 
   const handleScrollToBudgets = () => {
+    setIsClicked(true);
     const yOffset = -175; // scroll 100px above
     const y =
       sectionRefs.current[2].getBoundingClientRect().top +
@@ -180,9 +187,13 @@ export default function Home() {
       yOffset;
 
     window.scrollTo({ top: y, behavior: "smooth" });
+    setTimeout(() => {
+      setIsClicked(false);
+    }, 2000);
   };
 
   const handleScrollToExpenses = () => {
+    setIsClicked(true);
     const yOffset = -175; // scroll 100px above
     const y =
       sectionRefs.current[3].getBoundingClientRect().top +
@@ -190,6 +201,9 @@ export default function Home() {
       yOffset;
 
     window.scrollTo({ top: y, behavior: "smooth" });
+    setTimeout(() => {
+      setIsClicked(false);
+    }, 2000);
   };
 
   const [opacity, setOpacity] = useState(1);
@@ -199,7 +213,7 @@ export default function Home() {
     const handleScroll = () => {
       if (sectionRefs.current[0]) {
         const fadeStart = 50; // px from top where fade starts
-        const fadeEnd = 300; // px from top where fade ends
+        const fadeEnd = 250; // px from top where fade ends
 
         const currentScroll = window.scrollY;
 
@@ -215,7 +229,7 @@ export default function Home() {
 
         setOpacity(newOpacity);
 
-        if (newOpacity < 0.5 && !hasScrolledToTarget) {
+        if (!isClicked && newOpacity < 0.5 && !hasScrolledToTarget) {
           console.log("Scrolling to view ", hasScrolledToTarget);
           const yOffset = -105; // scroll 100px above
           const y =
@@ -227,15 +241,15 @@ export default function Home() {
           setHasScrolledToTarget(true);
         }
 
+        console.log(
+          "OPACITY",
+          newOpacity,
+          hasScrolledToTarget,
+          newOpacity >= 0.6 && hasScrolledToTarget
+        );
         // Optional: Reset the flag when scrolled back up
         if (newOpacity >= 0.6 && hasScrolledToTarget) {
-          console.log("Scrolling to view ", hasScrolledToTarget);
-          const yOffset = -60; // scroll 100px above
-          const y =
-            greetingRef.current?.getBoundingClientRect().top +
-            window.pageYOffset +
-            yOffset;
-          window.scrollTo({ top: y, behavior: "smooth" });
+          window.scrollTo({ top: 0, behavior: "smooth" });
           setHasScrolledToTarget(false);
         }
       }
@@ -243,7 +257,7 @@ export default function Home() {
 
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
-  }, [hasScrolledToTarget]);
+  }, [hasScrolledToTarget, isClicked]);
 
   console.log("Opactity", opacity);
 
