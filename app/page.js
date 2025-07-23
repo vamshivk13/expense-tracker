@@ -180,7 +180,7 @@ export default function Home() {
 
   const handleScrollToBudgets = () => {
     setIsClicked(true);
-    const yOffset = -175; // scroll 100px above
+    const yOffset = -165; // scroll 100px above
     const y =
       sectionRefs.current[2].getBoundingClientRect().top +
       window.pageYOffset +
@@ -194,7 +194,7 @@ export default function Home() {
 
   const handleScrollToExpenses = () => {
     setIsClicked(true);
-    const yOffset = -175; // scroll 100px above
+    const yOffset = -165; // scroll 100px above
     const y =
       sectionRefs.current[3].getBoundingClientRect().top +
       window.pageYOffset +
