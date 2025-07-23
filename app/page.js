@@ -151,7 +151,7 @@ export default function Home() {
         });
       },
       {
-        threshold: 0.5, // Adjust based on how much visibility you want
+        threshold: 0.5,
       }
     );
 
@@ -163,7 +163,7 @@ export default function Home() {
   }, []);
 
   const handleScrollToTransactions = () => {
-    const yOffset = -125; // scroll 100px above
+    const yOffset = -175; // scroll 100px above
     const y =
       sectionRefs.current[1].getBoundingClientRect().top +
       window.pageYOffset +
@@ -173,7 +173,7 @@ export default function Home() {
   };
 
   const handleScrollToBudgets = () => {
-    const yOffset = -125; // scroll 100px above
+    const yOffset = -175; // scroll 100px above
     const y =
       sectionRefs.current[2].getBoundingClientRect().top +
       window.pageYOffset +
@@ -183,7 +183,7 @@ export default function Home() {
   };
 
   const handleScrollToExpenses = () => {
-    const yOffset = -125; // scroll 100px above
+    const yOffset = -175; // scroll 100px above
     const y =
       sectionRefs.current[3].getBoundingClientRect().top +
       window.pageYOffset +
