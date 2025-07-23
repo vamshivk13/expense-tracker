@@ -198,7 +198,6 @@ export default function Home() {
   useEffect(() => {
     const handleScroll = () => {
       if (sectionRefs.current[0]) {
-        const rect = sectionRefs.current[0].getBoundingClientRect();
         const fadeStart = 50; // px from top where fade starts
         const fadeEnd = 300; // px from top where fade ends
 
@@ -216,15 +215,6 @@ export default function Home() {
 
         setOpacity(newOpacity);
 
-        console.log(
-          "REF",
-          sectionRefs.current[0],
-          rect,
-          newOpacity,
-          hasScrolledToTarget
-        );
-        setOpacity(newOpacity);
-
         if (newOpacity < 0.5 && !hasScrolledToTarget) {
           console.log("Scrolling to view ", hasScrolledToTarget);
           const yOffset = -105; // scroll 100px above
@@ -237,7 +227,6 @@ export default function Home() {
           setHasScrolledToTarget(true);
         }
 
-        console.log("Scrolling to view ---", hasScrolledToTarget, newOpacity);
         // Optional: Reset the flag when scrolled back up
         if (newOpacity >= 0.6 && hasScrolledToTarget) {
           console.log("Scrolling to view ", hasScrolledToTarget);
