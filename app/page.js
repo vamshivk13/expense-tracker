@@ -20,6 +20,7 @@ import { AddDrawer } from "./components/AddDrawer";
 import { Plus } from "lucide-react";
 
 import { useRouter } from "next/navigation";
+import AddExpenseDialog from "./components/AddExpenseDialog";
 
 export default function Home() {
   const transactions = [
@@ -269,7 +270,7 @@ export default function Home() {
   return (
     <div className="sm:container mx-auto px-8 sm:px-16 lg:px-16 py-3 flex flex-col gap-4">
       <div
-        className="flex items-center my-3 sticky top-[50px] h-[50px] bg-(--background) z-60"
+        className="flex items-center my-3 sticky top-[50px] h-[50px] bg-(--background) z-40"
         ref={greetingRef}
       >
         <div>
@@ -317,9 +318,12 @@ export default function Home() {
                 </h3>
                 <div className="mt-2">Rs 96,000</div>
               </div>
+              <div className="hidden sm:block absolute bottom-0 left-[50%] transform translate-y-[50%] translate-x-[-50%]">
+                <AddExpenseDialog />
+              </div>
               <Button
                 className={
-                  "absolute bottom-0 left-[50%] transform translate-y-[50%] translate-x-[-50%] rounded-full bg-blue-500 hover:bg-blue-700 dark:hover:bg-blue-300"
+                  "sm:hidden flex absolute bottom-0 left-[50%] transform translate-y-[50%] translate-x-[-50%] rounded-full bg-blue-500 hover:bg-blue-700 dark:hover:bg-blue-300"
                 }
                 size={"icon"}
                 onClick={() => {
