@@ -33,7 +33,11 @@ export default function Page() {
     { id: "others", tag: "Others", category: "Miscellaneous" },
   ];
   return (
-    <div className={"h-[calc(100vh-50px)] flex flex-col gap-3 py-3 px-4"}>
+    <div
+      className={
+        "h-[calc(100lvh-50px)] bg-red-500 flex flex-col gap-3 py-3 px-4"
+      }
+    >
       <Card className="flex-3/4 bg--(background) border-none">
         <CardHeader>
           <CardTitle>Add Expense</CardTitle>
