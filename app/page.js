@@ -519,7 +519,7 @@ export default function Home() {
       </div>
       {/* Fixed Expenses  */}
       <div
-        className={"flex flex-col my-3"}
+        className={"flex flex-col my-3 pb-15"}
         ref={(el) => (sectionRefs.current[3] = el)}
         data-section={"expenses"}
       >
