@@ -35,110 +35,95 @@ export default function Page() {
   return (
     <div
       className={
-        "h-[calc(100lvh-50px)] bg-red-500 flex flex-col gap-3 py-3 px-4"
+        "h-[calc(100lvh-50px)] flex flex-col gap-5 sm:container mx-auto px-8 sm:px-16 lg:px-16 py-3"
       }
     >
-      <Card className="flex-3/4 bg--(background) border-none">
-        <CardHeader>
-          <CardTitle>Add Expense</CardTitle>
-        </CardHeader>
-        <CardContent className={"flex flex-col gap-4"}>
-          <div className="grid w-full gap-1">
-            <div className="flex flex-col gap-1">
-              <Label
-                className="text-sm text-gray-700 dark:text-gray-400"
-                htmlFor="amount"
-              >
-                Amount
-              </Label>
-              <div className="flex items-center">
-                <IndianRupee className={"h-5"} />
-                <Input
-                  className={
-                    "text-lg border-none dark:bg-(--background) bg-(--background) focus-visible:ring-0 focus-visible:ring-offset-0 focus:outline-none"
-                  }
-                  type="number"
-                  id="amount"
-                  placeHolder="0"
-                />
-              </div>
-            </div>
+      <div className="grid w-full gap-1">
+        <div className="flex flex-col gap-1">
+          <Label
+            className="text-sm text-gray-700 dark:text-gray-400"
+            htmlFor="amount"
+          >
+            Amount
+          </Label>
+          <div className="flex items-center">
+            <IndianRupee className={"h-5"} />
+            <Input
+              className={
+                "text-lg border-none dark:bg-(--background) bg-(--background) focus-visible:ring-0 focus-visible:ring-offset-0 focus:outline-none"
+              }
+              type="number"
+              id="amount"
+              placeHolder="0"
+            />
           </div>
-          <div className="flex flex-col w-full gap-1">
-            <Label
-              className="text-sm text-gray-700 dark:text-gray-400"
-              htmlFor="amount"
-            >
-              Category
-            </Label>
-            <div
-              className="flex gap-2 items-center cursor-pointer"
-              id="category"
-            >
-              <Shapes className={"h-5"} />
-              <div className="text-lg">Others</div>
-              <ChevronRight className="h-5 ml-auto" />
-            </div>
-          </div>
-          {/* Description */}
-          <div className="flex flex-col w-full gap-1">
-            <Label
-              className="text-sm text-gray-700 dark:text-gray-400"
-              htmlFor="amount"
-            >
-              Description
-            </Label>
-            <div
-              className="flex gap-2 items-center cursor-pointer"
-              id="category"
-            >
-              <Notebook className={"h-5"} />
-              <Textarea
-                placeHolder="write a description"
-                className={
-                  "text-sm dark:bg-(--background) bg-(--background) resize-none min-h-2 border-none focus-visible:ring-0 focus-visible:ring-offset-0 focus:outline-none"
-                }
-              />
-            </div>
+        </div>
+      </div>
+      <div className="flex flex-col w-full gap-1">
+        <Label
+          className="text-sm text-gray-700 dark:text-gray-400"
+          htmlFor="amount"
+        >
+          Category
+        </Label>
+        <div className="flex gap-2 items-center cursor-pointer" id="category">
+          <Shapes className={"h-5"} />
+          <div className="text-lg">Others</div>
+          <ChevronRight className="h-5 ml-auto" />
+        </div>
+      </div>
+      {/* Description */}
+      <div className="flex flex-col w-full gap-1">
+        <Label
+          className="text-sm text-gray-700 dark:text-gray-400"
+          htmlFor="amount"
+        >
+          Description
+        </Label>
+        <div className="flex gap-2 items-center cursor-pointer" id="category">
+          <Notebook className={"h-5"} />
+          <Textarea
+            placeHolder="write a description"
+            className={
+              "text-sm dark:bg-(--background) bg-(--background) resize-none min-h-2 border-none focus-visible:ring-0 focus-visible:ring-offset-0 focus:outline-none"
+            }
+          />
+        </div>
+      </div>
 
-            {/* tags */}
-            <div className="flex flex-col w-full gap-1">
-              <Label
-                className="text-sm text-gray-700 dark:text-gray-400"
-                htmlFor="amount"
-              >
-                Tags
-              </Label>
-              <div
-                className="flex gap-2 items-center cursor-pointer"
-                id="category"
-              >
-                <Tag className={"h-5"} />
-                <Input
-                  placeHolder="add tags"
-                  type="text"
-                  className={
-                    "text-sm dark:bg-(--background) bg-(--background) resize-none min-h-2 border-none focus-visible:ring-0 focus-visible:ring-offset-0 focus:outline-none"
-                  }
-                />
-              </div>
-              <div className="flex gap-1 flex-wrap">
-                {expenseTags.map((tag) => {
-                  return (
-                    <Badge className={"cursor-pointer"} key={tag.id}>
-                      {tag.tag}
-                    </Badge>
-                  );
-                })}
-              </div>
-            </div>
-          </div>
-        </CardContent>
-      </Card>
-      <div className="flex-1/4 flex items-center">
+      {/* tags */}
+      <div className="flex flex-col w-full gap-1">
+        <Label
+          className="text-sm text-gray-700 dark:text-gray-400"
+          htmlFor="amount"
+        >
+          Tags
+        </Label>
+        <div className="flex gap-2 items-center cursor-pointer" id="category">
+          <Tag className={"h-5"} />
+          <Input
+            placeHolder="add tags"
+            type="text"
+            className={
+              "text-sm dark:bg-(--background) bg-(--background) resize-none min-h-2 border-none focus-visible:ring-0 focus-visible:ring-offset-0 focus:outline-none"
+            }
+          />
+        </div>
+        <div className="flex gap-1 mt-2 flex-wrap">
+          {expenseTags.map((tag) => {
+            return (
+              <Badge className={"cursor-pointer"} key={tag.id}>
+                {tag.tag}
+              </Badge>
+            );
+          })}
+        </div>
+      </div>
+
+      <div className="absolute bottom-10 right-10 flex-1/4 flex items-center">
         <Button
           className={
-            "ml-auto rounded-full bg-blue-500 hover:bg-blue-700 dark:hover:bg-blue-300"
+            "ml-auto rounded-full h-14 w-14 bg-blue-500 hover:bg-blue-700 dark:hover:bg-blue-300"
           }
           size={"icon"}
           onClick={() => {
