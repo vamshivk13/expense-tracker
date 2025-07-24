@@ -11,11 +11,15 @@ import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import DateSelect from "./components/DateSelect";
 import { Badge } from "@/components/ui/badge";
-import { Plus } from "lucide-react";
 import { getFormattedAmount, getFormattedDate } from "./util/DateUtility";
 import { Utensils } from "lucide-react";
 import { BadgeDollarSign, NotepadTextDashed, HandCoins } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
+import { ViewDrawer } from "./components/ViewDrawer";
+import { AddDrawer } from "./components/AddDrawer";
+import { Plus } from "lucide-react";
+
+import { useRouter } from "next/navigation";
 
 export default function Home() {
   const transactions = [
@@ -139,6 +143,7 @@ export default function Home() {
   const sectionRefs = useRef([]);
   const menuRef = useRef();
   const [activeSection, setActiveSection] = useState(null);
+  const router = useRouter();
 
   console.log("active session", activeSection);
   useEffect(() => {
@@ -312,12 +317,14 @@ export default function Home() {
                 </h3>
                 <div className="mt-2">Rs 96,000</div>
               </div>
-
               <Button
                 className={
                   "absolute bottom-0 left-[50%] transform translate-y-[50%] translate-x-[-50%] rounded-full bg-blue-500 hover:bg-blue-700 dark:hover:bg-blue-300"
                 }
                 size={"icon"}
+                onClick={() => {
+                  router.push("/add");
+                }}
               >
                 <Plus></Plus>
               </Button>
@@ -445,7 +452,6 @@ export default function Home() {
           <div className={"border-1 border-(--foreground) p-1"}>View All</div>
         </Button>
       </div>
-
       {/* Budgets  */}
       <div
         className={"flex flex-col my-3"}
