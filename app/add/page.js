@@ -35,7 +35,7 @@ export default function Page() {
   return (
     <div
       className={
-        "h-[calc(100lvh-50px)] flex flex-col gap-5 sm:container mx-auto px-8 sm:px-16 lg:px-16 py-3"
+        "h-[calc(100dvh-50px)] flex flex-col gap-5 sm:container mx-auto px-8 sm:px-16 lg:px-16 py-3"
       }
     >
       <div className="grid w-full gap-1">
