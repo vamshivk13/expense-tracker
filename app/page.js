@@ -1,26 +1,21 @@
 "use client";
 
-import {
-  Card,
-  CardAction,
-  CardContent,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import DateSelect from "./components/DateSelect";
 import { Badge } from "@/components/ui/badge";
 import { getFormattedAmount, getFormattedDate } from "./util/DateUtility";
-import { Utensils } from "lucide-react";
+
 import { BadgeDollarSign, NotepadTextDashed, HandCoins } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
-import { ViewDrawer } from "./components/ViewDrawer";
-import { AddDrawer } from "./components/AddDrawer";
 import { Plus } from "lucide-react";
+import { Utensils } from "lucide-react";
 
 import { useRouter } from "next/navigation";
 import AddExpenseDialog from "./components/AddExpenseDialog";
+import EditExpenseDialog from "./components/EditExpenseDialog";
+import Transactions from "./components/transactions/Transactions";
 
 export default function Home() {
   const transactions = [
@@ -409,6 +404,9 @@ export default function Home() {
             className={
               "text-center mx-auto text-sm text-gray-700 dark:text-gray-400 border-b-2 border-blue-500 pb-1 cursor-pointer"
             }
+            onClick={() => {
+              router.push("/view/transactions");
+            }}
           >
             view all
           </div>
@@ -420,32 +418,19 @@ export default function Home() {
             <div className="text-sm text-center">Amount</div>
             <Separator className={"absolute bottom-0"} />
           </div>
-
           {transactions.slice(0, 5).map((expense) => (
             <div key={expense.date}>
-              <div className="grid gap-x-3 grid-cols-4  mb-3">
-                <div className=" col-span-3 sm:col-span-2">
-                  <div className="flex items-center gap-4">
-                    <Utensils className="flex-shrink-0" />
-                    <div className="flex flex-col truncate">
-                      <div className="truncate">{expense.description}</div>
-                      <div className="text-sm text-gray-700 dark:text-gray-400">
-                        {expense.category}
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div className="hidden sm:block text-center">
-                  {getFormattedDate(expense.date)}
-                </div>
-                <div className="flex flex-col text-center">
-                  <div>{getFormattedAmount(expense.amount)}</div>
-                  <div className="text-sm block sm:hidden text-gray-700 dark:text-gray-400">
-                    {getFormattedDate(expense.date)}
-                  </div>
-                </div>
+              <div className="hidden sm:block">
+                <EditExpenseDialog>
+                  <Transactions expense={expense} />
+                </EditExpenseDialog>
               </div>
-              {/* <Separator /> */}
+              <div
+                className="sm:hidden block"
+                onClick={() => router.push("/edit")}
+              >
+                <Transactions expense={expense} />
+              </div>
             </div>
           ))}
         </div>
@@ -468,6 +453,9 @@ export default function Home() {
             className={
               "text-center mx-auto text-sm text-gray-700 dark:text-gray-400 border-b-2 border-blue-500 pb-1 cursor-pointer"
             }
+            onClick={() => {
+              router.push("/view/budgets");
+            }}
           >
             view all
           </div>
@@ -539,6 +527,9 @@ export default function Home() {
             className={
               "text-center mx-auto text-sm text-gray-700 dark:text-gray-400 border-b-2 border-blue-500 pb-1 cursor-pointer"
             }
+            onClick={() => {
+              router.push("/view/expenses");
+            }}
           >
             view all
           </div>

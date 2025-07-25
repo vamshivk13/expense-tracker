@@ -11,26 +11,20 @@ import {
 } from "@/components/ui/dialog";
 import { Plus } from "lucide-react";
 import AddExpense from "./AddExpense";
+import EditExpense from "./EditExpense";
 
-export default function AddExpenseDialog() {
+export default function EditExpenseDialog({ children }) {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button
-          className={
-            "rounded-full bg-blue-500 hover:bg-blue-700 dark:hover:bg-blue-300"
-          }
-          size={"icon"}
-        >
-          <Plus></Plus>
-        </Button>
+        <div>{children}</div>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[70%] dark:bg-(--gray-dialog)/100 h-[80%] z-50">
         <DialogHeader>
-          <DialogTitle>Add Expense</DialogTitle>
+          <DialogTitle>Edit Expense</DialogTitle>
         </DialogHeader>
         <div>
-          <AddExpense />
+          <EditExpense />
         </div>
         <DialogFooter>
           <DialogClose asChild>
