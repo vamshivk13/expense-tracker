@@ -75,7 +75,7 @@ export default function BudgetsView() {
   }
 
   return (
-    <div className="max-w-4xl mx-auto px-8 sm:px-20 lg:px-20 pb-2">
+    <div className="max-w-4xl mx-auto px-4 sm:px-20 lg:px-20 pb-2">
       <div className="text-lg z-20 bg-(--background) h-[55px] mb-2 sticky top-[50px] gap-x-3 grid grid-cols-4 items-center">
         <div className={"col-span-3"}>Budgets</div>
         <Button
