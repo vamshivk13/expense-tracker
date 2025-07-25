@@ -80,7 +80,7 @@ export default function BudgetsView() {
         <div className={"col-span-3"}>Budgets</div>
         <Button
           variant="outline"
-          className={"ml-auto rounded-xl bg-blue-500"}
+          className={"ml-auto rounded-2xl"}
           onClick={handleEditAndSave}
         >
           {mode == "edit" ? <Pencil /> : <Check />} {mode}
