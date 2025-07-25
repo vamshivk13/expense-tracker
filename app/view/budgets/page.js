@@ -92,7 +92,7 @@ export default function BudgetsView() {
             key={budget.category}
             className="flex flex-col gap-3 border-1 px-2 py-3 rounded-xl"
           >
-            <div className="grid gap-x-3 items-center grid-cols-5">
+            <div className="grid gap-x-3 items-center grid-cols-6">
               <div className="col-span-3">
                 <div className="flex items-center gap-4">
                   <Utensils className="flex-shrink-0" />
@@ -114,11 +114,11 @@ export default function BudgetsView() {
                     "%"}
                 </div>
               </div>
-              <div className="flex flex-row justify-center">
+              <div className="flex flex-row col-span-2 justify-center">
                 {mode == "edit" ? (
                   <div>
                     <div className="flex flex-col text-gray-700 dark:text-gray-400 text-sm">
-                      {getFormattedAmount(budget.spent)} /
+                      {getFormattedAmount(budget.spent)}/
                     </div>
                     <div className="block">{budget.budget}</div>
                   </div>
