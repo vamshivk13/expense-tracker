@@ -105,7 +105,7 @@ export default function ExpensesView() {
       </div>
 
       <div className="flex flex-col gap-5">
-        <div className="grid grid-cols-4 gap-x-3 h-[34px] flex items-center text-gray-700 dark:text-gray-400 bg-(--background) sticky top-[105px]">
+        <div className="grid grid-cols-4 gap-x-3 h-[34px] items-center text-gray-700 dark:text-gray-400 bg-(--background) sticky top-[105px]">
           <div className="text-sm col-span-3 sm:col-span-2">Expense</div>
           <div className="text-sm hidden sm:block text-center">Date</div>
           <div className="text-sm text-center">Amount</div>

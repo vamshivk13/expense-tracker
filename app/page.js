@@ -16,6 +16,7 @@ import { useRouter } from "next/navigation";
 import AddExpenseDialog from "./components/AddExpenseDialog";
 import EditExpenseDialog from "./components/EditExpenseDialog";
 import Transactions from "./components/transactions/Transactions";
+import { stringToDarkHSL, stringToHSL } from "./util/ColorUtility";
 
 export default function Home() {
   const transactions = [
@@ -424,6 +425,7 @@ export default function Home() {
               >
                 <Transactions expense={expense} />
               </div>
+              <Separator />
             </div>
           ))}
         </div>
@@ -460,46 +462,58 @@ export default function Home() {
             <Separator className={"absolute bottom-0"} />
           </div>
 
-          {budgets.slice(0, 5).map((budget) => (
-            <div key={budget.category}>
-              <div className="grid gap-x-3 grid-cols-4  mb-3">
-                <div className="col-span-3">
-                  <div className="flex items-center gap-4">
-                    <div
-                      style={{
-                        "--progress": `${
-                          String((budget.spent / budget.budget) * 100) + "%"
-                        }`,
-                      }}
-                      className={`h-10 w-10 flex-shrink-0 rounded-4xl  bg-[conic-gradient(#3b82f6_var(--progress),#e5e7eb_0%)] relative`}
-                    >
-                      <div className="h-8 w-8 rounded-4xl bg-(--background) flex justify-center items-center absolute top-[50%] left-[50%] transform translate-x-[-50%] translate-y-[-50%]">
-                        <Utensils className="flex-shrink-0" />
+          {budgets.slice(0, 5).map((budget) => {
+            const lightColor = stringToHSL(budget.category);
+            const darkColor = stringToDarkHSL(budget.category);
+            return (
+              <div key={budget.category}>
+                <div className="grid gap-x-3 grid-cols-4  mb-3">
+                  <div className="col-span-3">
+                    <div className="flex items-center gap-4">
+                      <div
+                        style={{
+                          "--progress": `${
+                            String((budget.spent / budget.budget) * 100) + "%"
+                          }`,
+                        }}
+                        className={`h-10 w-10 flex-shrink-0 rounded-4xl  bg-[conic-gradient(#3b82f6_var(--progress),#e5e7eb_0%)] relative`}
+                      >
+                        <div className="h-8 w-8 rounded-4xl bg-(--background) flex justify-center items-center absolute top-[50%] left-[50%] transform translate-x-[-50%] translate-y-[-50%]">
+                          <div
+                            className="flex-shrink-0 bg-(--color-muted) p-2 rounded-full text-[var(--color)] dark:text-[var(--dark-color)]"
+                            style={{
+                              "--color": lightColor,
+                              "--dark-color": darkColor,
+                            }}
+                          >
+                            <Utensils />
+                          </div>
+                        </div>
                       </div>
-                    </div>
 
-                    <div className="flex flex-col truncate gap-1">
-                      <div className="truncate text">{budget.category}</div>
-                      {/* <div className="rounded-2xl text-sm overflow-x-auto flex gap-2 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden text-gray-700 dark:text-gray-400">
+                      <div className="flex flex-col truncate gap-1">
+                        <div className="truncate text">{budget.category}</div>
+                        {/* <div className="rounded-2xl text-sm overflow-x-auto flex gap-2 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden text-gray-700 dark:text-gray-400">
                         {budget.tags.map((tag) => (
                           <Badge>{tag}</Badge>
                         ))}
                       </div> */}
+                      </div>
+                    </div>
+                  </div>
+                  <div className="flex flex-row justify-center">
+                    <div>
+                      <div className="flex flex-col text-gray-700 dark:text-gray-400 text-sm">
+                        {getFormattedAmount(budget.spent)} /
+                      </div>
+                      <div className="block">{budget.budget}</div>
                     </div>
                   </div>
                 </div>
-                <div className="flex flex-row justify-center">
-                  <div>
-                    <div className="flex flex-col text-gray-700 dark:text-gray-400 text-sm">
-                      {getFormattedAmount(budget.spent)} /
-                    </div>
-                    <div className="block">{budget.budget}</div>
-                  </div>
-                </div>
+                <Separator />
               </div>
-              {/* <Separator /> */}
-            </div>
-          ))}
+            );
+          })}
         </div>
         <Button
           variant="outline"
@@ -535,33 +549,46 @@ export default function Home() {
             <Separator className={"absolute bottom-0"} />
           </div>
 
-          {transactions.slice(0, 5).map((expense) => (
-            <div key={expense.date}>
-              <div className="grid gap-x-3 grid-cols-4  mb-3">
-                <div className=" col-span-3 sm:col-span-2">
-                  <div className="flex items-center gap-4">
-                    <Utensils className="flex-shrink-0" />
-                    <div className="flex flex-col truncate">
-                      <div className="truncate">{expense.description}</div>
-                      <div className="text-sm text-gray-700 dark:text-gray-400">
-                        {expense.category}
+          {transactions.slice(0, 5).map((expense) => {
+            const lightColor = stringToHSL(expense.description);
+            const darkColor = stringToDarkHSL(expense.description);
+
+            return (
+              <div key={expense.date}>
+                <div className="grid gap-x-3 grid-cols-4  mb-3">
+                  <div className=" col-span-3 sm:col-span-2">
+                    <div className="flex items-center gap-4">
+                      <div
+                        className="flex-shrink-0 bg-(--color-muted) p-2 rounded-full text-[var(--color)] dark:text-[var(--dark-color)]"
+                        style={{
+                          "--color": lightColor,
+                          "--dark-color": darkColor,
+                        }}
+                      >
+                        <Utensils />
+                      </div>
+                      <div className="flex flex-col truncate">
+                        <div className="truncate">{expense.description}</div>
+                        <div className="text-sm text-gray-700 dark:text-gray-400">
+                          {expense.category}
+                        </div>
                       </div>
                     </div>
                   </div>
-                </div>
-                <div className="hidden sm:block text-center">
-                  {getFormattedDate(expense.date)}
-                </div>
-                <div className="flex flex-col text-center">
-                  <div>{getFormattedAmount(expense.amount)}</div>
-                  <div className="text-sm block sm:hidden text-gray-700 dark:text-gray-400">
+                  <div className="hidden sm:block text-center">
                     {getFormattedDate(expense.date)}
                   </div>
+                  <div className="flex flex-col text-center">
+                    <div>{getFormattedAmount(expense.amount)}</div>
+                    <div className="text-sm block sm:hidden text-gray-700 dark:text-gray-400">
+                      {getFormattedDate(expense.date)}
+                    </div>
+                  </div>
                 </div>
+                <Separator />
               </div>
-              {/* <Separator /> */}
-            </div>
-          ))}
+            );
+          })}
         </div>
         <Button
           variant="outline"
