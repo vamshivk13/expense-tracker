@@ -115,7 +115,7 @@ export default function BudgetsView() {
                 "--dark-color": darkColor,
               }}
               key={budget.category}
-              className="relative bg-[var(--color)] dark:bg-[var(--dark-color)] flex flex-col gap-3 border-1 px-2 py-3 rounded-xl"
+              className="relative bg-[var(--color)] dark:bg-[var(--dark-color)] flex flex-col gap-5 border-1 px-3 py-4 rounded-xl"
             >
               <div className="grid gap-x-3 items-center grid-cols-6">
                 <div className="col-span-3">
