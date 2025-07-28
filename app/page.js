@@ -230,29 +230,22 @@ export default function Home() {
 
         setOpacity(newOpacity);
 
-        if (!isClicked && newOpacity < 0.5 && !hasScrolledToTarget) {
-          console.log("Scrolling to view ", hasScrolledToTarget);
-          const yOffset = -105; // scroll 100px above
-          const y =
-            menuRef.current?.getBoundingClientRect().top +
-            window.pageYOffset +
-            yOffset;
+        // if (!isClicked && newOpacity < 0.5 && !hasScrolledToTarget) {
+        //   console.log("Scrolling to view ", hasScrolledToTarget);
+        //   const yOffset = -105; // scroll 100px above
+        //   const y =
+        //     menuRef.current?.getBoundingClientRect().top +
+        //     window.pageYOffset +
+        //     yOffset;
 
-          window.scrollTo({ top: y, behavior: "smooth" });
-          setHasScrolledToTarget(true);
-        }
+        //   window.scrollTo({ top: y, behavior: "smooth" });
+        //   setHasScrolledToTarget(true);
+        // }
 
-        console.log(
-          "OPACITY",
-          newOpacity,
-          hasScrolledToTarget,
-          newOpacity >= 0.6 && hasScrolledToTarget
-        );
-        // Optional: Reset the flag when scrolled back up
-        if (newOpacity >= 0.6 && hasScrolledToTarget) {
-          window.scrollTo({ top: 0, behavior: "smooth" });
-          setHasScrolledToTarget(false);
-        }
+        // if (newOpacity >= 0.6 && hasScrolledToTarget) {
+        //   window.scrollTo({ top: 0, behavior: "smooth" });
+        //   setHasScrolledToTarget(false);
+        // }
       }
     };
 
