@@ -1,5 +1,9 @@
 import { Utensils } from "lucide-react";
-import { getFormattedAmount, getFormattedDate } from "../../util/DateUtility";
+import {
+  getFormattedAmount,
+  getFormattedDate,
+  getFormattedDateShort,
+} from "../../util/DateUtility";
 import { stringToDarkHSL, stringToHSL } from "@/app/util/ColorUtility";
 
 export default function Transactions({ expense }) {
@@ -7,7 +11,7 @@ export default function Transactions({ expense }) {
   const darkColor = stringToDarkHSL(expense.description);
 
   return (
-    <div key={expense.date} className="p-2 rounded-xl cursor-pointer mb-2">
+    <div key={expense.date} className="py-2 rounded-xl cursor-pointer mb-2">
       <div className="grid gap-x-3 grid-cols-4 items-center">
         <div className=" col-span-3 sm:col-span-2">
           <div className="flex items-center gap-4">
@@ -32,11 +36,12 @@ export default function Transactions({ expense }) {
           {getFormattedDate(expense.date)}
         </div>
         <div className="flex flex-col text-center">
-          <div className="text-red-500">
+          <div className="text-red-500 sm:block hidden">
             {getFormattedAmount(expense.amount)}
           </div>
+          <div className="text-red-500 sm:hidden block">-{expense.amount}</div>
           <div className="text-sm block sm:hidden text-gray-700 dark:text-gray-400">
-            {getFormattedDate(expense.date)}
+            {getFormattedDateShort(expense.date)}
           </div>
         </div>
       </div>

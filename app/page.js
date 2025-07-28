@@ -5,7 +5,11 @@ import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import DateSelect from "./components/DateSelect";
 import { Badge } from "@/components/ui/badge";
-import { getFormattedAmount, getFormattedDate } from "./util/DateUtility";
+import {
+  getFormattedAmount,
+  getFormattedDate,
+  getFormattedDateShort,
+} from "./util/DateUtility";
 
 import { BadgeDollarSign, NotepadTextDashed, HandCoins } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
@@ -579,9 +583,12 @@ export default function Home() {
                     {getFormattedDate(expense.date)}
                   </div>
                   <div className="flex flex-col text-center">
-                    <div>{getFormattedAmount(expense.amount)}</div>
+                    <div className=" sm:block hidden">
+                      {getFormattedAmount(expense.amount)}
+                    </div>
+                    <div className="sm:hidden block">{expense.amount}</div>
                     <div className="text-sm block sm:hidden text-gray-700 dark:text-gray-400">
-                      {getFormattedDate(expense.date)}
+                      {getFormattedDateShort(expense.date)}
                     </div>
                   </div>
                 </div>
