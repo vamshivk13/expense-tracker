@@ -277,7 +277,11 @@ export default function Home() {
         className="flex gap-5 mt-5 mb-2 transition-opacity duration-700"
         style={{ opacity }}
       >
-        <Card className={"rounded-[5px] relative flex-1/2 sm:py-10"}>
+        <Card
+          className={
+            "rounded-[5px] relative flex-1/2 sm:py-10 bg-(--color-muted)"
+          }
+        >
           <Badge
             className={
               "absolute top-0 transform translate-y-[-50%] left-5 bg-blue-500"
@@ -314,17 +318,6 @@ export default function Home() {
               <div className="hidden sm:block absolute bottom-0 left-[50%] transform translate-y-[50%] translate-x-[-50%]">
                 <AddExpenseDialog />
               </div>
-              <Button
-                className={
-                  "sm:hidden flex absolute bottom-0 left-[50%] transform translate-y-[50%] translate-x-[-50%] rounded-full bg-blue-500 hover:bg-blue-700 dark:hover:bg-blue-300"
-                }
-                size={"icon"}
-                onClick={() => {
-                  router.push("/add");
-                }}
-              >
-                <Plus></Plus>
-              </Button>
             </div>
           </CardContent>
         </Card>
@@ -460,7 +453,7 @@ export default function Home() {
           </div>
         </div>
         <div className="flex flex-col gap-4">
-          <div className="z-20 grid grid-cols-4 gap-x-3 h-[34px] flex items-center text-gray-700 dark:text-gray-400 bg-(--background) sticky top-[175px]">
+          <div className="z-20 grid grid-cols-4 gap-x-3 h-[34px] items-center text-gray-700 dark:text-gray-400 bg-(--background) sticky top-[175px]">
             <div className="text-sm col-span-3">Category</div>
             <div className="text-sm text-center">Amount</div>
             <Separator className={"absolute bottom-0"} />
@@ -602,6 +595,19 @@ export default function Home() {
           className={"mr-auto mt-7 p-1 rounded-none border-0"}
         >
           <div className={"border-1 border-(--foreground) p-1"}>View All</div>
+        </Button>
+      </div>
+      <div className="fixed bottom-8 right-8 h-20 w-20 z-50 bg-muted/90 rounded-full flex justify-center items-center">
+        <Button
+          className={
+            "sm:hidden z-50 flex rounded-full h-15 w-15 bg-blue-500 hover:bg-blue-700 dark:hover:bg-blue-300"
+          }
+          size={"icon"}
+          onClick={() => {
+            router.push("/add");
+          }}
+        >
+          <Plus></Plus>
         </Button>
       </div>
     </div>
