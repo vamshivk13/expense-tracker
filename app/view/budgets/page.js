@@ -7,6 +7,7 @@ import { Utensils } from "lucide-react";
 import { Pencil } from "lucide-react";
 import { Check } from "lucide-react";
 import { useState } from "react";
+import { BadgeInfo } from "lucide-react";
 
 export default function BudgetsView() {
   const [mode, setMode] = useState("edit");
@@ -115,7 +116,7 @@ export default function BudgetsView() {
                 "--dark-color": darkColor,
               }}
               key={budget.category}
-              className="relative bg-[var(--color)] dark:bg-[var(--dark-color)] flex flex-col gap-5 border-1 px-3 py-4 rounded-xl"
+              className="relative bg-[var(--color)] dark:bg-[var(--dark-color)] flex flex-col gap-5 border-1 px-3 py-4 rounded-2xl"
             >
               <div className="grid gap-x-3 items-center grid-cols-6">
                 <div className="col-span-3">
@@ -154,10 +155,18 @@ export default function BudgetsView() {
                   </div>
                 </div>
               </div>
-              <Progress
+              <div className="flex items-center text-sm gap-1">
+                <BadgeInfo className="h-4" />
+                <p className="text-gray-700 dark:text-gray-400">
+                  You have spent{" "}
+                  {Math.floor((budget.spent / budget.budget) * 100)}% of your
+                  budget!{" "}
+                </p>
+              </div>
+              {/* <Progress
                 className="h-[5px]"
                 value={(budget.spent / budget.budget) * 100}
-              />
+              /> */}
             </div>
           );
         })}
