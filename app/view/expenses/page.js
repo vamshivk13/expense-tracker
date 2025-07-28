@@ -104,7 +104,7 @@ export default function ExpensesView() {
         </Button>
       </div>
 
-      <div className="flex flex-col gap-4">
+      <div className="flex flex-col gap-5">
         <div className="grid grid-cols-4 gap-x-3 h-[34px] flex items-center text-gray-700 dark:text-gray-400 bg-(--background) sticky top-[105px]">
           <div className="text-sm col-span-3 sm:col-span-2">Expense</div>
           <div className="text-sm hidden sm:block text-center">Date</div>
@@ -123,7 +123,7 @@ export default function ExpensesView() {
                   "--color": lightColor,
                   "--dark-color": darkColor,
                 }}
-                className="px-3 py-4 rounded-2xl bg-[var(--color)] dark:bg-[var(--dark-color)] grid gap-x-3 grid-cols-4 grid-rows-2 mb-3 items-center"
+                className="px-3 py-4 rounded-2xl bg-[var(--color)] dark:bg-[var(--dark-color)] grid gap-x-3 grid-cols-4 grid-rows-2 items-center"
               >
                 <div className="col-span-3 sm:col-span-2">
                   <div className="flex items-center gap-4">
