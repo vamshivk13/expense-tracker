@@ -290,7 +290,7 @@ export default function Home() {
             Overview
           </Badge>
           <CardContent>
-            <div className="grid md:grid-cols-4 grid-cols-2 gap-x-3 gap-y-5">
+            <div className="grid md:grid-cols-5 grid-cols-2 gap-x-3 gap-y-5">
               <div className="">
                 <h3 className="text-sm text-gray-700 dark:text-gray-400">
                   Monthly Income
@@ -315,7 +315,7 @@ export default function Home() {
                 </h3>
                 <div className="mt-2">Rs 96,000</div>
               </div>
-              <div className="hidden sm:block absolute bottom-0 left-[50%] transform translate-y-[50%] translate-x-[-50%]">
+              <div className="hidden sm:block place-self-center">
                 <AddExpenseDialog />
               </div>
             </div>
@@ -597,17 +597,17 @@ export default function Home() {
           <div className={"border-1 border-(--foreground) p-1"}>View All</div>
         </Button>
       </div>
-      <div className="fixed bottom-8 right-8 h-20 w-20 z-50 bg-muted/90 rounded-full flex justify-center items-center">
+      <div className="fixed bottom-8 right-8 h-18 w-18 z-50 bg-muted/90 rounded-full sm:hidden flex justify-center items-center">
         <Button
           className={
-            "sm:hidden z-50 flex rounded-full h-15 w-15 bg-blue-500 hover:bg-blue-700 dark:hover:bg-blue-300"
+            "z-50 flex rounded-full h-13 w-13 bg-blue-500 hover:bg-blue-700 dark:hover:bg-blue-300"
           }
           size={"icon"}
           onClick={() => {
             router.push("/add");
           }}
         >
-          <Plus></Plus>
+          <Plus className="size-5"></Plus>
         </Button>
       </div>
     </div>

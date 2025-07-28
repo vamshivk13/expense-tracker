@@ -20,9 +20,8 @@ export default function AddExpenseDialog() {
           className={
             "rounded-full bg-blue-500 hover:bg-blue-700 dark:hover:bg-blue-300"
           }
-          size={"icon"}
         >
-          <Plus></Plus>
+          <Plus></Plus> Add Expense
         </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[70%] dark:bg-(--gray-dialog)/100 h-[80%] z-50">
