@@ -67,6 +67,24 @@ export default function BudgetsView() {
     },
   ];
 
+  function stringToHSL(str) {
+    let hash = 0;
+    for (let i = 0; i < str.length; i++) {
+      hash = str.charCodeAt(i) + ((hash << 5) - hash);
+    }
+    const h = hash % 360;
+    return `hsl(${h}, 70%, 80%)`; // Light tone for light mode
+  }
+
+  function stringToDarkHSL(str) {
+    let hash = 0;
+    for (let i = 0; i < str.length; i++) {
+      hash = str.charCodeAt(i) + ((hash << 5) - hash);
+    }
+    const h = hash % 360;
+    return `hsl(${h}, 60%, 30%)`; // Dark tone for dark mode
+  }
+
   function handleEditAndSave() {
     setMode((prev) => {
       if (prev == "edit") return "save";
@@ -75,7 +93,7 @@ export default function BudgetsView() {
   }
 
   return (
-    <div className="max-w-4xl mx-auto px-4 sm:px-20 lg:px-20 pb-2">
+    <div className="max-w-4xl mx-auto px-6 sm:px-20 lg:px-20 pb-2">
       <div className="text-lg z-20 bg-(--background) h-[55px] mb-2 sticky top-[50px] gap-x-3 grid grid-cols-4 items-center">
         <div className={"col-span-3"}>Budgets</div>
         <Button
@@ -86,55 +104,63 @@ export default function BudgetsView() {
           {mode == "edit" ? <Pencil /> : <Check />} {mode}
         </Button>
       </div>
-      <div className="flex flex-col gap-3">
-        {budgets.map((budget) => (
-          <div
-            key={budget.category}
-            className="flex flex-col gap-3 border-1 px-2 py-3 rounded-xl"
-          >
-            <div className="grid gap-x-3 items-center grid-cols-6">
-              <div className="col-span-3">
-                <div className="flex items-center gap-4">
-                  <Utensils className="flex-shrink-0" />
-                  <div className="flex flex-col truncate gap-1">
-                    <div className="truncate text">{budget.category}</div>
-                  </div>
-                </div>
-              </div>
-              <div
-                style={{
-                  "--progress": `${
-                    String((budget.spent / budget.budget) * 100) + "%"
-                  }`,
-                }}
-                className={`h-10 w-10 flex-shrink-0 rounded-4xl  bg-[conic-gradient(#3b82f6_var(--progress),#e5e7eb_0%)] relative`}
-              >
-                <div className="h-8 w-8 rounded-4xl bg-(--background) text-sm flex justify-center items-center absolute top-[50%] left-[50%] transform translate-x-[-50%] translate-y-[-50%]">
-                  {String(Math.floor((budget.spent / budget.budget) * 100)) +
-                    "%"}
-                </div>
-              </div>
-              <div className="flex flex-row col-span-2 justify-center">
-                {mode == "edit" ? (
-                  <div>
-                    <div className="flex flex-col text-gray-700 dark:text-gray-400 text-sm">
-                      {getFormattedAmount(budget.spent)}/
+      <div className="flex flex-col gap-5 mt-5">
+        {budgets.map((budget) => {
+          const lightColor = stringToHSL(budget.category);
+          const darkColor = stringToDarkHSL(budget.category);
+          return (
+            <div
+              style={{
+                "--color": lightColor,
+                "--dark-color": darkColor,
+              }}
+              key={budget.category}
+              className="relative bg-[var(--color)] dark:bg-[var(--dark-color)] flex flex-col gap-3 border-1 px-2 py-3 rounded-xl"
+            >
+              <div className="grid gap-x-3 items-center grid-cols-6">
+                <div className="col-span-3">
+                  <div className="flex items-center gap-4">
+                    <Utensils className="flex-shrink-0" />
+                    <div className="flex flex-col truncate gap-1">
+                      <div className="truncate text">{budget.category}</div>
                     </div>
-                    <div className="block">{budget.budget}</div>
                   </div>
-                ) : (
-                  <div>
-                    <Input type="number" />
+                </div>
+                <div className="flex flex-row col-span-2 justify-center">
+                  {mode == "edit" ? (
+                    <div>
+                      <div className="flex flex-col text-gray-700 dark:text-gray-400 text-sm">
+                        {getFormattedAmount(budget.spent)}/
+                      </div>
+                      <div className="block">{budget.budget}</div>
+                    </div>
+                  ) : (
+                    <div>
+                      <Input type="number" />
+                    </div>
+                  )}
+                </div>
+                <div
+                  style={{
+                    "--progress": `${
+                      String((budget.spent / budget.budget) * 100) + "%"
+                    }`,
+                  }}
+                  className={`h-10 w-10 flex-shrink-0 rounded-4xl  bg-[conic-gradient(#3b82f6_var(--progress),#e5e7eb_0%)] relative`}
+                >
+                  <div className="h-8 w-8 rounded-4xl bg-(--background) text-sm flex justify-center items-center absolute top-[50%] left-[50%] transform translate-x-[-50%] translate-y-[-50%]">
+                    {String(Math.floor((budget.spent / budget.budget) * 100)) +
+                      "%"}
                   </div>
-                )}
+                </div>
               </div>
+              <Progress
+                className="h-[5px]"
+                value={(budget.spent / budget.budget) * 100}
+              />
             </div>
-            <Progress
-              className="h-[5px]"
-              value={(budget.spent / budget.budget) * 100}
-            />
-          </div>
-        ))}
+          );
+        })}
       </div>
     </div>
   );

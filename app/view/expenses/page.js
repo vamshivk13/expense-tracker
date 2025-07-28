@@ -123,7 +123,7 @@ export default function ExpensesView() {
                   "--color": lightColor,
                   "--dark-color": darkColor,
                 }}
-                className="px-3 py-4 rounded-xl bg-[var(--color)] dark:bg-[var(--dark-color)] grid gap-x-3 grid-cols-4 grid-rows-2 mb-3 items-center"
+                className="px-3 py-4 rounded-2xl bg-[var(--color)] dark:bg-[var(--dark-color)] grid gap-x-3 grid-cols-4 grid-rows-2 mb-3 items-center"
               >
                 <div className="col-span-3 sm:col-span-2">
                   <div className="flex items-center gap-4">
@@ -144,7 +144,7 @@ export default function ExpensesView() {
                     {getFormattedDate(expense.date)}
                   </div>
                 </div>
-                <div className="truncate sm:col-span-2 col-span-3">
+                <div className="truncate py-2 sm:col-span-2 col-span-3">
                   {expense.description}
                 </div>
               </div>
