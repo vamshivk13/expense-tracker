@@ -15,6 +15,7 @@ import { BadgeDollarSign, NotepadTextDashed, HandCoins } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { Plus } from "lucide-react";
 import { Utensils } from "lucide-react";
+import { ChartGantt } from "lucide-react";
 
 import { useRouter } from "next/navigation";
 import AddExpenseDialog from "./components/AddExpenseDialog";
@@ -284,7 +285,7 @@ export default function Home() {
         >
           <Badge
             className={
-              "absolute top-0 transform translate-y-[-50%] left-5 bg-blue-500"
+              "absolute sm:text-base rounded-xl top-0 transform translate-y-[-50%] left-5 bg-blue-500"
             }
           >
             Overview
@@ -368,18 +369,33 @@ export default function Home() {
 
       {/* Quick Actions */}
       <div className="flex flex-col gap-2 mt-2 mb-2">
-        <div className={"mr-auto text-sm text-gray-700 dark:text-gray-400"}>
+        <div className={"mr-auto text-sm text-gray-700 dark:text-gray-400 "}>
           QUICK ACTIONS
         </div>
         <div className="rounded-2xl overflow-x-auto flex gap-2 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden text-gray-700 dark:text-gray-400">
-          <Badge variant={"secondary"} className={"p-2 rounded-2xl"}>
-            Add Expenses
+          <Badge
+            variant={"secondary"}
+            className={
+              "p-2  sm:text-sm rounded-2xl dark:bg-blue-300 bg-blue-500 dark:text-black text-white"
+            }
+          >
+            <Plus /> Add Expenses
           </Badge>
-          <Badge variant={"secondary"} className={"p-2 rounded-2xl"}>
-            Update Budgets
+          <Badge
+            variant={"secondary"}
+            className={
+              "p-2 sm:text-sm  rounded-2xl dark:bg-green-300 dark:text-black text-white bg-green-600/70 "
+            }
+          >
+            <ChartGantt /> Update Budgets
           </Badge>
-          <Badge variant={"secondary"} className={"p-2 rounded-2xl"}>
-            Modify Fixed Expenses
+          <Badge
+            variant={"secondary"}
+            className={
+              "p-2 sm:text-sm rounded-2xl dark:bg-amber-300 dark:text-black text-white bg-amber-600/70 "
+            }
+          >
+            <HandCoins /> Modify Fixed Expenses
           </Badge>
         </div>
       </div>
