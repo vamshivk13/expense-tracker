@@ -40,9 +40,7 @@ const chartConfig = {
 export function ChartBarDefault() {
   return (
     <div>
-      <div className="mb-3 mt-2 text-gray-700 dark:text-gray-400">
-        Last Week's Expenses
-      </div>
+      <div className="mb-3 mt-2">Last Week's Expenses</div>
       <ChartContainer className={"w-full"} config={chartConfig}>
         <BarChart accessibilityLayer data={chartData}>
           <CartesianGrid vertical={false} />

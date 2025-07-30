@@ -346,7 +346,7 @@ export default function Home() {
           <div className="p-2 rounded-full bg-(--color-muted)/10">
             <ArrowUp />
           </div>
-          <div className="flex-col justify-center items-center  flex">
+          <div className="flex-col justify-center items-center flex">
             <h3 className="text-sm font-bold text-gray-600 dark:text-gray-700">
               Expense
             </h3>
@@ -354,7 +354,7 @@ export default function Home() {
           </div>
         </div>
         <AddExpenseDialog />
-        <div className="row-span-2 col-span-2 sm:col-span-4">
+        <div className="row-span-2 rounded-xl dark:bg-gray-300/20 bg-(--color-muted) border p-2 col-span-2 sm:col-span-4">
           <ChartBarDefault />
         </div>
         <div className="flex sm:col-span-6 col-span-2 flex-col sm:items-stretch gap-2 items-center sm:mt-0 ">
