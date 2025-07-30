@@ -16,13 +16,12 @@ export default function AddExpenseDialog() {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button
-          className={
-            "rounded-full bg-blue-500 hover:bg-blue-700 dark:hover:bg-blue-300"
-          }
-        >
-          <Plus></Plus> Add Expense
-        </Button>
+        <div className="hidden sm:rounded-xl sm:flex col-span-2 cursor-pointer rounded-full sm:blockrounded-full dark:bg-blue-300/70 bg-blue-300/80 p-2 items-center gap-2 justify-around">
+          <div className="p-2 rounded-full bg-(--color-muted)/10">
+            <Plus />
+          </div>
+          <div>Add Expense</div>
+        </div>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[70%] dark:bg-(--gray-dialog)/100 h-[80%] z-50">
         <DialogHeader>

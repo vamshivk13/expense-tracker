@@ -26,6 +26,8 @@ import EditExpenseDialog from "./components/EditExpenseDialog";
 import Transactions from "./components/transactions/Transactions";
 import { stringToDarkHSL, stringToHSL } from "./util/ColorUtility";
 import { Arrow } from "@radix-ui/react-select";
+import { Plus_Jakarta_Sans } from "next/font/google";
+import { ChartBarDefault } from "./components/Chart";
 
 export default function Home() {
   const transactions = [
@@ -276,7 +278,7 @@ export default function Home() {
         </div>
         <DateSelect />
       </div>
-      <div
+      {/* <div
         data-section="overview"
         ref={(el) => (sectionRefs.current[0] = el)}
         className="hidden gap-5 mt-5 mb-2 transition-opacity duration-700 sm:flex"
@@ -326,33 +328,40 @@ export default function Home() {
             </div>
           </CardContent>
         </Card>
-      </div>
+      </div> */}
 
-      <div className="sm:hidden grid md:grid-cols-5 grid-cols-2 gap-x-3 gap-y-5">
-        <div className="rounded-full dark:bg-green-300/70 bg-green-300/80 p-2 flex items-center gap-2 jusitfy-center  ">
+      <div className="grid md:grid-cols-10 grid-cols-2 sm:grid-rows-2 gap-x-4 gap-y-5 items-stretch justify-center">
+        <div className="rounded-full sm:rounded-xl sm:col-span-2 dark:bg-green-300/70 bg-green-300/80 p-2 flex items-center gap-2 sm:justify-around">
           <div className="p-2 rounded-full bg-(--color-muted)/10">
             <ArrowDown />
           </div>
-          <div className="flex-col flex">
+          <div className="flex-col justify-center items-center flex">
             <h3 className="text-sm font-bold text-gray-600 dark:text-gray-700">
               Income
             </h3>
             <div className="mt-2">Rs 96,000</div>
           </div>
         </div>
-        <div className="rounded-full  dark:bg-red-300/90 bg-red-300/80 p-2 flex jusitfy-center gap-2 items-center">
+        <div className="rounded-full sm:rounded-xl sm:col-span-2 dark:bg-red-300/90 bg-red-300/80 p-2 flex sm:justify-around gap-2 items-center">
           <div className="p-2 rounded-full bg-(--color-muted)/10">
             <ArrowUp />
           </div>
-          <div className="flex-col flex">
+          <div className="flex-col justify-center items-center  flex">
             <h3 className="text-sm font-bold text-gray-600 dark:text-gray-700">
               Expense
             </h3>
             <div className="mt-2">Rs 26,000</div>
           </div>
         </div>
-        <div className="flex col-span-2 gap-2 mt-5">
-          <div className="border-1 flex flex-1 flex-col bg-(--color-muted) gap-2 p-2 rounded-xl items-center">
+        <AddExpenseDialog />
+        <div className="row-span-2 col-span-2 sm:col-span-4">
+          <ChartBarDefault />
+        </div>
+        <div className="flex sm:col-span-6 col-span-2 flex-col sm:items-stretch gap-2 items-center sm:mt-0 ">
+          <div className="sm:hidden self-start mb-2 text-sm text-gray-700 dark:text-gray-400">
+            Overview
+          </div>
+          <div className="border-1 flex-1 flex-col bg-(--color-muted) grid grid-cols-3 gap-2 p-2 rounded-xl sm:justify-around items-center">
             <h3 className="text-sm text-gray-700 dark:text-gray-400">
               Todays's Expense
             </h3>
@@ -362,7 +371,8 @@ export default function Home() {
               Rs 100 <ArrowUp className="h-4" />
             </div>
           </div>
-          <div className="border-1 flex  flex-1 flex-col bg-(--color-muted) gap-2 p-2 items-center rounded-xl">
+
+          <div className="border-1 flex-1 flex-col bg-(--color-muted) grid grid-cols-3 gap-2 p-2 items-center rounded-xl">
             <h3 className="text-sm text-gray-700 dark:text-gray-400">
               Fixed Expenses
             </h3>
@@ -370,9 +380,6 @@ export default function Home() {
             <div className="text-sm font-thin flex items-center  text-gray-700 dark:text-gray-400 ">
               <BadgeInfo className="h-3" /> 70% of Income
             </div>
-          </div>
-          <div className="hidden sm:block place-self-center">
-            <AddExpenseDialog />
           </div>
         </div>
       </div>
@@ -388,15 +395,13 @@ export default function Home() {
         <div className="rounded-2xl overflow-x-auto flex gap-2 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden text-gray-700 dark:text-gray-400">
           <Badge
             variant={"secondary"}
-            className={
-              "p-2  sm:text-sm rounded-2xl bg-(--color-muted) text-white"
-            }
+            className={"p-2  sm:text-sm rounded-2xl bg-(--color-muted)"}
           >
             <Plus /> Add Expenses
           </Badge>
           <Badge
             variant={"secondary"}
-            className={"p-2 sm:text-sm  rounded-2xl bg-(--color-muted)"}
+            className={"p-2 sm:text-sm rounded-2xl bg-(--color-muted)"}
           >
             <ChartGantt /> Update Budgets
           </Badge>
@@ -409,10 +414,10 @@ export default function Home() {
         </div>
       </div>
       {/* Menu */}
-      <div className="sticky top-[100px] bg-(--background) z-30">
+      <div className="sticky  mt-2 mb-4 top-[100px] bg-(--background) z-30">
         <div
           ref={menuRef}
-          className=" bg-(--color-muted) rounded-2xl border-1 h-[75px] py-3 grid grid-cols-3 mt-2 mb-4 text-sm text-gray-700 dark:text-gray-400"
+          className=" bg-(--color-muted) rounded-2xl border-1 h-[75px] py-3 grid grid-cols-3 text-sm text-gray-700 dark:text-gray-400"
         >
           <div
             className={
@@ -473,7 +478,7 @@ export default function Home() {
           </div>
         </div>
         <div className="flex flex-col gap-4">
-          <div className="grid grid-cols-4 gap-x-3 h-[34px] flex items-center text-gray-700 dark:text-gray-400 bg-(--background) sticky top-[175px]">
+          <div className="grid grid-cols-4 gap-x-3 h-[44px] flex items-center text-gray-700 dark:text-gray-400 bg-(--background) sticky top-[175px]">
             <div className="text-sm col-span-3 sm:col-span-2">Expense</div>
             <div className="text-sm hidden sm:block text-center">Date</div>
             <div className="text-sm text-center">Amount</div>
@@ -523,7 +528,7 @@ export default function Home() {
           </div>
         </div>
         <div className="flex flex-col gap-4">
-          <div className="z-20 grid grid-cols-4 gap-x-3 h-[34px] items-center text-gray-700 dark:text-gray-400 bg-(--background) sticky top-[175px]">
+          <div className="z-20 grid grid-cols-4 gap-x-3 h-[44px] items-center text-gray-700 dark:text-gray-400 bg-(--background) sticky top-[175px]">
             <div className="text-sm col-span-3">Category</div>
             <div className="text-sm text-center">Amount</div>
             <Separator className={"absolute bottom-0"} />
@@ -609,7 +614,7 @@ export default function Home() {
           </div>
         </div>
         <div className="flex flex-col gap-4">
-          <div className="grid grid-cols-4 gap-x-3 h-[34px] flex items-center text-gray-700 dark:text-gray-400 bg-(--background) sticky top-[175px]">
+          <div className="grid grid-cols-4 gap-x-3 h-[44px] items-center text-gray-700 dark:text-gray-400 bg-(--background) sticky top-[175px]">
             <div className="text-sm col-span-3 sm:col-span-2">Expense</div>
             <div className="text-sm hidden sm:block text-center">Date</div>
             <div className="text-sm text-center">Amount</div>
