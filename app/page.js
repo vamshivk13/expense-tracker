@@ -5,6 +5,8 @@ import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import DateSelect from "./components/DateSelect";
 import { Badge } from "@/components/ui/badge";
+import { ArrowDown, ArrowUp } from "lucide-react";
+
 import {
   getFormattedAmount,
   getFormattedDate,
@@ -23,6 +25,7 @@ import AddExpenseDialog from "./components/AddExpenseDialog";
 import EditExpenseDialog from "./components/EditExpenseDialog";
 import Transactions from "./components/transactions/Transactions";
 import { stringToDarkHSL, stringToHSL } from "./util/ColorUtility";
+import { Arrow } from "@radix-ui/react-select";
 
 export default function Home() {
   const transactions = [
@@ -326,25 +329,40 @@ export default function Home() {
       </div>
 
       <div className="sm:hidden grid md:grid-cols-5 grid-cols-2 gap-x-3 gap-y-5">
-        <div className="rounded-4xl dark:bg-green-600 bg-green-400 p-2 flex jusitfy-center items-center flex-col">
-          <h3 className="text-sm">Monthly Income</h3>
-          <div className="mt-2">Rs 96,000</div>
+        <div className="rounded-full dark:bg-green-300/70 bg-green-300/80 p-2 flex items-center gap-2 jusitfy-center  ">
+          <div className="p-2 rounded-full bg-(--color-muted)/10">
+            <ArrowDown />
+          </div>
+          <div className="flex-col flex">
+            <h3 className="text-sm font-bold text-gray-600 dark:text-gray-700">
+              Income
+            </h3>
+            <div className="mt-2">Rs 96,000</div>
+          </div>
         </div>
-        <div className="rounded-4xl dark:bg-red-600 bg-red-500 p-2 flex jusitfy-center items-center flex-col">
-          <h3 className="text-sm">Monthly Expense</h3>
-          <div className="mt-2">Rs 26,000</div>
+        <div className="rounded-full  dark:bg-red-300/90 bg-red-300/80 p-2 flex jusitfy-center gap-2 items-center">
+          <div className="p-2 rounded-full bg-(--color-muted)/10">
+            <ArrowUp />
+          </div>
+          <div className="flex-col flex">
+            <h3 className="text-sm font-bold text-gray-600 dark:text-gray-700">
+              Expense
+            </h3>
+            <div className="mt-2">Rs 26,000</div>
+          </div>
         </div>
         <div className="flex col-span-2 gap-2 mt-5">
-          <div className="border-1 flex flex-1 flex-col gap-2 p-2 rounded-xl items-center">
+          <div className="border-1 flex flex-1 flex-col bg-(--color-muted) gap-2 p-2 rounded-xl items-center">
             <h3 className="text-sm text-gray-700 dark:text-gray-400">
               Todays's Expense
             </h3>
             <div className="">Rs 96,000</div>
             <div className="text-sm font-thin flex items-center  text-gray-700 dark:text-gray-400 ">
-              <BadgeInfo className="h-3" /> Increaded by Rs 100
+              <BadgeInfo className="h-3" />
+              Rs 100 <ArrowUp className="h-4" />
             </div>
           </div>
-          <div className="border-1 flex  flex-1 flex-col gap-2 p-2 items-center rounded-xl">
+          <div className="border-1 flex  flex-1 flex-col bg-(--color-muted) gap-2 p-2 items-center rounded-xl">
             <h3 className="text-sm text-gray-700 dark:text-gray-400">
               Fixed Expenses
             </h3>
