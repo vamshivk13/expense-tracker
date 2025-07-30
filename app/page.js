@@ -16,6 +16,7 @@ import { useEffect, useRef, useState } from "react";
 import { Plus } from "lucide-react";
 import { Utensils } from "lucide-react";
 import { ChartGantt } from "lucide-react";
+import { BadgeInfo } from "lucide-react";
 
 import { useRouter } from "next/navigation";
 import AddExpenseDialog from "./components/AddExpenseDialog";
@@ -275,7 +276,7 @@ export default function Home() {
       <div
         data-section="overview"
         ref={(el) => (sectionRefs.current[0] = el)}
-        className="flex gap-5 mt-5 mb-2 transition-opacity duration-700"
+        className="hidden gap-5 mt-5 mb-2 transition-opacity duration-700 sm:flex"
         style={{ opacity }}
       >
         <Card
@@ -322,6 +323,40 @@ export default function Home() {
             </div>
           </CardContent>
         </Card>
+      </div>
+
+      <div className="sm:hidden grid md:grid-cols-5 grid-cols-2 gap-x-3 gap-y-5">
+        <div className="rounded-4xl dark:bg-green-600 bg-green-400 p-2 flex jusitfy-center items-center flex-col">
+          <h3 className="text-sm">Monthly Income</h3>
+          <div className="mt-2">Rs 96,000</div>
+        </div>
+        <div className="rounded-4xl dark:bg-red-600 bg-red-500 p-2 flex jusitfy-center items-center flex-col">
+          <h3 className="text-sm">Monthly Expense</h3>
+          <div className="mt-2">Rs 26,000</div>
+        </div>
+        <div className="flex col-span-2 gap-2 mt-5">
+          <div className="border-1 flex flex-1 flex-col gap-2 p-2 rounded-xl items-center">
+            <h3 className="text-sm text-gray-700 dark:text-gray-400">
+              Todays's Expense
+            </h3>
+            <div className="">Rs 96,000</div>
+            <div className="text-sm font-thin flex items-center  text-gray-700 dark:text-gray-400 ">
+              <BadgeInfo className="h-3" /> Increaded by Rs 100
+            </div>
+          </div>
+          <div className="border-1 flex  flex-1 flex-col gap-2 p-2 items-center rounded-xl">
+            <h3 className="text-sm text-gray-700 dark:text-gray-400">
+              Fixed Expenses
+            </h3>
+            <div className="">Rs 96,000</div>
+            <div className="text-sm font-thin flex items-center  text-gray-700 dark:text-gray-400 ">
+              <BadgeInfo className="h-3" /> 70% of Income
+            </div>
+          </div>
+          <div className="hidden sm:block place-self-center">
+            <AddExpenseDialog />
+          </div>
+        </div>
       </div>
 
       {/* Menu */}
