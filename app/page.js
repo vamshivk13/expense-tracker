@@ -376,85 +376,86 @@ export default function Home() {
           </div>
         </div>
       </div>
-
-      {/* Menu */}
-      <div
-        ref={menuRef}
-        className="sticky top-[100px] h-[75px] py-3 z-30 bg-(--background) grid grid-cols-3 mt-2 mb-4 text-sm text-gray-700 dark:text-gray-400"
-      >
-        <div
-          className={
-            `flex flex-col items-center cursor-pointer mx-auto` +
-            (activeSection == "transactions"
-              ? " text-(--foreground) border-b-3 border-(--foreground)"
-              : "")
-          }
-          onClick={handleScrollToTransactions}
-        >
-          <BadgeDollarSign />
-          <div className="pointer-events-none select-none">Transactions</div>
-        </div>
-        <div
-          onClick={handleScrollToBudgets}
-          className={
-            `flex flex-col items-center cursor-pointer mx-auto` +
-            (activeSection == "budgets"
-              ? " text-(--foreground)  border-b-3 border-(--foreground)"
-              : "")
-          }
-        >
-          <NotepadTextDashed />
-          <div className="pointer-events-none select-none">Budgets</div>
-        </div>
-        <div
-          onClick={handleScrollToExpenses}
-          className={
-            `flex flex-col items-center cursor-pointer mx-auto` +
-            (activeSection == "expenses"
-              ? " text-(--foreground)  border-b-3 border-(--foreground)"
-              : "")
-          }
-        >
-          <HandCoins />
-          <div className="pointer-events-none select-none">Expenses</div>
-        </div>
-      </div>
-
       {/* Quick Actions */}
-      <div className="flex flex-col gap-2 mt-2 mb-2">
-        <div className={"mr-auto text-sm text-gray-700 dark:text-gray-400 "}>
-          QUICK ACTIONS
+      <div className="flex flex-col gap-2 mt-4 mb-4">
+        <div
+          className={
+            "mr-auto font-bold mb-3 text-sm text-gray-700 dark:text-gray-400 "
+          }
+        >
+          Quick Actions
         </div>
         <div className="rounded-2xl overflow-x-auto flex gap-2 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden text-gray-700 dark:text-gray-400">
           <Badge
             variant={"secondary"}
             className={
-              "p-2  sm:text-sm rounded-2xl dark:bg-blue-300 bg-blue-500 dark:text-black text-white"
+              "p-2  sm:text-sm rounded-2xl bg-(--color-muted) text-white"
             }
           >
             <Plus /> Add Expenses
           </Badge>
           <Badge
             variant={"secondary"}
-            className={
-              "p-2 sm:text-sm  rounded-2xl dark:bg-green-300 dark:text-black text-white bg-green-600/70 "
-            }
+            className={"p-2 sm:text-sm  rounded-2xl bg-(--color-muted)"}
           >
             <ChartGantt /> Update Budgets
           </Badge>
           <Badge
             variant={"secondary"}
-            className={
-              "p-2 sm:text-sm rounded-2xl dark:bg-amber-300 dark:text-black text-white bg-amber-600/70 "
-            }
+            className={"p-2 sm:text-sm rounded-2xl bg-(--color-muted) "}
           >
             <HandCoins /> Modify Fixed Expenses
           </Badge>
         </div>
       </div>
+      {/* Menu */}
+      <div className="sticky top-[100px] bg-(--background) z-30">
+        <div
+          ref={menuRef}
+          className=" bg-(--color-muted) rounded-2xl border-1 h-[75px] py-3 grid grid-cols-3 mt-2 mb-4 text-sm text-gray-700 dark:text-gray-400"
+        >
+          <div
+            className={
+              `flex flex-col items-center cursor-pointer mx-auto` +
+              (activeSection == "transactions"
+                ? " text-(--foreground) border-b-3 border-(--foreground)"
+                : "")
+            }
+            onClick={handleScrollToTransactions}
+          >
+            <BadgeDollarSign />
+            <div className="pointer-events-none select-none">Transactions</div>
+          </div>
+          <div
+            onClick={handleScrollToBudgets}
+            className={
+              `flex flex-col items-center cursor-pointer mx-auto` +
+              (activeSection == "budgets"
+                ? " text-(--foreground)  border-b-3 border-(--foreground)"
+                : "")
+            }
+          >
+            <NotepadTextDashed />
+            <div className="pointer-events-none select-none">Budgets</div>
+          </div>
+          <div
+            onClick={handleScrollToExpenses}
+            className={
+              `flex flex-col items-center cursor-pointer mx-auto` +
+              (activeSection == "expenses"
+                ? " text-(--foreground)  border-b-3 border-(--foreground)"
+                : "")
+            }
+          >
+            <HandCoins />
+            <div className="pointer-events-none select-none">Expenses</div>
+          </div>
+        </div>
+      </div>
+
       {/* Transactions  */}
       <div
-        className={"flex flex-col mt-1 mb-3"}
+        className={"flex flex-col mt-2 mb-2"}
         ref={(el) => (sectionRefs.current[1] = el)}
         data-section={"transactions"}
       >
