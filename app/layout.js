@@ -33,14 +33,14 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body className={montserrat.className}>
+      <body className={geistSans.className}>
         <ThemeProvider
           attribute={"class"}
           defaultTheme="system"
           enableSystem
           disableTransitionOnChange
         >
-          <Header />
+          {/* <Header /> */}
           {children}
         </ThemeProvider>
       </body>

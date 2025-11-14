@@ -28,6 +28,7 @@ import { stringToDarkHSL, stringToHSL } from "./util/ColorUtility";
 import { Arrow } from "@radix-ui/react-select";
 import { Plus_Jakarta_Sans } from "next/font/google";
 import { ChartBarDefault } from "./components/Chart";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 export default function Home() {
   const transactions = [
@@ -179,7 +180,7 @@ export default function Home() {
 
   const handleScrollToTransactions = () => {
     setIsClicked(true);
-    const yOffset = -165; // scroll 100px above
+    const yOffset = -105; // scroll 100px above
     const y =
       sectionRefs.current[1].getBoundingClientRect().top +
       window.pageYOffset +
@@ -193,7 +194,7 @@ export default function Home() {
 
   const handleScrollToBudgets = () => {
     setIsClicked(true);
-    const yOffset = -165; // scroll 100px above
+    const yOffset = -75; // scroll 100px above
     const y =
       sectionRefs.current[2].getBoundingClientRect().top +
       window.pageYOffset +
@@ -207,7 +208,7 @@ export default function Home() {
 
   const handleScrollToExpenses = () => {
     setIsClicked(true);
-    const yOffset = -165; // scroll 100px above
+    const yOffset = -105; // scroll 100px above
     const y =
       sectionRefs.current[3].getBoundingClientRect().top +
       window.pageYOffset +
@@ -222,6 +223,24 @@ export default function Home() {
   const [opacity, setOpacity] = useState(1);
   const [hasScrolledToTarget, setHasScrolledToTarget] = useState(false);
   const greetingRef = useRef();
+
+  const targetRef = useRef(null);
+  const [showFloating, setShowFloating] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (!targetRef.current) return;
+      const rect = targetRef.current.getBoundingClientRect();
+      console.log("TOP", rect);
+      setShowFloating(rect.top <= 100);
+    };
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    handleScroll(); // run once on mount
+
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
   useEffect(() => {
     const handleScroll = () => {
       if (sectionRefs.current[0]) {
@@ -265,74 +284,29 @@ export default function Home() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, [hasScrolledToTarget, isClicked]);
 
+  console.log("TOP", showFloating);
   console.log("Opactity", opacity);
 
   return (
     <div className="sm:container mx-auto px-8 sm:px-16 lg:px-16 py-3 flex flex-col gap-4">
       <div
-        className="flex items-center my-3 sticky top-[50px] h-[50px] bg-(--background) z-40"
+        className="flex items-center justify-around gap-2 mt-3 mb-6 my-3 sticky h-[50px] bg-(--background) z-40"
         ref={greetingRef}
       >
+        <div className="h-full aspect-square p-1">
+          <Avatar className={"min-h-full min-w-full  bg-(--foreground) p-1"}>
+            <AvatarFallback className={""}>V</AvatarFallback>
+          </Avatar>
+        </div>
         <div>
-          Hi, <span className="text-xl">Vamshi Thatikonda</span>
+          <div>Hi,</div>
+          <span className="text-xl">Vamshi</span>
         </div>
         <DateSelect />
       </div>
-      {/* <div
-        data-section="overview"
-        ref={(el) => (sectionRefs.current[0] = el)}
-        className="hidden gap-5 mt-5 mb-2 transition-opacity duration-700 sm:flex"
-        style={{ opacity }}
-      >
-        <Card
-          className={
-            "rounded-[5px] relative flex-1/2 sm:py-10 bg-(--color-muted)"
-          }
-        >
-          <Badge
-            className={
-              "absolute sm:text-base rounded-xl top-0 transform translate-y-[-50%] left-5 bg-blue-500"
-            }
-          >
-            Overview
-          </Badge>
-          <CardContent>
-            <div className="grid md:grid-cols-5 grid-cols-2 gap-x-3 gap-y-5">
-              <div className="">
-                <h3 className="text-sm text-gray-700 dark:text-gray-400">
-                  Monthly Income
-                </h3>
-                <div className="mt-2">Rs 96,000</div>
-              </div>
-              <div>
-                <h3 className="text-sm text-gray-700 dark:text-gray-400">
-                  Monthly Expense
-                </h3>
-                <div className="mt-2">Rs 96,000</div>
-              </div>
-              <div>
-                <h3 className="text-sm text-gray-700 dark:text-gray-400">
-                  Todays's Expense
-                </h3>
-                <div className="mt-2">Rs 96,000</div>
-              </div>
-              <div>
-                <h3 className="text-sm text-gray-700 dark:text-gray-400">
-                  Fixed Expenses
-                </h3>
-                <div className="mt-2">Rs 96,000</div>
-              </div>
-              <div className="hidden sm:block place-self-center">
-                <AddExpenseDialog />
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-      </div> */}
-
       <div className="grid md:grid-cols-10 grid-cols-2 sm:grid-rows-2 gap-x-4 gap-y-5 items-stretch justify-center">
-        <div className="rounded-full sm:rounded-xl sm:col-span-2 dark:bg-green-300/70 bg-green-300/80 p-2 flex items-center gap-2 sm:justify-around">
-          <div className="p-2 rounded-full bg-(--color-muted)/10">
+        <div className="sm:col-span-2 p-2 flex items-center gap-2 sm:justify-around">
+          <div className="p-2 rounded-full">
             <ArrowDown />
           </div>
           <div className="flex-col justify-center items-center flex">
@@ -342,8 +316,8 @@ export default function Home() {
             <div className="mt-2">Rs 96,000</div>
           </div>
         </div>
-        <div className="rounded-full sm:rounded-xl sm:col-span-2 dark:bg-red-300/90 bg-red-300/80 p-2 flex sm:justify-around gap-2 items-center">
-          <div className="p-2 rounded-full bg-(--color-muted)/10">
+        <div className="rounded-full sm:rounded-xl sm:col-span-2 p-2 flex sm:justify-around gap-2 items-center">
+          <div className="p-2 rounded-full">
             <ArrowUp />
           </div>
           <div className="flex-col justify-center items-center flex">
@@ -354,7 +328,8 @@ export default function Home() {
           </div>
         </div>
         <AddExpenseDialog />
-        <div className="row-span-2 rounded-xl dark:bg-gray-300/20 bg-(--color-muted) border p-2 col-span-2 sm:col-span-4">
+        <div className="row-span-2 mt-7 rounded-xl dark:bg-gray-300/20 bg-(--color-muted) border-none p-0 col-span-2 sm:col-span-4">
+          <div className="bg-(--background)">Last Week's Expenses</div>
           <ChartBarDefault />
         </div>
         <div className="flex sm:col-span-6 col-span-2 flex-col sm:items-stretch gap-2 items-center sm:mt-0 ">
@@ -413,11 +388,35 @@ export default function Home() {
           </Badge>
         </div>
       </div>
+      <div
+        style={{ opacity: showFloating ? 1 : 0 }}
+        className={`transition-opacity duration-500 ease-in-out h-[70px] flex items-center bg-(--background) bottom-0 sticky top-0 z-100 w-full`}
+      >
+        <div
+          className="flex items-center flex-1 justify-around gap-2 h-[55px] bg-(--background) z-40"
+          ref={greetingRef}
+        >
+          <div className="h-full aspect-square p-1">
+            <Avatar className={"min-h-full min-w-full  bg-(--foreground) p-1"}>
+              <AvatarFallback className={""}>V</AvatarFallback>
+            </Avatar>
+          </div>
+          <div>
+            <div>Hi,</div>
+            <span className="text-xl">Vamshi</span>
+          </div>
+          <DateSelect />
+        </div>
+      </div>
+
       {/* Menu */}
-      <div className="sticky  mt-2 mb-4 top-[100px] bg-(--background) z-30">
+      <div
+        ref={targetRef}
+        className="sticky mt-2 mb-4 top-[70px] bg-(--background) z-30"
+      >
         <div
           ref={menuRef}
-          className=" bg-(--color-muted) rounded-2xl border-1 h-[75px] py-3 grid grid-cols-3 text-sm text-gray-700 dark:text-gray-400"
+          className="h-[75px] py-3 grid grid-cols-3 text-sm text-gray-700 dark:text-gray-400"
         >
           <div
             className={
@@ -453,7 +452,7 @@ export default function Home() {
             }
           >
             <HandCoins />
-            <div className="pointer-events-none select-none">Expenses</div>
+            <div className="poi nter-events-none select-none">Expenses</div>
           </div>
         </div>
       </div>
@@ -478,7 +477,7 @@ export default function Home() {
           </div>
         </div>
         <div className="flex flex-col gap-4">
-          <div className="grid grid-cols-4 gap-x-3 h-[44px] flex items-center text-gray-700 dark:text-gray-400 bg-(--background) sticky top-[175px]">
+          <div className="grid grid-cols-4 gap-x-3 h-[44px] flex items-center text-gray-700 dark:text-gray-400 bg-(--background) sticky top-[75px]">
             <div className="text-sm col-span-3 sm:col-span-2">Expense</div>
             <div className="text-sm hidden sm:block text-center">Date</div>
             <div className="text-sm text-center">Amount</div>
@@ -528,7 +527,7 @@ export default function Home() {
           </div>
         </div>
         <div className="flex flex-col gap-4">
-          <div className="z-20 grid grid-cols-4 gap-x-3 h-[44px] items-center text-gray-700 dark:text-gray-400 bg-(--background) sticky top-[175px]">
+          <div className="z-20 grid grid-cols-4 gap-x-3 h-[44px] items-center text-gray-700 dark:text-gray-400 bg-(--background) sticky top-[75px]">
             <div className="text-sm col-span-3">Category</div>
             <div className="text-sm text-center">Amount</div>
             <Separator className={"absolute bottom-0"} />
@@ -614,7 +613,7 @@ export default function Home() {
           </div>
         </div>
         <div className="flex flex-col gap-4">
-          <div className="grid grid-cols-4 gap-x-3 h-[44px] items-center text-gray-700 dark:text-gray-400 bg-(--background) sticky top-[175px]">
+          <div className="grid grid-cols-4 gap-x-3 h-[44px] items-center text-gray-700 dark:text-gray-400 bg-(--background) sticky top-[75px]">
             <div className="text-sm col-span-3 sm:col-span-2">Expense</div>
             <div className="text-sm hidden sm:block text-center">Date</div>
             <div className="text-sm text-center">Amount</div>
