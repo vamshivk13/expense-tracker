@@ -287,381 +287,489 @@ export default function Home() {
   console.log("TOP", showFloating);
   console.log("Opactity", opacity);
 
+  const titleRef = useRef([]);
+  const valueRef = useRef([]);
+
+  const [connectorStyle1, setConnectorStyle1] = useState(null);
+  const [connectorStyle, setConnectorStyle] = useState(null);
+
+  useEffect(() => {
+    const updateConnector = (titleRef, valueRef, type) => {
+      console.log("UPDATING CONNECTOR", titleRef, valueRef);
+      if (!titleRef || !valueRef) return;
+      const container = titleRef.closest(".connector-wrap") || document.body;
+      const containerRect = container.getBoundingClientRect();
+      const a = titleRef.getBoundingClientRect();
+      const b = valueRef.getBoundingClientRect();
+      const left = Math.round(a.right - containerRect.left);
+      const right = Math.round(b.left - containerRect.left);
+      const width = Math.max(0, right - left);
+      const top = Math.round((a.top + a.bottom) / 2 - containerRect.top);
+      console.log("CALCULATED CONNECTOR", { left, right, width, top });
+      if (type == "type1") {
+        setConnectorStyle1({
+          left: `${left + 4}px`,
+          width: `${width - 4}px`,
+        });
+      } else {
+        setConnectorStyle({
+          left: `${left + 4}px`,
+          width: `${width - 4}px`,
+        });
+      }
+
+      console.log("CONNECTOR UPDATED");
+    };
+
+    const toRemove = [];
+    titleRef?.current.forEach((_, index) => {
+      console.log("SETTING UP CONNECTOR FOR INDEX", index);
+      const updateConnector1 = () =>
+        updateConnector(
+          titleRef.current[index],
+          valueRef.current[index],
+          "type" + index
+        );
+      updateConnector1();
+      window.addEventListener("resize", updateConnector1);
+      window.addEventListener("scroll", updateConnector1, { passive: true });
+      toRemove.push(updateConnector1);
+    });
+    return () => {
+      toRemove.forEach((_, index) => {
+        window.removeEventListener("resize", toRemove[index]);
+        window.removeEventListener("scroll", toRemove[index], {
+          passive: true,
+        });
+      });
+    };
+  }, [titleRef, valueRef]);
+
+  console.log("CONNECTOR STYLE", connectorStyle);
+  console.log("TITLE REF", titleRef.current);
+  console.log("VALUE REF", valueRef.current);
+
   return (
-    <div className="sm:container mx-auto px-8 sm:px-16 lg:px-16 py-3 flex flex-col gap-4">
-      <div
-        className="flex items-center justify-around gap-2 mt-3 mb-6 my-3 sticky h-[50px] bg-(--background) z-40"
-        ref={greetingRef}
-      >
-        <div className="h-full aspect-square p-1">
-          <Avatar className={"min-h-full min-w-full  bg-(--foreground) p-1"}>
-            <AvatarFallback className={""}>V</AvatarFallback>
-          </Avatar>
-        </div>
-        <div>
-          <div>Hi,</div>
-          <span className="text-xl">Vamshi</span>
-        </div>
-        <DateSelect />
-      </div>
-      <div className="grid md:grid-cols-10 grid-cols-2 sm:grid-rows-2 gap-x-4 gap-y-5 items-stretch justify-center">
-        <div className="sm:col-span-2 p-2 flex items-center gap-2 sm:justify-around">
-          <div className="p-2 rounded-full">
-            <ArrowDown />
+    <div>
+      <div className="w-full px-8 sm:px-16 lg:px-16 py-3 flex flex-col gap-4 dark:bg-[#3D3D3D] bg-[#EFEFEF] rounded-b-2xl">
+        <div
+          className="flex items-center justify-around gap-2 mt-3 mb-6 my-3 sticky h-[50px] z-40"
+          ref={greetingRef}
+        >
+          <div className="h-full aspect-square p-1">
+            <Avatar className={"min-h-full min-w-full  bg-(--foreground) p-1"}>
+              <AvatarFallback className={""}>V</AvatarFallback>
+            </Avatar>
           </div>
-          <div className="flex-col justify-center items-center flex">
-            <h3 className="text-sm font-bold text-gray-600 dark:text-gray-700">
-              Income
-            </h3>
-            <div className="mt-2">Rs 96,000</div>
+          <div>
+            <div>Hi,</div>
+            <span className="text-xl">Vamshi</span>
           </div>
+          <DateSelect />
         </div>
-        <div className="rounded-full sm:rounded-xl sm:col-span-2 p-2 flex sm:justify-around gap-2 items-center">
-          <div className="p-2 rounded-full">
-            <ArrowUp />
+        {/* Overview Section */}
+        <div className="grid md:grid-cols-10 grid-cols-2 sm:grid-rows-2 gap-x-4 gap-y-5 items-stretch justify-center">
+          {/* INCOME */}
+          <div className="sm:col-span-4 p-2 flex items-center gap-2 sm:justify-around">
+            <div className="p-2 rounded-full">
+              <ArrowDown />
+            </div>
+            <div className="flex-col justify-center items-center flex">
+              <h3 className="text-sm font-bold">Income</h3>
+              <div className="mt-2">Rs 96,000</div>
+            </div>
           </div>
-          <div className="flex-col justify-center items-center flex">
-            <h3 className="text-sm font-bold text-gray-600 dark:text-gray-700">
-              Expense
-            </h3>
-            <div className="mt-2">Rs 26,000</div>
+          {/* EXPENSE */}
+          <div className="rounded-full sm:rounded-xl sm:col-span-4 p-2 flex sm:justify-around gap-2 items-center">
+            <div className="p-2 rounded-full">
+              <ArrowUp />
+            </div>
+            <div className="flex-col justify-center items-center flex">
+              <h3 className="text-sm font-bold">Expense</h3>
+              <div className="mt-2">Rs 26,000</div>
+            </div>
           </div>
-        </div>
-        <AddExpenseDialog />
-        {/* <div className="row-span-2 mt-7 rounded-xl dark:bg-gray-300/20 bg-(--color-muted) border-none p-0 col-span-2 sm:col-span-4">
+          <AddExpenseDialog />
+          {/* <div className="row-span-2 mt-7 rounded-xl dark:bg-gray-300/20 bg-(--color-muted) border-none p-0 col-span-2 sm:col-span-4">
           <div className="bg-(--background)">Last Week's Expenses</div>
           <ChartBarDefault />
         </div> */}
-        <div className="flex sm:col-span-6 col-span-2 flex-col sm:items-stretch gap-2 items-center sm:mt-0 ">
-          <div className="sm:hidden self-start mb-2 text-sm text-gray-700 dark:text-gray-400">
-            Overview
-          </div>
-          <div className="border-1 flex-1 flex-col bg-(--color-muted) grid grid-cols-3 gap-2 p-2 rounded-xl sm:justify-around items-center">
-            <h3 className="text-sm text-gray-700 dark:text-gray-400">
-              Todays's Expense
-            </h3>
-            <div className="">Rs 96,000</div>
-            <div className="text-sm font-thin flex items-center  text-gray-700 dark:text-gray-400 ">
-              <BadgeInfo className="h-3" />
-              Rs 100 <ArrowUp className="h-4" />
+          <div className="flex sm:col-span-10 col-span-2 flex-col sm:items-stretch gap-2 items-center sm:mt-0 ">
+            <div className="self-start mb-2 text-sm font-bold text-gray-700 dark:text-gray-400">
+              Overview
             </div>
-          </div>
-
-          <div className="border-1 flex-1 flex-col bg-(--color-muted) grid grid-cols-3 gap-2 p-2 items-center rounded-xl">
-            <h3 className="text-sm text-gray-700 dark:text-gray-400">
-              Fixed Expenses
-            </h3>
-            <div className="">Rs 96,000</div>
-            <div className="text-sm font-thin flex items-center  text-gray-700 dark:text-gray-400 ">
-              <BadgeInfo className="h-3" /> 70% of Income
-            </div>
-          </div>
-        </div>
-      </div>
-      {/* Quick Actions */}
-      <div className="flex flex-col gap-2 mt-4 mb-4">
-        <div
-          className={
-            "mr-auto font-bold mb-3 text-sm text-gray-700 dark:text-gray-400 "
-          }
-        >
-          Quick Actions
-        </div>
-        <div className="rounded-2xl overflow-x-auto flex gap-2 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden text-gray-700 dark:text-gray-400">
-          <Badge
-            variant={"secondary"}
-            className={"p-2  sm:text-sm rounded-2xl bg-(--color-muted)"}
-          >
-            <Plus /> Add Expenses
-          </Badge>
-          <Badge
-            variant={"secondary"}
-            className={"p-2 sm:text-sm rounded-2xl bg-(--color-muted)"}
-          >
-            <ChartGantt /> Update Budgets
-          </Badge>
-          <Badge
-            variant={"secondary"}
-            className={"p-2 sm:text-sm rounded-2xl bg-(--color-muted) "}
-          >
-            <HandCoins /> Modify Fixed Expenses
-          </Badge>
-        </div>
-      </div>
-      {/* Menu */}
-      <div
-        ref={targetRef}
-        className="sticky mt-2 mb-4 top-0 bg-(--background) z-30"
-      >
-        <div
-          ref={menuRef}
-          className="h-[75px] py-3 grid grid-cols-3 text-sm text-gray-700 dark:text-gray-400"
-        >
-          <div
-            className={
-              `flex flex-col items-center cursor-pointer mx-auto` +
-              (activeSection == "transactions"
-                ? " text-(--foreground) border-b-3 border-(--foreground)"
-                : "")
-            }
-            onClick={handleScrollToTransactions}
-          >
-            <BadgeDollarSign />
-            <div className="pointer-events-none select-none">Transactions</div>
-          </div>
-          <div
-            onClick={handleScrollToBudgets}
-            className={
-              `flex flex-col items-center cursor-pointer mx-auto` +
-              (activeSection == "budgets"
-                ? " text-(--foreground)  border-b-3 border-(--foreground)"
-                : "")
-            }
-          >
-            <NotepadTextDashed />
-            <div className="pointer-events-none select-none">Budgets</div>
-          </div>
-          <div
-            onClick={handleScrollToExpenses}
-            className={
-              `flex flex-col items-center cursor-pointer mx-auto` +
-              (activeSection == "expenses"
-                ? " text-(--foreground)  border-b-3 border-(--foreground)"
-                : "")
-            }
-          >
-            <HandCoins />
-            <div className="poi nter-events-none select-none">Expenses</div>
-          </div>
-        </div>
-      </div>
-
-      {/* Transactions  */}
-      <div
-        className={"flex flex-col mt-2 mb-2"}
-        ref={(el) => (sectionRefs.current[1] = el)}
-        data-section={"transactions"}
-      >
-        <div className="my-5 text-lg z-20  bg-(--background) h-[55px] gap-x-3 grid grid-cols-4 items-center">
-          <div className={"col-span-3"}>Your Transactions</div>
-          <div
-            className={
-              "text-center mx-auto text-sm text-gray-700 dark:text-gray-400 border-b-2 border-blue-500 pb-1 cursor-pointer"
-            }
-            onClick={() => {
-              router.push("/view/transactions");
-            }}
-          >
-            view all
-          </div>
-        </div>
-        <div className="flex flex-col gap-4">
-          <div className="grid grid-cols-4 gap-x-3 h-[44px] flex items-center text-gray-700 dark:text-gray-400 bg-(--background) sticky top-[75px]">
-            <div className="text-sm col-span-3 sm:col-span-2">Expense</div>
-            <div className="text-sm hidden sm:block text-center">Date</div>
-            <div className="text-sm text-center">Amount</div>
-            <Separator className={"absolute bottom-0"} />
-          </div>
-          {transactions.slice(0, 5).map((expense) => (
-            <div key={expense.date}>
-              <div className="hidden sm:block">
-                <EditExpenseDialog>
-                  <Transactions expense={expense} />
-                </EditExpenseDialog>
+            <div className="grid grid-cols-3 sm:grid-cols-6 items-center gap-5">
+              <div className="flex col-span-1 justify-center">
+                <h3
+                  ref={(el) => (titleRef.current[0] = el)}
+                  className="text-sm text-gray-700 dark:text-gray-400"
+                >
+                  Today's Expenses
+                </h3>
               </div>
               <div
-                className="sm:hidden block"
-                onClick={() => router.push("/edit")}
+                ref={(el) => (valueRef.current[0] = el)}
+                className="border-1 border-[#8A8A8A] col-span-2 sm:col-span-5 flex-1 grid grid-cols-2 text-center gap-2 p-2 sm:justify-around items-center"
               >
-                <Transactions expense={expense} />
+                <div className="">Rs 96,000</div>
+                <div className="text-sm font-thin flex items-center  justify-center text-gray-700 dark:text-gray-400 ">
+                  <BadgeInfo className="h-3" />
+                  Rs 100 <ArrowUp className="h-4" />
+                </div>
               </div>
-              <Separator />
+              {connectorStyle && (
+                <div
+                  aria-hidden
+                  style={{
+                    position: "absolute",
+                    height: "1px",
+                    background: "#8A8A8A",
+                    ...connectorStyle,
+                    zIndex: 100,
+                  }}
+                />
+              )}
             </div>
-          ))}
+            <div className="grid grid-cols-3 sm:grid-cols-6 items-center gap-5">
+              <div className="flex col-span-1 justify-center">
+                <h3
+                  ref={(el) => (titleRef.current[1] = el)}
+                  className="text-sm text-gray-700 dark:text-gray-400"
+                >
+                  Fixed Expenses
+                </h3>
+              </div>
+              <div
+                ref={(el) => (valueRef.current[1] = el)}
+                className="border-1 border-[#8A8A8A] col-span-2 sm:col-span-5 flex-1 grid grid-cols-2 text-center gap-2 p-2 sm:justify-around items-center"
+              >
+                <div className="">Rs 96,000</div>
+                <div className="text-sm font-thin flex items-center  justify-center text-gray-700 dark:text-gray-400 ">
+                  <BadgeInfo className="h-3" />
+                  70% of Income <ArrowUp className="h-4" />
+                </div>
+              </div>
+              {connectorStyle1 && (
+                <div
+                  aria-hidden
+                  style={{
+                    position: "absolute",
+                    height: "1px",
+                    background: "#8A8A8A",
+                    ...connectorStyle1,
+                    zIndex: 101,
+                  }}
+                />
+              )}
+            </div>
+          </div>
         </div>
-        <Button
-          variant="outline"
-          className={"mr-auto mt-7 p-1 rounded-none border-0"}
-        >
-          <div className={"border-1 border-(--foreground) p-1"}>View All</div>
-        </Button>
-      </div>
-      {/* Budgets  */}
-      <div
-        className={"flex flex-col my-3"}
-        ref={(el) => (sectionRefs.current[2] = el)}
-        data-section={"budgets"}
-      >
-        <div className="my-5 text-lg z-20 bg-(--background) h-[55px] gap-x-3 grid grid-cols-4 items-center">
-          <div className={"col-span-3"}>Budgets</div>
+        {/* Quick Actions */}
+        <div className="flex flex-col gap-2 mt-4 mb-4">
           <div
             className={
-              "text-center mx-auto text-sm text-gray-700 dark:text-gray-400 border-b-2 border-blue-500 pb-1 cursor-pointer"
+              "mr-auto font-bold mb-3 text-sm text-gray-700 dark:text-gray-400 "
             }
-            onClick={() => {
-              router.push("/view/budgets");
-            }}
           >
-            view all
+            Quick Actions
+          </div>
+          <div className="rounded-2xl overflow-x-auto flex gap-2 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden text-gray-700 dark:text-gray-400">
+            <Badge
+              variant={"secondary"}
+              className={"p-2  sm:text-sm rounded-2xl bg-(--color-muted)"}
+            >
+              <Plus /> Add Expenses
+            </Badge>
+            <Badge
+              variant={"secondary"}
+              className={"p-2 sm:text-sm rounded-2xl bg-(--color-muted)"}
+            >
+              <ChartGantt /> Update Budgets
+            </Badge>
+            <Badge
+              variant={"secondary"}
+              className={"p-2 sm:text-sm rounded-2xl bg-(--color-muted) "}
+            >
+              <HandCoins /> Modify Fixed Expenses
+            </Badge>
           </div>
         </div>
-        <div className="flex flex-col gap-4">
-          <div className="z-20 grid grid-cols-4 gap-x-3 h-[44px] items-center text-gray-700 dark:text-gray-400 bg-(--background) sticky top-[75px]">
-            <div className="text-sm col-span-3">Category</div>
-            <div className="text-sm text-center">Amount</div>
-            <Separator className={"absolute bottom-0"} />
+        {/* Menu */}
+        <div ref={targetRef} className="sticky mt-2 mb-4 top-0 z-30">
+          <div
+            ref={menuRef}
+            className="h-[75px] py-3 grid grid-cols-3 text-sm text-gray-700 dark:text-gray-400"
+          >
+            <div
+              className={
+                `flex flex-col items-center cursor-pointer mx-auto` +
+                (activeSection == "transactions"
+                  ? " text-(--foreground) border-b-3 border-(--foreground)"
+                  : "")
+              }
+              onClick={handleScrollToTransactions}
+            >
+              <BadgeDollarSign />
+              <div className="pointer-events-none select-none">
+                Transactions
+              </div>
+            </div>
+            <div
+              onClick={handleScrollToBudgets}
+              className={
+                `flex flex-col items-center cursor-pointer mx-auto` +
+                (activeSection == "budgets"
+                  ? " text-(--foreground)  border-b-3 border-(--foreground)"
+                  : "")
+              }
+            >
+              <NotepadTextDashed />
+              <div className="pointer-events-none select-none">Budgets</div>
+            </div>
+            <div
+              onClick={handleScrollToExpenses}
+              className={
+                `flex flex-col items-center cursor-pointer mx-auto` +
+                (activeSection == "expenses"
+                  ? " text-(--foreground)  border-b-3 border-(--foreground)"
+                  : "")
+              }
+            >
+              <HandCoins />
+              <div className="poi nter-events-none select-none">Expenses</div>
+            </div>
           </div>
+        </div>
+      </div>
 
-          {budgets.slice(0, 5).map((budget) => {
-            const lightColor = stringToHSL(budget.category);
-            const darkColor = stringToDarkHSL(budget.category);
-            return (
-              <div key={budget.category}>
-                <div className="grid gap-x-3 grid-cols-4  mb-3">
-                  <div className="col-span-3">
-                    <div className="flex items-center gap-4">
-                      <div
-                        style={{
-                          "--progress": `${
-                            String((budget.spent / budget.budget) * 100) + "%"
-                          }`,
-                        }}
-                        className={`h-10 w-10 flex-shrink-0 rounded-4xl  bg-[conic-gradient(#3b82f6_var(--progress),#e5e7eb_0%)] relative`}
-                      >
-                        <div className="h-8 w-8 rounded-4xl bg-(--background) flex justify-center items-center absolute top-[50%] left-[50%] transform translate-x-[-50%] translate-y-[-50%]">
-                          <div
-                            className="flex-shrink-0 bg-(--color-muted) p-2 rounded-full text-[var(--color)] dark:text-[var(--dark-color)]"
-                            style={{
-                              "--color": lightColor,
-                              "--dark-color": darkColor,
-                            }}
-                          >
-                            <Utensils />
+      <div className="sm:container mx-auto px-8 sm:px-16 lg:px-16 py-3 flex flex-col gap-4">
+        {/* Transactions  */}
+        <div
+          className={"flex flex-col mt-2 mb-2"}
+          ref={(el) => (sectionRefs.current[1] = el)}
+          data-section={"transactions"}
+        >
+          <div className="my-5 text-lg z-20  bg-(--background) h-[55px] gap-x-3 grid grid-cols-4 items-center">
+            <div className={"col-span-3"}>Your Transactions</div>
+            <div
+              className={
+                "text-center mx-auto text-sm text-gray-700 dark:text-gray-400 border-b-2 border-blue-500 pb-1 cursor-pointer"
+              }
+              onClick={() => {
+                router.push("/view/transactions");
+              }}
+            >
+              view all
+            </div>
+          </div>
+          <div className="flex flex-col gap-4">
+            <div className="grid grid-cols-4 gap-x-3 h-[44px] flex items-center text-gray-700 dark:text-gray-400 bg-(--background) sticky top-[75px]">
+              <div className="text-sm col-span-3 sm:col-span-2">Expense</div>
+              <div className="text-sm hidden sm:block text-center">Date</div>
+              <div className="text-sm text-center">Amount</div>
+              <Separator className={"absolute bottom-0"} />
+            </div>
+            {transactions.slice(0, 5).map((expense) => (
+              <div key={expense.date}>
+                <div className="hidden sm:block">
+                  <EditExpenseDialog>
+                    <Transactions expense={expense} />
+                  </EditExpenseDialog>
+                </div>
+                <div
+                  className="sm:hidden block"
+                  onClick={() => router.push("/edit")}
+                >
+                  <Transactions expense={expense} />
+                </div>
+                <Separator />
+              </div>
+            ))}
+          </div>
+          <Button
+            variant="outline"
+            className={"mr-auto mt-7 p-1 rounded-none border-0"}
+          >
+            <div className={"border-1 border-(--foreground) p-1"}>View All</div>
+          </Button>
+        </div>
+        {/* Budgets  */}
+        <div
+          className={"flex flex-col my-3"}
+          ref={(el) => (sectionRefs.current[2] = el)}
+          data-section={"budgets"}
+        >
+          <div className="my-5 text-lg z-20 bg-(--background) h-[55px] gap-x-3 grid grid-cols-4 items-center">
+            <div className={"col-span-3"}>Budgets</div>
+            <div
+              className={
+                "text-center mx-auto text-sm text-gray-700 dark:text-gray-400 border-b-2 border-blue-500 pb-1 cursor-pointer"
+              }
+              onClick={() => {
+                router.push("/view/budgets");
+              }}
+            >
+              view all
+            </div>
+          </div>
+          <div className="flex flex-col gap-4">
+            <div className="z-20 grid grid-cols-4 gap-x-3 h-[44px] items-center text-gray-700 dark:text-gray-400 bg-(--background) sticky top-[75px]">
+              <div className="text-sm col-span-3">Category</div>
+              <div className="text-sm text-center">Amount</div>
+              <Separator className={"absolute bottom-0"} />
+            </div>
+
+            {budgets.slice(0, 5).map((budget) => {
+              const lightColor = stringToHSL(budget.category);
+              const darkColor = stringToDarkHSL(budget.category);
+              return (
+                <div key={budget.category}>
+                  <div className="grid gap-x-3 grid-cols-4  mb-3">
+                    <div className="col-span-3">
+                      <div className="flex items-center gap-4">
+                        <div
+                          style={{
+                            "--progress": `${
+                              String((budget.spent / budget.budget) * 100) + "%"
+                            }`,
+                          }}
+                          className={`h-10 w-10 flex-shrink-0 rounded-4xl  bg-[conic-gradient(#3b82f6_var(--progress),#e5e7eb_0%)] relative`}
+                        >
+                          <div className="h-8 w-8 rounded-4xl bg-(--background) flex justify-center items-center absolute top-[50%] left-[50%] transform translate-x-[-50%] translate-y-[-50%]">
+                            <div
+                              className="flex-shrink-0 bg-(--color-muted) p-2 rounded-full text-[var(--color)] dark:text-[var(--dark-color)]"
+                              style={{
+                                "--color": lightColor,
+                                "--dark-color": darkColor,
+                              }}
+                            >
+                              <Utensils />
+                            </div>
                           </div>
                         </div>
-                      </div>
 
-                      <div className="flex flex-col truncate gap-1">
-                        <div className="truncate text">{budget.category}</div>
-                        {/* <div className="rounded-2xl text-sm overflow-x-auto flex gap-2 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden text-gray-700 dark:text-gray-400">
+                        <div className="flex flex-col truncate gap-1">
+                          <div className="truncate text">{budget.category}</div>
+                          {/* <div className="rounded-2xl text-sm overflow-x-auto flex gap-2 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden text-gray-700 dark:text-gray-400">
                         {budget.tags.map((tag) => (
                           <Badge>{tag}</Badge>
                         ))}
                       </div> */}
-                      </div>
-                    </div>
-                  </div>
-                  <div className="flex flex-row justify-center">
-                    <div>
-                      <div className="flex flex-col text-gray-700 dark:text-gray-400 text-sm">
-                        {getFormattedAmount(budget.spent)} /
-                      </div>
-                      <div className="block">{budget.budget}</div>
-                    </div>
-                  </div>
-                </div>
-                <Separator />
-              </div>
-            );
-          })}
-        </div>
-        <Button
-          variant="outline"
-          className={"mr-auto mt-7 p-1 rounded-none border-0"}
-        >
-          <div className={"border-1 border-(--foreground) p-1"}>View All</div>
-        </Button>
-      </div>
-      {/* Fixed Expenses  */}
-      <div
-        className={"flex flex-col my-3 pb-15"}
-        ref={(el) => (sectionRefs.current[3] = el)}
-        data-section={"expenses"}
-      >
-        <div className="my-5 text-lg z-20  bg-(--background) h-[55px] gap-x-3 grid grid-cols-4 items-center">
-          <div className={"col-span-3"}>Fixed Expenses</div>
-          <div
-            className={
-              "text-center mx-auto text-sm text-gray-700 dark:text-gray-400 border-b-2 border-blue-500 pb-1 cursor-pointer"
-            }
-            onClick={() => {
-              router.push("/view/expenses");
-            }}
-          >
-            view all
-          </div>
-        </div>
-        <div className="flex flex-col gap-4">
-          <div className="grid grid-cols-4 gap-x-3 h-[44px] items-center text-gray-700 dark:text-gray-400 bg-(--background) sticky top-[75px]">
-            <div className="text-sm col-span-3 sm:col-span-2">Expense</div>
-            <div className="text-sm hidden sm:block text-center">Date</div>
-            <div className="text-sm text-center">Amount</div>
-            <Separator className={"absolute bottom-0"} />
-          </div>
-
-          {transactions.slice(0, 5).map((expense) => {
-            const lightColor = stringToHSL(expense.description);
-            const darkColor = stringToDarkHSL(expense.description);
-
-            return (
-              <div key={expense.date}>
-                <div className="grid gap-x-3 grid-cols-4  mb-3">
-                  <div className=" col-span-3 sm:col-span-2">
-                    <div className="flex items-center gap-4">
-                      <div
-                        className="flex-shrink-0 bg-(--color-muted) p-2 rounded-full text-[var(--color)] dark:text-[var(--dark-color)]"
-                        style={{
-                          "--color": lightColor,
-                          "--dark-color": darkColor,
-                        }}
-                      >
-                        <Utensils />
-                      </div>
-                      <div className="flex flex-col truncate">
-                        <div className="truncate">{expense.description}</div>
-                        <div className="text-sm text-gray-700 dark:text-gray-400">
-                          {expense.category}
                         </div>
                       </div>
                     </div>
-                  </div>
-                  <div className="hidden sm:block text-center">
-                    {getFormattedDate(expense.date)}
-                  </div>
-                  <div className="flex flex-col text-center">
-                    <div className=" sm:block hidden">
-                      {getFormattedAmount(expense.amount)}
-                    </div>
-                    <div className="sm:hidden block">{expense.amount}</div>
-                    <div className="text-sm block sm:hidden text-gray-700 dark:text-gray-400">
-                      {getFormattedDateShort(expense.date)}
+                    <div className="flex flex-row justify-center">
+                      <div>
+                        <div className="flex flex-col text-gray-700 dark:text-gray-400 text-sm">
+                          {getFormattedAmount(budget.spent)} /
+                        </div>
+                        <div className="block">{budget.budget}</div>
+                      </div>
                     </div>
                   </div>
+                  <Separator />
                 </div>
-                <Separator />
-              </div>
-            );
-          })}
+              );
+            })}
+          </div>
+          <Button
+            variant="outline"
+            className={"mr-auto mt-7 p-1 rounded-none border-0"}
+          >
+            <div className={"border-1 border-(--foreground) p-1"}>View All</div>
+          </Button>
         </div>
-        <Button
-          variant="outline"
-          className={"mr-auto mt-7 p-1 rounded-none border-0"}
+        {/* Fixed Expenses  */}
+        <div
+          className={"flex flex-col my-3 pb-15"}
+          ref={(el) => (sectionRefs.current[3] = el)}
+          data-section={"expenses"}
         >
-          <div className={"border-1 border-(--foreground) p-1"}>View All</div>
-        </Button>
-      </div>
-      <div className="fixed bottom-8 right-8 h-18 w-18 z-50 bg-muted/90 rounded-full sm:hidden flex justify-center items-center">
-        <Button
-          className={
-            "z-50 flex rounded-full h-13 w-13 bg-blue-500 hover:bg-blue-700 dark:hover:bg-blue-300"
-          }
-          size={"icon"}
-          onClick={() => {
-            router.push("/add");
-          }}
-        >
-          <Plus className="size-5"></Plus>
-        </Button>
+          <div className="my-5 text-lg z-20  bg-(--background) h-[55px] gap-x-3 grid grid-cols-4 items-center">
+            <div className={"col-span-3"}>Fixed Expenses</div>
+            <div
+              className={
+                "text-center mx-auto text-sm text-gray-700 dark:text-gray-400 border-b-2 border-blue-500 pb-1 cursor-pointer"
+              }
+              onClick={() => {
+                router.push("/view/expenses");
+              }}
+            >
+              view all
+            </div>
+          </div>
+          <div className="flex flex-col gap-4">
+            <div className="grid grid-cols-4 gap-x-3 h-[44px] items-center text-gray-700 dark:text-gray-400 bg-(--background) sticky top-[75px]">
+              <div className="text-sm col-span-3 sm:col-span-2">Expense</div>
+              <div className="text-sm hidden sm:block text-center">Date</div>
+              <div className="text-sm text-center">Amount</div>
+              <Separator className={"absolute bottom-0"} />
+            </div>
+
+            {transactions.slice(0, 5).map((expense) => {
+              const lightColor = stringToHSL(expense.description);
+              const darkColor = stringToDarkHSL(expense.description);
+
+              return (
+                <div key={expense.date}>
+                  <div className="grid gap-x-3 grid-cols-4  mb-3">
+                    <div className=" col-span-3 sm:col-span-2">
+                      <div className="flex items-center gap-4">
+                        <div
+                          className="flex-shrink-0 bg-(--color-muted) p-2 rounded-full text-[var(--color)] dark:text-[var(--dark-color)]"
+                          style={{
+                            "--color": lightColor,
+                            "--dark-color": darkColor,
+                          }}
+                        >
+                          <Utensils />
+                        </div>
+                        <div className="flex flex-col truncate">
+                          <div className="truncate">{expense.description}</div>
+                          <div className="text-sm text-gray-700 dark:text-gray-400">
+                            {expense.category}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="hidden sm:block text-center">
+                      {getFormattedDate(expense.date)}
+                    </div>
+                    <div className="flex flex-col text-center">
+                      <div className=" sm:block hidden">
+                        {getFormattedAmount(expense.amount)}
+                      </div>
+                      <div className="sm:hidden block">{expense.amount}</div>
+                      <div className="text-sm block sm:hidden text-gray-700 dark:text-gray-400">
+                        {getFormattedDateShort(expense.date)}
+                      </div>
+                    </div>
+                  </div>
+                  <Separator />
+                </div>
+              );
+            })}
+          </div>
+          <Button
+            variant="outline"
+            className={"mr-auto mt-7 p-1 rounded-none border-0"}
+          >
+            <div className={"border-1 border-(--foreground) p-1"}>View All</div>
+          </Button>
+        </div>
+        <div className="fixed bottom-8 right-8 h-18 w-18 z-50 bg-muted/90 rounded-full sm:hidden flex justify-center items-center">
+          <Button
+            className={
+              "z-50 flex rounded-full h-13 w-13 bg-blue-500 hover:bg-blue-700 dark:hover:bg-blue-300"
+            }
+            size={"icon"}
+            onClick={() => {
+              router.push("/add");
+            }}
+          >
+            <Plus className="size-5"></Plus>
+          </Button>
+        </div>
       </div>
     </div>
   );

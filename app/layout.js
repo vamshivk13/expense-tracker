@@ -4,6 +4,7 @@ import {
   Montserrat,
   Oswald,
   Raleway,
+  Roboto,
 } from "next/font/google";
 import "./globals.css";
 import Header from "./components/Header";
@@ -25,6 +26,12 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
+const roboto = Roboto({
+  subsets: ["latin"],
+  weight: ["400", "700"],
+  variable: "--font-roboto",
+});
+
 export const metadata = {
   title: "Expense Tracker",
   description: "track your expenses",
@@ -33,10 +40,10 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body className={geistSans.className}>
+      <body className={roboto.className}>
         <ThemeProvider
           attribute={"class"}
-          defaultTheme="dark"
+          defaultTheme="light"
           enableSystem
           disableTransitionOnChange
         >
