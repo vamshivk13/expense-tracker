@@ -328,10 +328,10 @@ export default function Home() {
           </div>
         </div>
         <AddExpenseDialog />
-        <div className="row-span-2 mt-7 rounded-xl dark:bg-gray-300/20 bg-(--color-muted) border-none p-0 col-span-2 sm:col-span-4">
+        {/* <div className="row-span-2 mt-7 rounded-xl dark:bg-gray-300/20 bg-(--color-muted) border-none p-0 col-span-2 sm:col-span-4">
           <div className="bg-(--background)">Last Week's Expenses</div>
           <ChartBarDefault />
-        </div>
+        </div> */}
         <div className="flex sm:col-span-6 col-span-2 flex-col sm:items-stretch gap-2 items-center sm:mt-0 ">
           <div className="sm:hidden self-start mb-2 text-sm text-gray-700 dark:text-gray-400">
             Overview
@@ -388,31 +388,10 @@ export default function Home() {
           </Badge>
         </div>
       </div>
-      <div
-        style={{ opacity: showFloating ? 1 : 0 }}
-        className={`transition-opacity duration-500 ease-in-out h-[70px] flex items-center bg-(--background) bottom-0 sticky top-0 z-100 w-full`}
-      >
-        <div
-          className="flex items-center flex-1 justify-around gap-2 h-[55px] bg-(--background) z-40"
-          ref={greetingRef}
-        >
-          <div className="h-full aspect-square p-1">
-            <Avatar className={"min-h-full min-w-full  bg-(--foreground) p-1"}>
-              <AvatarFallback className={""}>V</AvatarFallback>
-            </Avatar>
-          </div>
-          <div>
-            <div>Hi,</div>
-            <span className="text-xl">Vamshi</span>
-          </div>
-          <DateSelect />
-        </div>
-      </div>
-
       {/* Menu */}
       <div
         ref={targetRef}
-        className="sticky mt-2 mb-4 top-[70px] bg-(--background) z-30"
+        className="sticky mt-2 mb-4 top-0 bg-(--background) z-30"
       >
         <div
           ref={menuRef}

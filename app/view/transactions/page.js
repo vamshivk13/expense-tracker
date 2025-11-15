@@ -81,13 +81,13 @@ export default function ExpensesView() {
   ];
   return (
     <div className="px-6 sm:px-16 lg:px-16 pb-2">
-      <div className="text-lg z-20 bg-(--background) h-[55px] sticky top-[50px] gap-x-3 grid grid-cols-4 items-center">
+      <div className="text-lg z-20 bg-(--background) h-[55px] sticky top-0 gap-x-3 grid grid-cols-4 items-center">
         <div className={"col-span-3"}>Your Transactions</div>
         <DateSelect />
       </div>
 
       <div className="flex flex-col gap-4">
-        <div className="grid grid-cols-4 gap-x-3 h-[34px] flex items-center text-gray-700 dark:text-gray-400 bg-(--background) sticky top-[105px]">
+        <div className="grid grid-cols-4 gap-x-3 h-[34px] flex items-center text-gray-700 dark:text-gray-400 bg-(--background) sticky top-[55px]">
           <div className="text-sm col-span-3 sm:col-span-2">Expense</div>
           <div className="text-sm hidden sm:block text-center">Date</div>
           <div className="text-sm text-center">Amount</div>
