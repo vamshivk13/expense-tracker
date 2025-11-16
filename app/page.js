@@ -368,35 +368,30 @@ export default function Home() {
           </div>
           <DateSelect />
         </div>
-        {/* Overview Section */}
 
+        <div className={"flex mb-1 gap-4"}>
+          <div className="flex items-center bg-[#E0E0E0] gap-2 rounded-2xl border-1 py-1 px-2 border-(--border-color)">
+            <div className="aspect-square size-5 flex items-center justify-center rounded-full">
+              <HandCoins />
+            </div>
+            <div className="text-sm font-light text-gray-700 dark:text-gray-400">
+              Expenses
+            </div>
+          </div>
+          <div className="flex items-center gap-2 rounded-2xl border-1 py-1 px-2 border-(--border-color)">
+            <div className="aspect-square size-5 flex items-center justify-center rounded-full">
+              <BanknoteArrowUp />
+            </div>
+            <div className="text-sm font-light text-gray-700 dark:text-gray-400">
+              Income
+            </div>
+          </div>
+        </div>
         <Card
           className={
             "rounded-none bg-[] py-2 gap-0 dark:bg-[#3D3D3D] bg-[#EFEFEF] border-1 border-[#8A8A8A] "
           }
         >
-          <CardHeader
-            className={
-              "flex mb-4 border-b-1 border-b-[#8A8A8A]  px-2 pb-2 gap-4"
-            }
-          >
-            <div className="flex items-center gap-2 rounded-2xl border-1 py-1 px-2 border-(--border-color)">
-              <div className="aspect-square size-5 flex items-center justify-center bg-(--color-muted) rounded-full">
-                <HandCoins />
-              </div>
-              <div className="text-sm font-light text-gray-700 dark:text-gray-400">
-                Expenses
-              </div>
-            </div>
-            <div className="flex items-center gap-2 rounded-2xl border-1 py-1 px-2 border-(--border-color)">
-              <div className="aspect-square size-5 flex items-center justify-center bg-(--color-muted) rounded-full">
-                <BanknoteArrowUp />
-              </div>
-              <div className="text-sm font-light text-gray-700 dark:text-gray-400">
-                Income
-              </div>
-            </div>
-          </CardHeader>
           <CardContent className={"flex py-2 px-2 items-center gap-4"}>
             <div className="aspect-square border-1 border-(--border-color-light) size-10 flex items-center justify-center bg-(--color-muted) rounded-full">
               <HandCoins />
@@ -409,7 +404,6 @@ export default function Home() {
             </div>
           </CardContent>
         </Card>
-
         <div className="flex sm:col-span-10 col-span-2 flex-col sm:items-stretch gap-2 items-center sm:mt-0 ">
           <div className="self-start mb-2 text-sm font-bold text-gray-700 dark:text-gray-400">
             Overview
