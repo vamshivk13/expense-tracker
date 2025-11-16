@@ -377,7 +377,7 @@ export default function Home() {
         >
           <CardHeader
             className={
-              "flex mb-4 border-b-1 border-1 border-b-[#8A8A8A]  pb-2 gap-4"
+              "flex mb-4 border-b-1 border-b-[#8A8A8A]  px-2 pb-2 gap-4"
             }
           >
             <div className="flex items-center gap-2 rounded-2xl border-1 py-1 px-2 border-(--border-color)">
@@ -397,7 +397,7 @@ export default function Home() {
               </div>
             </div>
           </CardHeader>
-          <CardContent className={"flex py-2 items-center gap-4"}>
+          <CardContent className={"flex py-2 px-2 items-center gap-4"}>
             <div className="aspect-square border-1 border-(--border-color-light) size-10 flex items-center justify-center bg-(--color-muted) rounded-full">
               <HandCoins />
             </div>
