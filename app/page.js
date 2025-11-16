@@ -356,9 +356,9 @@ export default function Home() {
           className="flex items-center justify-around gap-2 mt-3 mb-6 my-3 sticky h-[50px] z-40"
           ref={greetingRef}
         >
-          <div className="h-full aspect-square p-1">
+          <div className="h-full aspect-square p-1/2 bg-black rounded-full">
             <Avatar className={"min-h-full min-w-full  bg-(--foreground) p-1"}>
-              <AvatarFallback className={""}>V</AvatarFallback>
+              <AvatarFallback className={"font-bold"}>V</AvatarFallback>
             </Avatar>
           </div>
           <div>
@@ -425,7 +425,7 @@ export default function Home() {
                     height: "1px",
                     background: "#8A8A8A",
                     ...connectorStyle,
-                    zIndex: 100,
+                    zIndex: 1,
                   }}
                 />
               )}
@@ -457,7 +457,7 @@ export default function Home() {
                     height: "1px",
                     background: "#8A8A8A",
                     ...connectorStyle1,
-                    zIndex: 101,
+                    zIndex: 1,
                   }}
                 />
               )}
