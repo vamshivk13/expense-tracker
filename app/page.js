@@ -370,26 +370,30 @@ export default function Home() {
         </div>
         {/* Overview Section */}
 
-        <Card className={"rounded-none py-2 gap-0"}>
+        <Card
+          className={
+            "rounded-none bg-[] py-2 gap-0 dark:bg-[#3D3D3D] bg-[#EFEFEF] border-1 border-[#8A8A8A] "
+          }
+        >
           <CardHeader
             className={
-              "flex mb-4 border-b-1 border-(--border-color-light) pb-2 gap-4"
+              "flex mb-4 border-b-1 border-1 border-b-[#8A8A8A]  pb-2 gap-4"
             }
           >
             <div className="flex items-center gap-2 rounded-2xl border-1 py-1 px-2 border-(--border-color)">
               <div className="aspect-square size-5 flex items-center justify-center bg-(--color-muted) rounded-full">
                 <HandCoins />
               </div>
-              <div className="text-sm font-bold text-gray-700 dark:text-gray-400">
-                EXPENSES
+              <div className="text-sm font-light text-gray-700 dark:text-gray-400">
+                Expenses
               </div>
             </div>
             <div className="flex items-center gap-2 rounded-2xl border-1 py-1 px-2 border-(--border-color)">
               <div className="aspect-square size-5 flex items-center justify-center bg-(--color-muted) rounded-full">
                 <BanknoteArrowUp />
               </div>
-              <div className="text-sm font-bold text-gray-700 dark:text-gray-400">
-                INCOME
+              <div className="text-sm font-light text-gray-700 dark:text-gray-400">
+                Income
               </div>
             </div>
           </CardHeader>
