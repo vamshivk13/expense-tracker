@@ -368,102 +368,111 @@ export default function Home() {
           <DateSelect />
         </div>
         {/* Overview Section */}
-        <div className="grid md:grid-cols-10 grid-cols-2 sm:grid-rows-2 gap-x-4 gap-y-5 items-stretch justify-center">
-          {/* INCOME */}
-          <div className="sm:col-span-4 p-2 flex items-center gap-2 sm:justify-around">
-            <div className="p-2 rounded-full">
-              <ArrowDown />
-            </div>
-            <div className="flex-col justify-center items-center flex">
-              <h3 className="text-sm font-bold">Income</h3>
-              <div className="mt-2">Rs 96,000</div>
-            </div>
-          </div>
-          {/* EXPENSE */}
-          <div className="rounded-full sm:rounded-xl sm:col-span-4 p-2 flex sm:justify-around gap-2 items-center">
-            <div className="p-2 rounded-full">
-              <ArrowUp />
-            </div>
-            <div className="flex-col justify-center items-center flex">
-              <h3 className="text-sm font-bold">Expense</h3>
-              <div className="mt-2">Rs 26,000</div>
-            </div>
-          </div>
-          <AddExpenseDialog />
-          {/* <div className="row-span-2 mt-7 rounded-xl dark:bg-gray-300/20 bg-(--color-muted) border-none p-0 col-span-2 sm:col-span-4">
+
+        <Card className={"rounded-none py-2"}>
+          <CardContent className={"p-0"}>
+            <div>
+              <div className="grid md:grid-cols-10 grid-cols-2 sm:grid-rows-2 gap-x-4 gap-y-5 items-stretch justify-center">
+                {/* INCOME */}
+                <div className="sm:col-span-4 p-2 flex items-center gap-2 sm:justify-around">
+                  <div className="p-2 rounded-full">
+                    <ArrowDown />
+                  </div>
+                  <div className="flex-col justify-center items-center flex">
+                    <h3 className="text-sm font-bold">Income</h3>
+                    <div className="mt-2">Rs 96,000</div>
+                  </div>
+                </div>
+                {/* EXPENSE */}
+                <div className="rounded-full sm:rounded-xl sm:col-span-4 p-2 flex sm:justify-around gap-2 items-center">
+                  <div className="p-2 rounded-full">
+                    <ArrowUp />
+                  </div>
+                  <div className="flex-col justify-center items-center flex">
+                    <h3 className="text-sm font-bold">Expense</h3>
+                    <div className="mt-2">Rs 26,000</div>
+                  </div>
+                </div>
+                <AddExpenseDialog />
+              </div>
+              {/* <div className="row-span-2 mt-7 rounded-xl dark:bg-gray-300/20 bg-(--color-muted) border-none p-0 col-span-2 sm:col-span-4">
           <div className="bg-(--background)">Last Week's Expenses</div>
           <ChartBarDefault />
         </div> */}
-          <div className="flex sm:col-span-10 col-span-2 flex-col sm:items-stretch gap-2 items-center sm:mt-0 ">
-            <div className="self-start mb-2 text-sm font-bold text-gray-700 dark:text-gray-400">
-              Overview
             </div>
-            <div className="grid grid-cols-3 sm:grid-cols-6 items-center gap-5">
-              <div className="flex col-span-1 justify-center">
-                <h3
-                  ref={(el) => (titleRef.current[0] = el)}
-                  className="text-sm text-gray-700 dark:text-gray-400"
-                >
-                  Today's Expenses
-                </h3>
-              </div>
-              <div
-                ref={(el) => (valueRef.current[0] = el)}
-                className="border-1 border-[#8A8A8A] col-span-2 sm:col-span-5 flex-1 grid grid-cols-2 text-center gap-2 p-2 sm:justify-around items-center"
+          </CardContent>
+        </Card>
+
+        <div className="flex sm:col-span-10 col-span-2 flex-col sm:items-stretch gap-2 items-center sm:mt-0 ">
+          <div className="self-start mb-2 text-sm font-bold text-gray-700 dark:text-gray-400">
+            Overview
+          </div>
+          <div className="grid grid-cols-3 sm:grid-cols-6 items-center gap-5">
+            <div className="flex col-span-1 justify-center">
+              <h3
+                ref={(el) => (titleRef.current[0] = el)}
+                className="text-sm text-gray-700 dark:text-gray-400"
               >
-                <div className="">Rs 96,000</div>
-                <div className="text-sm font-thin flex items-center  justify-center text-gray-700 dark:text-gray-400 ">
-                  <BadgeInfo className="h-3" />
-                  Rs 100 <ArrowUp className="h-4" />
-                </div>
-              </div>
-              {connectorStyle && (
-                <div
-                  aria-hidden
-                  style={{
-                    position: "absolute",
-                    height: "1px",
-                    background: "#8A8A8A",
-                    ...connectorStyle,
-                    zIndex: 1,
-                  }}
-                />
-              )}
+                Today's Expenses
+              </h3>
             </div>
-            <div className="grid grid-cols-3 sm:grid-cols-6 items-center gap-5">
-              <div className="flex col-span-1 justify-center">
-                <h3
-                  ref={(el) => (titleRef.current[1] = el)}
-                  className="text-sm text-gray-700 dark:text-gray-400"
-                >
-                  Fixed Expenses
-                </h3>
+            <div
+              ref={(el) => (valueRef.current[0] = el)}
+              className="border-1 border-[#8A8A8A] col-span-2 sm:col-span-5 flex-1 grid grid-cols-2 text-center gap-2 p-2 sm:justify-around items-center"
+            >
+              <div className="">Rs 96,000</div>
+              <div className="text-sm font-thin flex items-center  justify-center text-gray-700 dark:text-gray-400 ">
+                <BadgeInfo className="h-3" />
+                Rs 100 <ArrowUp className="h-4" />
               </div>
+            </div>
+            {connectorStyle && (
               <div
-                ref={(el) => (valueRef.current[1] = el)}
-                className="border-1 border-[#8A8A8A] col-span-2 sm:col-span-5 flex-1 grid grid-cols-2 text-center gap-2 p-2 sm:justify-around items-center"
+                aria-hidden
+                style={{
+                  position: "absolute",
+                  height: "1px",
+                  background: "#8A8A8A",
+                  ...connectorStyle,
+                  zIndex: 1,
+                }}
+              />
+            )}
+          </div>
+          <div className="grid grid-cols-3 sm:grid-cols-6 items-center gap-5">
+            <div className="flex col-span-1 justify-center">
+              <h3
+                ref={(el) => (titleRef.current[1] = el)}
+                className="text-sm text-gray-700 dark:text-gray-400"
               >
-                <div className="">Rs 96,000</div>
-                <div className="text-sm font-thin flex items-center  justify-center text-gray-700 dark:text-gray-400 ">
-                  <BadgeInfo className="h-3" />
-                  70% of Income <ArrowUp className="h-4" />
-                </div>
-              </div>
-              {connectorStyle1 && (
-                <div
-                  aria-hidden
-                  style={{
-                    position: "absolute",
-                    height: "1px",
-                    background: "#8A8A8A",
-                    ...connectorStyle1,
-                    zIndex: 1,
-                  }}
-                />
-              )}
+                Fixed Expenses
+              </h3>
             </div>
+            <div
+              ref={(el) => (valueRef.current[1] = el)}
+              className="border-1 border-[#8A8A8A] col-span-2 sm:col-span-5 flex-1 grid grid-cols-2 text-center gap-2 p-2 sm:justify-around items-center"
+            >
+              <div className="">Rs 96,000</div>
+              <div className="text-sm font-thin flex items-center  justify-center text-gray-700 dark:text-gray-400 ">
+                <BadgeInfo className="h-3" />
+                70% of Income <ArrowUp className="h-4" />
+              </div>
+            </div>
+            {connectorStyle1 && (
+              <div
+                aria-hidden
+                style={{
+                  position: "absolute",
+                  height: "1px",
+                  background: "#8A8A8A",
+                  ...connectorStyle1,
+                  zIndex: 1,
+                }}
+              />
+            )}
           </div>
         </div>
+
         {/* Quick Actions */}
         <div className="flex flex-col gap-2 mt-4 mb-4">
           <div
