@@ -352,7 +352,7 @@ export default function Home() {
 
   return (
     <div>
-      <div className="w-full px-8 sm:px-16 lg:px-16 py-3 flex flex-col gap-4 dark:bg-[#3D3D3D] bg-[#EFEFEF] rounded-b-2xl">
+      <div className="w-full px-6 sm:px-16 lg:px-16 py-3 flex flex-col gap-4 dark:bg-[#3D3D3D] bg-[#EFEFEF] rounded-b-2xl">
         <div
           className="flex items-center justify-around gap-2 mt-3 mb-6 my-3 sticky h-[50px] z-40"
           ref={greetingRef}
