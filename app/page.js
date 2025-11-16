@@ -1,11 +1,12 @@
 "use client";
 
-import { Card, CardContent } from "@/components/ui/card";
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import DateSelect from "./components/DateSelect";
 import { Badge } from "@/components/ui/badge";
 import { ArrowDown, ArrowUp } from "lucide-react";
+import { BanknoteArrowUp } from "lucide-react";
 
 import {
   getFormattedAmount,
@@ -369,36 +370,38 @@ export default function Home() {
         </div>
         {/* Overview Section */}
 
-        <Card className={"rounded-none py-2"}>
-          <CardContent className={"p-0"}>
-            <div>
-              <div className="grid md:grid-cols-10 grid-cols-2 sm:grid-rows-2 gap-x-4 gap-y-5 items-stretch justify-center">
-                {/* INCOME */}
-                <div className="sm:col-span-4 p-2 flex items-center gap-2 sm:justify-around">
-                  <div className="p-2 rounded-full">
-                    <ArrowDown />
-                  </div>
-                  <div className="flex-col justify-center items-center flex">
-                    <h3 className="text-sm font-bold">Income</h3>
-                    <div className="mt-2">Rs 96,000</div>
-                  </div>
-                </div>
-                {/* EXPENSE */}
-                <div className="rounded-full sm:rounded-xl sm:col-span-4 p-2 flex sm:justify-around gap-2 items-center">
-                  <div className="p-2 rounded-full">
-                    <ArrowUp />
-                  </div>
-                  <div className="flex-col justify-center items-center flex">
-                    <h3 className="text-sm font-bold">Expense</h3>
-                    <div className="mt-2">Rs 26,000</div>
-                  </div>
-                </div>
-                <AddExpenseDialog />
+        <Card className={"rounded-none py-2 gap-0"}>
+          <CardHeader
+            className={
+              "flex mb-4 border-b-1 border-(--border-color-light) pb-2 gap-4"
+            }
+          >
+            <div className="flex items-center gap-2 rounded-2xl border-1 py-1 px-2 border-(--border-color)">
+              <div className="aspect-square size-5 flex items-center justify-center bg-(--color-muted) rounded-full">
+                <HandCoins />
               </div>
-              {/* <div className="row-span-2 mt-7 rounded-xl dark:bg-gray-300/20 bg-(--color-muted) border-none p-0 col-span-2 sm:col-span-4">
-          <div className="bg-(--background)">Last Week's Expenses</div>
-          <ChartBarDefault />
-        </div> */}
+              <div className="text-sm font-bold text-gray-700 dark:text-gray-400">
+                EXPENSES
+              </div>
+            </div>
+            <div className="flex items-center gap-2 rounded-2xl border-1 py-1 px-2 border-(--border-color)">
+              <div className="aspect-square size-5 flex items-center justify-center bg-(--color-muted) rounded-full">
+                <BanknoteArrowUp />
+              </div>
+              <div className="text-sm font-bold text-gray-700 dark:text-gray-400">
+                INCOME
+              </div>
+            </div>
+          </CardHeader>
+          <CardContent className={"flex py-2 items-center gap-4"}>
+            <div className="aspect-square border-1 border-(--border-color-light) size-10 flex items-center justify-center bg-(--color-muted) rounded-full">
+              <HandCoins />
+            </div>
+            <div>
+              <div className="text-sm font-light text-gray-700 dark:text-gray-400">
+                Total Expenses
+              </div>
+              <div className="text-2xl font-extrabold">Rs 45,000</div>
             </div>
           </CardContent>
         </Card>
