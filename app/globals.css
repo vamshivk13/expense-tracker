@@ -125,3 +125,58 @@
     @apply bg-background text-foreground;
   }
 }
+
+.mainHeading {
+  @apply text-2xl font-semibold text-muted-foreground;
+}
+
+.subHeading {
+  @apply text-sm uppercase text-muted-foreground tracking-widest;
+}
+
+.subHeading2 {
+  @apply text-xs uppercase text-muted-foreground tracking-widest;
+}
+
+.mainLabel {
+  @apply text-sm uppercase tracking-widest align-middle;
+}
+
+.mainLabel2 {
+  @apply text-xs uppercase tracking-widest align-middle;
+}
+
+.mainLabel3 {
+  @apply text-[8px] uppercase tracking-widest align-middle;
+}
+
+.subLabel {
+  @apply text-xs uppercase font-bold tracking-widest align-middle;
+}
+
+.subLabel3 {
+  @apply text-[8px] uppercase tracking-widest text-muted-foreground align-middle;
+}
+
+.h1 {
+  @apply scroll-m-20 text-left text-4xl font-extrabold tracking-tight text-balance;
+}
+
+.h3 {
+  @apply scroll-m-20 text-2xl font-semibold tracking-tight;
+}
+.h4 {
+  @apply scroll-m-20 text-xl font-semibold tracking-tight;
+}
+.small {
+  @apply text-sm leading-none font-medium;
+}
+.xs {
+  @apply text-xs leading-none font-medium;
+}
+.lead {
+  @apply text-muted-foreground text-xl;
+}
+.muted {
+  @apply text-muted-foreground;
+}

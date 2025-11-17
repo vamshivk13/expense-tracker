@@ -7,6 +7,8 @@ import DateSelect from "./components/DateSelect";
 import { Badge } from "@/components/ui/badge";
 import { ArrowDown, ArrowUp } from "lucide-react";
 import { BanknoteArrowUp } from "lucide-react";
+import { MoveDownLeft } from "lucide-react";
+import { MoveUpRight } from "lucide-react";
 
 import {
   getFormattedAmount,
@@ -369,7 +371,7 @@ export default function Home() {
           <DateSelect />
         </div>
 
-        <div className={"flex mb-1 gap-4"}>
+        {/* <div className={"flex mb-1 gap-4"}>
           <div className="flex items-center bg-[#E0E0E0] gap-2 rounded-2xl border-1 py-1 px-2 border-(--border-color)">
             <div className="aspect-square size-5 flex items-center justify-center rounded-full">
               <HandCoins />
@@ -386,21 +388,46 @@ export default function Home() {
               Income
             </div>
           </div>
-        </div>
+        </div> */}
         <Card
           className={
             "rounded-none bg-[] py-2 gap-0 dark:bg-[#3D3D3D] bg-[#EFEFEF] border-1 border-[#8A8A8A] "
           }
         >
-          <CardContent className={"flex py-2 px-2 items-center gap-4"}>
-            <div className="aspect-square border-1 border-(--border-color-light) size-10 flex items-center justify-center bg-(--color-muted) rounded-full">
-              <HandCoins />
+          <CardContent
+            className={"flex py-1 px-1 justify-around items-center gap-4"}
+          >
+            <div className="flex items-center gap-2">
+              <MoveDownLeft
+                className="aspect-square text-green-700"
+                strokeWidth={2}
+                size={18}
+              />
+              <p className="subLabel">Income</p>
             </div>
             <div>
-              <div className="text-sm font-light text-gray-700 dark:text-gray-400">
-                Total Expenses
-              </div>
-              <div className="text-2xl font-extrabold">Rs 45,000</div>
+              <div className="text-2xl font-extrabold">₹ 45,000</div>
+            </div>
+          </CardContent>
+        </Card>
+        <Card
+          className={
+            "rounded-none bg-[] py-2 gap-0 dark:bg-[#3D3D3D] bg-[#EFEFEF] border-1 border-[#8A8A8A] "
+          }
+        >
+          <CardContent
+            className={"flex py-1 px-1 justify-around items-center gap-4"}
+          >
+            <div className="flex items-center gap-2">
+              <MoveUpRight
+                className="aspect-square text-red-700"
+                strokeWidth={2}
+                size={18}
+              />
+              <p className="subLabel">Expenses</p>
+            </div>
+            <div>
+              <div className="text-2xl font-extrabold">₹ 95,000</div>
             </div>
           </CardContent>
         </Card>
