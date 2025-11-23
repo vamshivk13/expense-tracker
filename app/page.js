@@ -533,7 +533,7 @@ export default function Home() {
           </div>
         </div>
         {/* Menu */}
-        <div ref={targetRef} className="sticky mt-2 mb-4 top-0 z-30">
+        <div ref={targetRef} className="sticky mt-2 mb-1 top-0 z-30">
           <div
             ref={menuRef}
             className="h-[75px] py-3 grid grid-cols-3 text-sm text-gray-700 dark:text-gray-400"
@@ -547,7 +547,7 @@ export default function Home() {
               }
               onClick={handleScrollToTransactions}
             >
-              <BadgeDollarSign strokeWidth={2} />
+              <BadgeDollarSign strokeWidth={1} />
               <div className="pointer-events-none mainLabel2 select-none">
                 Transactions
               </div>
@@ -561,7 +561,7 @@ export default function Home() {
                   : "")
               }
             >
-              <NotepadTextDashed strokeWidth={2} />
+              <NotepadTextDashed strokeWidth={1} />
               <div className="pointer-events-none mainLabel2 select-none">
                 Budgets
               </div>
@@ -575,7 +575,7 @@ export default function Home() {
                   : "")
               }
             >
-              <HandCoins strokeWidth={2} />
+              <HandCoins strokeWidth={1} />
               <div className="poi nter-events-none select-none mainLabel2 ">
                 Expenses
               </div>
