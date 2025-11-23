@@ -15,18 +15,12 @@ export default function Transactions({ expense }) {
       <div className="grid gap-x-3 grid-cols-4 items-center">
         <div className=" col-span-3 sm:col-span-2">
           <div className="flex items-center gap-4">
-            <div
-              className="flex-shrink-0 bg-(--color-muted) p-2 rounded-full text-[var(--color)] dark:text-[var(--dark-color)]"
-              style={{
-                "--color": lightColor,
-                "--dark-color": darkColor,
-              }}
-            >
+            <div className="flex-shrink-0 bg-(--color-muted) border border-(--border-color)/30 p-2 rounded-full text-[var(--color)] dark:text-[var(--dark-color)]">
               <Utensils />
             </div>
-            <div className="flex flex-col truncate">
-              <div className="truncate">{expense.description}</div>
-              <div className="text-sm text-gray-700 dark:text-gray-400">
+            <div className="flex flex-col truncate gap-1">
+              <div className="truncate customLabel">{expense.description}</div>
+              <div className="text-sm text-gray-700 dark:text-gray-400 belowLabel">
                 {expense.category}
               </div>
             </div>
@@ -36,11 +30,13 @@ export default function Transactions({ expense }) {
           {getFormattedDate(expense.date)}
         </div>
         <div className="flex flex-col text-center">
-          <div className="text-red-500 sm:block hidden">
+          <div className="sm:block hidden customLabel">
             {getFormattedAmount(expense.amount)}
           </div>
-          <div className="text-red-500 sm:hidden block">-{expense.amount}</div>
-          <div className="text-sm block sm:hidden text-gray-700 dark:text-gray-400">
+          <div className="sm:hidden block customLabel text-(--foreground)">
+            {expense.amount}
+          </div>
+          <div className="text-sm block belowLabel sm:hidden text-gray-700 dark:text-gray-400">
             {getFormattedDateShort(expense.date)}
           </div>
         </div>

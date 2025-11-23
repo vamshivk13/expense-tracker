@@ -154,6 +154,10 @@
   @apply text-sm uppercase tracking-widest align-middle;
 }
 
+.mainLabelTight {
+  @apply text-sm uppercase tracking-tight align-middle;
+}
+
 .mainLabel3 {
   @apply text-[8px] uppercase tracking-widest align-middle;
 }
@@ -168,6 +172,10 @@
 
 .subLabel3 {
   @apply text-[8px] uppercase tracking-widest text-muted-foreground align-middle;
+}
+
+.subLabelWide {
+  @apply text-xs font-bold tracking-widest align-middle;
 }
 
 .h1 {
@@ -191,4 +199,16 @@
 }
 .muted {
   @apply text-muted-foreground;
+}
+
+.customLabel {
+  @apply text-[14px] font-semibold tracking-[-0.2px] leading-tight text-(--foreground)
+         sm:text-[16px] sm:tracking-[-0.25px];
+}
+
+.belowLabel {
+  @apply text-[12px] font-normal tracking-[-0.15px] leading-snug text-(--foreground)/70
+         sm:text-[12.5px]
+         md:text-[13px] md:tracking-[-0.2px]
+         lg:text-[14px] lg:tracking-[-0.25px];
 }

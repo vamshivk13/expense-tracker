@@ -9,6 +9,7 @@ import { ArrowDown, ArrowUp } from "lucide-react";
 import { ArrowRightLeft } from "lucide-react";
 import { MoveDownLeft } from "lucide-react";
 import { MoveUpRight } from "lucide-react";
+import { ChevronDown } from "lucide-react";
 
 import {
   getFormattedAmount,
@@ -389,48 +390,59 @@ export default function Home() {
             </div>
           </div>
         </div> */}
-        <Card
-          className={
-            "rounded-none bg-[] py-2 gap-0 dark:bg-[#3D3D3D] bg-[#EFEFEF] border-1 border-[#8A8A8A] "
-          }
-        >
-          <CardContent
-            className={"flex py-1 px-1 justify-around items-center gap-4"}
+        <div className="gap-2 flex-col flex">
+          <Card
+            className={
+              "rounded-sm bg-[] py-3 gap-0 dark:bg-[#3D3D3D] bg-[#EFEFEF] border-1 border-[#8A8A8A]/50 "
+            }
           >
-            <div className="flex items-center gap-2">
+            <CardContent
+              className={"flex py-1 px-1 justify-around items-center gap-4"}
+            >
               <MoveDownLeft
                 className="aspect-square text-green-700"
                 strokeWidth={2}
                 size={18}
               />
-              <p className="subLabel">Income</p>
-            </div>
-            <div>
-              <div className="text-2xl font-extrabold">₹ 45,000</div>
-            </div>
-          </CardContent>
-        </Card>
-        <Card
-          className={
-            "rounded-none bg-[] py-2 gap-0 dark:bg-[#3D3D3D] bg-[#EFEFEF] border-1 border-[#8A8A8A] "
-          }
-        >
-          <CardContent
-            className={"flex py-1 px-1 justify-around items-center gap-4"}
+              <div className="flex items-center gap-2">
+                <p className="subLabel">Income</p>
+              </div>
+
+              <div className="text-2xl font-bold mainLabel">₹45,000</div>
+              <ChevronDown
+                className="aspect-square"
+                strokeWidth={2}
+                size={16}
+              ></ChevronDown>
+            </CardContent>
+          </Card>
+          <Card
+            className={
+              "rounded-sm py-3 gap-0 dark:bg-[#3D3D3D] bg-[#EFEFEF] border-1 border-[#8A8A8A]/50 "
+            }
           >
-            <div className="flex items-center gap-2">
+            <CardContent
+              className={"flex py-1 px-1 justify-around items-center gap-4"}
+            >
               <MoveUpRight
                 className="aspect-square text-red-700"
                 strokeWidth={2}
                 size={18}
               />
-              <p className="subLabel">Expenses</p>
-            </div>
-            <div>
-              <div className="text-2xl font-extrabold">₹ 95,000</div>
-            </div>
-          </CardContent>
-        </Card>
+              <div className="flex items-center gap-2">
+                <p className="subLabel">Expenses</p>
+              </div>
+
+              <div className="text-2xl font-bold mainLabel">₹95,000</div>
+
+              <ChevronDown
+                className="aspect-square"
+                strokeWidth={2}
+                size={16}
+              ></ChevronDown>
+            </CardContent>
+          </Card>
+        </div>
         {/* Overview */}
         {/* <div className="flex sm:col-span-10 col-span-2 flex-col sm:items-stretch gap-2 items-center sm:mt-0 ">
           <div className="self-start mb-2 text-sm font-bold text-gray-700 dark:text-gray-400">

@@ -19,5 +19,5 @@ export const getFormattedDateShort = (date) => {
 };
 
 export const getFormattedAmount = (amount) => {
-  return "- ₹" + " " + amount;
+  return "₹" + " " + amount;
 };
