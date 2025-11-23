@@ -6,7 +6,7 @@ import { Separator } from "@/components/ui/separator";
 import DateSelect from "./components/DateSelect";
 import { Badge } from "@/components/ui/badge";
 import { ArrowDown, ArrowUp } from "lucide-react";
-import { BanknoteArrowUp } from "lucide-react";
+import { ArrowRightLeft } from "lucide-react";
 import { MoveDownLeft } from "lucide-react";
 import { MoveUpRight } from "lucide-react";
 
@@ -533,31 +533,34 @@ export default function Home() {
           </div>
         </div>
         {/* Menu */}
-        <div ref={targetRef} className="sticky mt-2 mb-1 top-0 z-30">
+        <div ref={targetRef} className="sticky mt-2 mb-1 px-3 top-0 z-30">
           <div
             ref={menuRef}
-            className="h-[75px] py-3 grid grid-cols-3 text-sm text-gray-700 dark:text-gray-400"
+            className="h-[75px] py-3 flex justify-between text-sm text-gray-700 dark:text-gray-400"
           >
             <div
               className={
                 `flex flex-col items-center cursor-pointer mx-auto gap-2` +
                 (activeSection == "transactions"
-                  ? " text-(--foreground) border-b-2 border-(--foreground)"
+                  ? " text-(--foreground) font-bold"
                   : "")
               }
               onClick={handleScrollToTransactions}
             >
-              <BadgeDollarSign strokeWidth={1} />
-              <div className="pointer-events-none mainLabel2 select-none">
+              <ArrowRightLeft strokeWidth={1} />
+              <div className="relative pointer-events-none mainLabel2 select-none">
                 Transactions
               </div>
+              {activeSection == "transactions" && (
+                <div className="absolute bottom-1 h-1 w-7 bg-(--foreground)"></div>
+              )}
             </div>
             <div
               onClick={handleScrollToBudgets}
               className={
                 `flex flex-col items-center cursor-pointer mx-auto gap-2` +
                 (activeSection == "budgets"
-                  ? " text-(--foreground)  border-b-2 border-(--foreground)"
+                  ? " text-(--foreground) font-bold"
                   : "")
               }
             >
@@ -565,20 +568,26 @@ export default function Home() {
               <div className="pointer-events-none mainLabel2 select-none">
                 Budgets
               </div>
+              {activeSection == "budgets" && (
+                <div className="absolute bottom-1 h-1 w-7 bg-(--foreground)"></div>
+              )}
             </div>
             <div
               onClick={handleScrollToExpenses}
               className={
                 `flex flex-col items-center cursor-pointer mx-auto gap-2` +
                 (activeSection == "expenses"
-                  ? " text-(--foreground)  border-b-2  border-(--foreground)"
+                  ? " text-(--foreground) font-bold"
                   : "")
               }
             >
               <HandCoins strokeWidth={1} />
-              <div className="poi nter-events-none select-none mainLabel2 ">
+              <div className="pointer-events-none select-none mainLabel2 ">
                 Expenses
               </div>
+              {activeSection == "expenses" && (
+                <div className="absolute bottom-1 h-1 w-7 bg-(--foreground)"></div>
+              )}
             </div>
           </div>
         </div>
