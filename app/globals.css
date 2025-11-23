@@ -146,6 +146,14 @@
   @apply text-xs uppercase tracking-widest align-middle;
 }
 
+.mainLabelWide {
+  @apply text-xs uppercase tracking-widest align-middle;
+}
+
+.mainLabelWide2 {
+  @apply text-sm uppercase tracking-widest align-middle;
+}
+
 .mainLabel3 {
   @apply text-[8px] uppercase tracking-widest align-middle;
 }

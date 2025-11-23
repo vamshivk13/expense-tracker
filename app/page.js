@@ -354,7 +354,7 @@ export default function Home() {
 
   return (
     <div>
-      <div className="w-full px-6 sm:px-16 lg:px-16 py-3 flex flex-col gap-4 dark:bg-[#3D3D3D] bg-[#EFEFEF] rounded-b-2xl">
+      <div className="w-full px-6 sm:px-16 lg:px-16 py-3 flex flex-col gap-4 border border-gray-200/30 dark:border-white/5 dark:bg-[#3D3D3D] bg-[#EFEFEF] rounded-b-2xl">
         <div
           className="flex items-center justify-around gap-2 mt-3 mb-6 my-3 sticky h-[50px] z-40"
           ref={greetingRef}
@@ -502,36 +502,6 @@ export default function Home() {
           </div>
         </div> */}
 
-        {/* Quick Actions */}
-        <div className="flex flex-col gap-2 mt-4 mb-4">
-          <div
-            className={
-              "mr-auto font-bold mb-3 text-sm text-gray-700 dark:text-gray-400 "
-            }
-          >
-            Quick Actions
-          </div>
-          <div className="rounded-2xl overflow-x-auto flex gap-2 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden text-gray-700 dark:text-gray-400">
-            <Badge
-              variant={"secondary"}
-              className={"p-2  sm:text-sm rounded-2xl bg-(--color-muted)"}
-            >
-              <Plus /> Add Expenses
-            </Badge>
-            <Badge
-              variant={"secondary"}
-              className={"p-2 sm:text-sm rounded-2xl bg-(--color-muted)"}
-            >
-              <ChartGantt /> Update Budgets
-            </Badge>
-            <Badge
-              variant={"secondary"}
-              className={"p-2 sm:text-sm rounded-2xl bg-(--color-muted) "}
-            >
-              <HandCoins /> Modify Fixed Expenses
-            </Badge>
-          </div>
-        </div>
         {/* Menu */}
         <div ref={targetRef} className="sticky mt-2 px-3 top-0 z-30">
           <div
@@ -540,7 +510,7 @@ export default function Home() {
           >
             <div
               className={
-                `flex flex-col items-center cursor-pointer mx-auto gap-2` +
+                `flex flex-col items-center justify-center cursor-pointer mx-auto gap-2` +
                 (activeSection == "transactions"
                   ? " text-(--foreground) font-bold"
                   : "")
@@ -558,7 +528,7 @@ export default function Home() {
             <div
               onClick={handleScrollToBudgets}
               className={
-                `flex flex-col items-center cursor-pointer mx-auto gap-2` +
+                `flex flex-col items-center justify-center cursor-pointer mx-auto gap-2` +
                 (activeSection == "budgets"
                   ? " text-(--foreground) font-bold"
                   : "")
@@ -575,7 +545,7 @@ export default function Home() {
             <div
               onClick={handleScrollToExpenses}
               className={
-                `flex flex-col items-center cursor-pointer mx-auto gap-2` +
+                `flex flex-col justify-center items-center cursor-pointer mx-auto gap-2` +
                 (activeSection == "expenses"
                   ? " text-(--foreground) font-bold"
                   : "")
@@ -592,8 +562,47 @@ export default function Home() {
           </div>
         </div>
       </div>
-
-      <div className="sm:container mx-auto px-8 sm:px-16 lg:px-16 py-3 flex flex-col gap-4">
+      {/* Quick Actions */}
+      <div className="flex flex-col gap-2 mt-6 mb-2 px-8 sm:px-16 lg:px-16">
+        <div
+          className={
+            "mr-auto font-bold mb-3 text-sm mainLabelWide text-gray-700 dark:text-gray-400 "
+          }
+        >
+          Quick Actions
+        </div>
+        <div className="-mx-8 sm:-mx-16 lg:-mx-16 overflow-x-auto relative">
+          <div className="px-8 sm:px-16 lg:px-16 overflow-x-auto flex gap-2 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden text-gray-700 dark:text-gray-400">
+            <Badge
+              variant={"secondary"}
+              className={
+                "p-2 border-1 border-(--border-color) sm:text-sm rounded-2xl bg-(--color-muted)"
+              }
+            >
+              <Plus /> Add Expenses
+            </Badge>
+            <Badge
+              variant={"secondary"}
+              className={
+                "p-2 border-1 border-(--border-color) sm:text-sm rounded-2xl bg-(--color-muted)"
+              }
+            >
+              <ChartGantt /> Update Budgets
+            </Badge>
+            <Badge
+              variant={"secondary"}
+              className={
+                "p-2 border-1 border-(--border-color) sm:text-sm rounded-2xl bg-(--color-muted) "
+              }
+            >
+              <HandCoins /> Modify Fixed Expenses
+            </Badge>
+          </div>
+        </div>
+        <div className="pointer-events-none absolute top-0 bottom-0 left-0 w-8 sm:w-16 z-20 bg-gradient-to-r from-white/90 to-transparent dark:from-[#3D3D3D]/90 dark:to-transparent" />
+        <div className="pointer-events-none absolute top-0 bottom-0 right-0 w-8 sm:w-16 z-20 bg-gradient-to-l from-white/90 to-transparent dark:from-[#3D3D3D]/90 dark:to-transparent" />
+      </div>
+      <div className="mx-auto px-8 sm:px-16 lg:px-16 py-3 flex flex-col gap-4">
         {/* Transactions  */}
         <div
           className={"flex flex-col mt-2 mb-2"}
@@ -601,10 +610,10 @@ export default function Home() {
           data-section={"transactions"}
         >
           <div className="my-5 text-lg z-20  bg-(--background) h-[55px] gap-x-3 grid grid-cols-4 items-center">
-            <div className={"col-span-3"}>Your Transactions</div>
+            <h4 className={"col-span-3 mainLabelWide2"}>your transactions</h4>
             <div
               className={
-                "text-center mx-auto text-sm text-gray-700 dark:text-gray-400 border-b-2 border-blue-500 pb-1 cursor-pointer"
+                "text-center mx-auto subLabel2 text-sm text-gray-700 dark:text-gray-400 border-b-2 border-blue-500 pb-1 cursor-pointer"
               }
               onClick={() => {
                 router.push("/view/transactions");
@@ -613,6 +622,7 @@ export default function Home() {
               view all
             </div>
           </div>
+
           <div className="flex flex-col gap-4">
             <div className="grid grid-cols-4 gap-x-3 h-[44px] flex items-center text-gray-700 dark:text-gray-400 bg-(--background) sticky top-[75px]">
               <div className="text-sm col-span-3 sm:col-span-2">Expense</div>
