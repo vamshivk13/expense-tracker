@@ -431,7 +431,8 @@ export default function Home() {
             </div>
           </CardContent>
         </Card>
-        <div className="flex sm:col-span-10 col-span-2 flex-col sm:items-stretch gap-2 items-center sm:mt-0 ">
+        {/* Overview */}
+        {/* <div className="flex sm:col-span-10 col-span-2 flex-col sm:items-stretch gap-2 items-center sm:mt-0 ">
           <div className="self-start mb-2 text-sm font-bold text-gray-700 dark:text-gray-400">
             Overview
           </div>
@@ -499,7 +500,7 @@ export default function Home() {
               />
             )}
           </div>
-        </div>
+        </div> */}
 
         {/* Quick Actions */}
         <div className="flex flex-col gap-2 mt-4 mb-4">
@@ -539,41 +540,45 @@ export default function Home() {
           >
             <div
               className={
-                `flex flex-col items-center cursor-pointer mx-auto` +
+                `flex flex-col items-center cursor-pointer mx-auto gap-2` +
                 (activeSection == "transactions"
-                  ? " text-(--foreground) border-b-3 border-(--foreground)"
+                  ? " text-(--foreground) border-b-2 border-(--foreground)"
                   : "")
               }
               onClick={handleScrollToTransactions}
             >
-              <BadgeDollarSign />
-              <div className="pointer-events-none select-none">
+              <BadgeDollarSign strokeWidth={2} />
+              <div className="pointer-events-none mainLabel2 select-none">
                 Transactions
               </div>
             </div>
             <div
               onClick={handleScrollToBudgets}
               className={
-                `flex flex-col items-center cursor-pointer mx-auto` +
+                `flex flex-col items-center cursor-pointer mx-auto gap-2` +
                 (activeSection == "budgets"
-                  ? " text-(--foreground)  border-b-3 border-(--foreground)"
+                  ? " text-(--foreground)  border-b-2 border-(--foreground)"
                   : "")
               }
             >
-              <NotepadTextDashed />
-              <div className="pointer-events-none select-none">Budgets</div>
+              <NotepadTextDashed strokeWidth={2} />
+              <div className="pointer-events-none mainLabel2 select-none">
+                Budgets
+              </div>
             </div>
             <div
               onClick={handleScrollToExpenses}
               className={
-                `flex flex-col items-center cursor-pointer mx-auto` +
+                `flex flex-col items-center cursor-pointer mx-auto gap-2` +
                 (activeSection == "expenses"
-                  ? " text-(--foreground)  border-b-3 border-(--foreground)"
+                  ? " text-(--foreground)  border-b-2  border-(--foreground)"
                   : "")
               }
             >
-              <HandCoins />
-              <div className="poi nter-events-none select-none">Expenses</div>
+              <HandCoins strokeWidth={2} />
+              <div className="poi nter-events-none select-none mainLabel2 ">
+                Expenses
+              </div>
             </div>
           </div>
         </div>
