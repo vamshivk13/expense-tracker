@@ -533,10 +533,10 @@ export default function Home() {
           </div>
         </div>
         {/* Menu */}
-        <div ref={targetRef} className="sticky mt-2 mb-1 px-3 top-0 z-30">
+        <div ref={targetRef} className="sticky mt-2 px-3 top-0 z-30">
           <div
             ref={menuRef}
-            className="h-[75px] py-3 flex justify-between text-sm text-gray-700 dark:text-gray-400"
+            className="h-[75px] py-3 grid grid-cols-3 justify-items-center text-sm text-gray-700 dark:text-gray-400"
           >
             <div
               className={
@@ -548,7 +548,7 @@ export default function Home() {
               onClick={handleScrollToTransactions}
             >
               <ArrowRightLeft strokeWidth={1} />
-              <div className="relative pointer-events-none mainLabel2 select-none">
+              <div className="relative pointer-events-none subLabel2 select-none">
                 Transactions
               </div>
               {activeSection == "transactions" && (
@@ -565,7 +565,7 @@ export default function Home() {
               }
             >
               <NotepadTextDashed strokeWidth={1} />
-              <div className="pointer-events-none mainLabel2 select-none">
+              <div className="pointer-events-none subLabel2 select-none">
                 Budgets
               </div>
               {activeSection == "budgets" && (
@@ -582,7 +582,7 @@ export default function Home() {
               }
             >
               <HandCoins strokeWidth={1} />
-              <div className="pointer-events-none select-none mainLabel2 ">
+              <div className="pointer-events-none select-none subLabel2 ">
                 Expenses
               </div>
               {activeSection == "expenses" && (

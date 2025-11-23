@@ -154,6 +154,10 @@
   @apply text-xs uppercase font-bold tracking-widest align-middle;
 }
 
+.subLabel2 {
+  @apply text-[10px] uppercase font-bold tracking-wide align-middle;
+}
+
 .subLabel3 {
   @apply text-[8px] uppercase tracking-widest text-muted-foreground align-middle;
 }
