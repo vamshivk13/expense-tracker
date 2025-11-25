@@ -29,7 +29,7 @@ export default function Transactions({ expense }) {
         <div className="hidden sm:block text-center text-gray-700 dark:text-gray-400">
           {getFormattedDate(expense.date)}
         </div>
-        <div className="flex flex-col text-center">
+        <div className="flex flex-col text-center gap-1">
           <div className="sm:block hidden customLabel">
             {getFormattedAmount(expense.amount)}
           </div>

@@ -355,7 +355,7 @@ export default function Home() {
 
   return (
     <div>
-      <div className="w-full px-6 sm:px-16 lg:px-16 py-3 flex flex-col gap-4 border border-gray-200/30 dark:border-white/5 dark:bg-[#3D3D3D] bg-[#EFEFEF] rounded-b-2xl">
+      <div className="w-full border-none relative px-6 sm:px-16 lg:px-16 py-3 flex flex-col gap-4 dark:bg-[#3D3D3D] bg-[#EFEFEF]">
         <div
           className="flex items-center justify-around gap-2 mt-3 mb-6 my-3 sticky h-[50px] z-40"
           ref={greetingRef}
@@ -371,25 +371,6 @@ export default function Home() {
           </div>
           <DateSelect />
         </div>
-
-        {/* <div className={"flex mb-1 gap-4"}>
-          <div className="flex items-center bg-[#E0E0E0] gap-2 rounded-2xl border-1 py-1 px-2 border-(--border-color)">
-            <div className="aspect-square size-5 flex items-center justify-center rounded-full">
-              <HandCoins />
-            </div>
-            <div className="text-sm font-light text-gray-700 dark:text-gray-400">
-              Expenses
-            </div>
-          </div>
-          <div className="flex items-center gap-2 rounded-2xl border-1 py-1 px-2 border-(--border-color)">
-            <div className="aspect-square size-5 flex items-center justify-center rounded-full">
-              <BanknoteArrowUp />
-            </div>
-            <div className="text-sm font-light text-gray-700 dark:text-gray-400">
-              Income
-            </div>
-          </div>
-        </div> */}
         <div className="gap-2 flex-col flex">
           <Card
             className={
@@ -443,6 +424,7 @@ export default function Home() {
             </CardContent>
           </Card>
         </div>
+
         {/* Overview */}
         {/* <div className="flex sm:col-span-10 col-span-2 flex-col sm:items-stretch gap-2 items-center sm:mt-0 ">
           <div className="self-start mb-2 text-sm font-bold text-gray-700 dark:text-gray-400">
@@ -513,67 +495,70 @@ export default function Home() {
             )}
           </div>
         </div> */}
-
-        {/* Menu */}
-        <div ref={targetRef} className="sticky mt-2 px-3 top-0 z-30">
+      </div>
+      {/* Menu */}
+      <div
+        ref={targetRef}
+        className="px-6 sticky sm:px-16 lg:px-16 top-0 z-110 border-none dark:bg-[#3D3D3D] bg-[#EFEFEF] "
+      >
+        <div
+          ref={menuRef}
+          className="h-[75px] py-3 grid grid-cols-3 justify-items-center text-sm text-gray-700 dark:text-gray-400"
+        >
           <div
-            ref={menuRef}
-            className="h-[75px] py-3 grid grid-cols-3 justify-items-center text-sm text-gray-700 dark:text-gray-400"
+            className={
+              `flex flex-col items-center justify-center cursor-pointer mx-auto gap-2` +
+              (activeSection == "transactions"
+                ? " text-(--foreground) font-bold"
+                : "")
+            }
+            onClick={handleScrollToTransactions}
           >
-            <div
-              className={
-                `flex flex-col items-center justify-center cursor-pointer mx-auto gap-2` +
-                (activeSection == "transactions"
-                  ? " text-(--foreground) font-bold"
-                  : "")
-              }
-              onClick={handleScrollToTransactions}
-            >
-              <ArrowRightLeft strokeWidth={1} />
-              <div className="relative pointer-events-none subLabel2 select-none">
-                Transactions
-              </div>
-              {activeSection == "transactions" && (
-                <div className="absolute bottom-1 h-1 w-7 bg-(--foreground)"></div>
-              )}
+            <ArrowRightLeft strokeWidth={1} />
+            <div className="relative pointer-events-none subLabel2 select-none">
+              Transactions
             </div>
-            <div
-              onClick={handleScrollToBudgets}
-              className={
-                `flex flex-col items-center justify-center cursor-pointer mx-auto gap-2` +
-                (activeSection == "budgets"
-                  ? " text-(--foreground) font-bold"
-                  : "")
-              }
-            >
-              <NotepadTextDashed strokeWidth={1} />
-              <div className="pointer-events-none subLabel2 select-none">
-                Budgets
-              </div>
-              {activeSection == "budgets" && (
-                <div className="absolute bottom-1 h-1 w-7 bg-(--foreground)"></div>
-              )}
+            {activeSection == "transactions" && (
+              <div className="absolute bottom-1 h-1 w-7 bg-(--foreground)"></div>
+            )}
+          </div>
+          <div
+            onClick={handleScrollToBudgets}
+            className={
+              `flex flex-col items-center justify-center cursor-pointer mx-auto gap-2` +
+              (activeSection == "budgets"
+                ? " text-(--foreground) font-bold"
+                : "")
+            }
+          >
+            <NotepadTextDashed strokeWidth={1} />
+            <div className="pointer-events-none subLabel2 select-none">
+              Budgets
             </div>
-            <div
-              onClick={handleScrollToExpenses}
-              className={
-                `flex flex-col justify-center items-center cursor-pointer mx-auto gap-2` +
-                (activeSection == "expenses"
-                  ? " text-(--foreground) font-bold"
-                  : "")
-              }
-            >
-              <HandCoins strokeWidth={1} />
-              <div className="pointer-events-none select-none subLabel2 ">
-                Expenses
-              </div>
-              {activeSection == "expenses" && (
-                <div className="absolute bottom-1 h-1 w-7 bg-(--foreground)"></div>
-              )}
+            {activeSection == "budgets" && (
+              <div className="absolute bottom-1 h-1 w-7 bg-(--foreground)"></div>
+            )}
+          </div>
+          <div
+            onClick={handleScrollToExpenses}
+            className={
+              `flex flex-col justify-center items-center cursor-pointer mx-auto gap-2` +
+              (activeSection == "expenses"
+                ? " text-(--foreground) font-bold"
+                : "")
+            }
+          >
+            <HandCoins strokeWidth={1} />
+            <div className="pointer-events-none select-none subLabel2 ">
+              Expenses
             </div>
+            {activeSection == "expenses" && (
+              <div className="absolute bottom-1 h-1 w-7 bg-(--foreground)"></div>
+            )}
           </div>
         </div>
       </div>
+
       {/* Quick Actions */}
       <div className="flex flex-col gap-2 mt-6 mb-2 px-8 sm:px-16 lg:px-16">
         <div
@@ -673,10 +658,10 @@ export default function Home() {
           data-section={"budgets"}
         >
           <div className="my-5 text-lg z-20 bg-(--background) h-[55px] gap-x-3 grid grid-cols-4 items-center">
-            <div className={"col-span-3"}>Budgets</div>
+            <div className={"col-span-3 mainLabelWide2"}>Budgets</div>
             <div
               className={
-                "text-center mx-auto text-sm text-gray-700 dark:text-gray-400 border-b-2 border-blue-500 pb-1 cursor-pointer"
+                "text-center subLabel2 mx-auto text-sm text-gray-700 dark:text-gray-400 border-b-2 border-blue-500 pb-1 cursor-pointer"
               }
               onClick={() => {
                 router.push("/view/budgets");
@@ -693,8 +678,6 @@ export default function Home() {
             </div>
 
             {budgets.slice(0, 5).map((budget) => {
-              const lightColor = stringToHSL(budget.category);
-              const darkColor = stringToDarkHSL(budget.category);
               return (
                 <div key={budget.category}>
                   <div className="grid gap-x-3 grid-cols-4  mb-3">
@@ -709,34 +692,25 @@ export default function Home() {
                           className={`h-10 w-10 flex-shrink-0 rounded-4xl  bg-[conic-gradient(#3b82f6_var(--progress),#e5e7eb_0%)] relative`}
                         >
                           <div className="h-8 w-8 rounded-4xl bg-(--background) flex justify-center items-center absolute top-[50%] left-[50%] transform translate-x-[-50%] translate-y-[-50%]">
-                            <div
-                              className="flex-shrink-0 bg-(--color-muted) p-2 rounded-full text-[var(--color)] dark:text-[var(--dark-color)]"
-                              style={{
-                                "--color": lightColor,
-                                "--dark-color": darkColor,
-                              }}
-                            >
+                            <div className="border border-(--border-color)/30 flex-shrink-0 bg-(--color-muted) p-2 rounded-full text-[var(--color)] dark:text-[var(--dark-color)]">
                               <Utensils />
                             </div>
                           </div>
                         </div>
 
                         <div className="flex flex-col truncate gap-1">
-                          <div className="truncate text">{budget.category}</div>
-                          {/* <div className="rounded-2xl text-sm overflow-x-auto flex gap-2 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden text-gray-700 dark:text-gray-400">
-                        {budget.tags.map((tag) => (
-                          <Badge>{tag}</Badge>
-                        ))}
-                      </div> */}
+                          <div className="truncate text customLabel">
+                            {budget.category}
+                          </div>
                         </div>
                       </div>
                     </div>
                     <div className="flex flex-row justify-center">
                       <div>
-                        <div className="flex flex-col text-gray-700 dark:text-gray-400 text-sm">
+                        <div className="flex flex-col text-gray-700 dark:text-gray-400 belowLabel text-sm">
                           {getFormattedAmount(budget.spent)} /
                         </div>
-                        <div className="block">{budget.budget}</div>
+                        <div className="block customLabel">{budget.budget}</div>
                       </div>
                     </div>
                   </div>
@@ -759,10 +733,10 @@ export default function Home() {
           data-section={"expenses"}
         >
           <div className="my-5 text-lg z-20  bg-(--background) h-[55px] gap-x-3 grid grid-cols-4 items-center">
-            <div className={"col-span-3"}>Fixed Expenses</div>
+            <div className={"col-span-3 mainLabelWide2"}>Fixed Expenses</div>
             <div
               className={
-                "text-center mx-auto text-sm text-gray-700 dark:text-gray-400 border-b-2 border-blue-500 pb-1 cursor-pointer"
+                "text-center subLabel2 mx-auto text-sm text-gray-700 dark:text-gray-400 border-b-2 border-blue-500 pb-1 cursor-pointer"
               }
               onClick={() => {
                 router.push("/view/expenses");
@@ -780,40 +754,35 @@ export default function Home() {
             </div>
 
             {transactions.slice(0, 5).map((expense) => {
-              const lightColor = stringToHSL(expense.description);
-              const darkColor = stringToDarkHSL(expense.description);
-
               return (
                 <div key={expense.date}>
                   <div className="grid gap-x-3 grid-cols-4  mb-3">
                     <div className=" col-span-3 sm:col-span-2">
                       <div className="flex items-center gap-4">
-                        <div
-                          className="flex-shrink-0 bg-(--color-muted) p-2 rounded-full text-[var(--color)] dark:text-[var(--dark-color)]"
-                          style={{
-                            "--color": lightColor,
-                            "--dark-color": darkColor,
-                          }}
-                        >
+                        <div className="flex-shrink-0 bg-(--color-muted) p-2 rounded-full text-[var(--color)] dark:text-[var(--dark-color)]">
                           <Utensils />
                         </div>
-                        <div className="flex flex-col truncate">
-                          <div className="truncate">{expense.description}</div>
-                          <div className="text-sm text-gray-700 dark:text-gray-400">
+                        <div className="flex flex-col gap-1 truncate">
+                          <div className="truncate customLabel">
+                            {expense.description}
+                          </div>
+                          <div className="text-sm text-gray-700 dark:text-gray-400 belowLabel">
                             {expense.category}
                           </div>
                         </div>
                       </div>
                     </div>
-                    <div className="hidden sm:block text-center">
+                    <div className="hidden sm:block text-center customLabel">
                       {getFormattedDate(expense.date)}
                     </div>
-                    <div className="flex flex-col text-center">
-                      <div className=" sm:block hidden">
+                    <div className="flex flex-col text-center gap-1">
+                      <div className=" sm:block hidden customLabel">
                         {getFormattedAmount(expense.amount)}
                       </div>
-                      <div className="sm:hidden block">{expense.amount}</div>
-                      <div className="text-sm block sm:hidden text-gray-700 dark:text-gray-400">
+                      <div className="sm:hidden block customLabel">
+                        {expense.amount}
+                      </div>
+                      <div className="text-sm block sm:hidden belowLabel text-gray-700 dark:text-gray-400">
                         {getFormattedDateShort(expense.date)}
                       </div>
                     </div>
