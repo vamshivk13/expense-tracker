@@ -355,7 +355,7 @@ export default function Home() {
 
   return (
     <div>
-      <div className="w-full border-none relative px-6 sm:px-16 lg:px-16 py-3 flex flex-col gap-4 dark:bg-[#3D3D3D] bg-[#EFEFEF]">
+      <div className="w-full pb-5border-none z-100 relative px-6 sm:px-16 lg:px-16 py-3 flex flex-col gap-4 dark:bg-[#3D3D3D] bg-[#EFEFEF]">
         <div
           className="flex items-center justify-around gap-2 mt-3 mb-6 my-3 sticky h-[50px] z-40"
           ref={greetingRef}
@@ -497,13 +497,15 @@ export default function Home() {
         </div> */}
       </div>
       {/* Menu */}
+
       <div
         ref={targetRef}
-        className="px-6 sticky sm:px-16 lg:px-16 top-0 z-110 border-none dark:bg-[#3D3D3D] bg-[#EFEFEF] "
+        className="px-6 sticky bg sm:px-16 lg:px-16 top-0 z-100 rounded-b-sm border-b border-(--border-color)/10 dark:bg-[#3D3D3D] bg-[#EFEFEF]"
       >
+        <div className="h-[8px]"></div>
         <div
           ref={menuRef}
-          className="h-[75px] py-3 grid grid-cols-3 justify-items-center text-sm text-gray-700 dark:text-gray-400"
+          className="h-[75px] relative flex-1 py-3 grid grid-cols-3 justify-items-center text-sm text-gray-700 dark:text-gray-400"
         >
           <div
             className={
@@ -557,6 +559,7 @@ export default function Home() {
             )}
           </div>
         </div>
+        <div className="h-[8px]"></div>
       </div>
 
       {/* Quick Actions */}
@@ -621,7 +624,7 @@ export default function Home() {
           </div>
 
           <div className="flex flex-col gap-4">
-            <div className="grid grid-cols-4 gap-x-3 h-[44px] flex items-center text-gray-700 dark:text-gray-400 bg-(--background) sticky top-[75px]">
+            <div className="grid grid-cols-4 gap-x-3 h-[44px] flex items-center text-gray-700 dark:text-gray-400 bg-(--background) sticky top-[91px]">
               <div className="text-sm col-span-3 sm:col-span-2">Expense</div>
               <div className="text-sm hidden sm:block text-center">Date</div>
               <div className="text-sm text-center">Amount</div>
@@ -671,7 +674,7 @@ export default function Home() {
             </div>
           </div>
           <div className="flex flex-col gap-4">
-            <div className="z-20 grid grid-cols-4 gap-x-3 h-[44px] items-center text-gray-700 dark:text-gray-400 bg-(--background) sticky top-[75px]">
+            <div className="z-20 grid grid-cols-4 gap-x-3 h-[44px] items-center text-gray-700 dark:text-gray-400 bg-(--background) sticky top-[91px]">
               <div className="text-sm col-span-3">Category</div>
               <div className="text-sm text-center">Amount</div>
               <Separator className={"absolute bottom-0"} />
@@ -746,7 +749,7 @@ export default function Home() {
             </div>
           </div>
           <div className="flex flex-col gap-4">
-            <div className="grid grid-cols-4 gap-x-3 h-[44px] items-center text-gray-700 dark:text-gray-400 bg-(--background) sticky top-[75px]">
+            <div className="grid grid-cols-4 gap-x-3 h-[44px] items-center text-gray-700 dark:text-gray-400 bg-(--background) sticky top-[91px]">
               <div className="text-sm col-span-3 sm:col-span-2">Expense</div>
               <div className="text-sm hidden sm:block text-center">Date</div>
               <div className="text-sm text-center">Amount</div>
@@ -780,7 +783,7 @@ export default function Home() {
                         {getFormattedAmount(expense.amount)}
                       </div>
                       <div className="sm:hidden block customLabel">
-                        {expense.amount}
+                        {getFormattedAmount(expense.amount)}
                       </div>
                       <div className="text-sm block sm:hidden belowLabel text-gray-700 dark:text-gray-400">
                         {getFormattedDateShort(expense.date)}

@@ -34,7 +34,7 @@ export default function Transactions({ expense }) {
             {getFormattedAmount(expense.amount)}
           </div>
           <div className="sm:hidden block customLabel text-(--foreground)">
-            {expense.amount}
+            {getFormattedAmount(expense.amount)}
           </div>
           <div className="text-sm block belowLabel sm:hidden text-gray-700 dark:text-gray-400">
             {getFormattedDateShort(expense.date)}
