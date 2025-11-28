@@ -5,10 +5,12 @@ import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import DateSelect from "./components/DateSelect";
 import { Badge } from "@/components/ui/badge";
-import { ArrowDown, ArrowUp } from "lucide-react";
+import { ArrowDown, ArrowUp, ChevronRight } from "lucide-react";
 import { ArrowRightLeft } from "lucide-react";
 import { MoveDownLeft } from "lucide-react";
 import { MoveUpRight } from "lucide-react";
+import { Coins } from "lucide-react";
+
 import { ChevronDown } from "lucide-react";
 
 import {
@@ -355,7 +357,7 @@ export default function Home() {
 
   return (
     <div>
-      <div className="w-full pb-5border-none z-100 relative px-6 sm:px-16 lg:px-16 py-3 flex flex-col gap-4 dark:bg-[#3D3D3D] bg-[#EFEFEF]">
+      <div className="w-full pb-5border-none z-100 relative px-6 sm:px-16 lg:px-16 py-3 flex flex-col gap-4 dark:bg-[#3D3D3D] bg-[#f8f8f8]">
         <div
           className="flex items-center justify-around gap-2 mt-3 mb-6 my-3 sticky h-[50px] z-40"
           ref={greetingRef}
@@ -371,56 +373,49 @@ export default function Home() {
           </div>
           <DateSelect />
         </div>
-        <div className="gap-2 flex-col flex">
-          <Card
-            className={
-              "rounded-sm bg-[] py-3 gap-0 dark:bg-[#3D3D3D] bg-[#EFEFEF] border-1 border-[#8A8A8A]/50 "
-            }
-          >
-            <CardContent
-              className={"flex py-1 px-1 justify-around items-center gap-4"}
-            >
-              <MoveDownLeft
-                className="aspect-square text-green-700"
-                strokeWidth={2}
-                size={18}
-              />
-              <div className="flex items-center gap-2">
-                <p className="subLabel">Income</p>
+        <div className="flex gap-2">
+          <div className="rounded-xl border px-2 flex items-center bg-(--foreground) text-(--background) subLabel2">
+            <p>today</p>
+          </div>
+          <div className="rounded-xl border px-2 py-1 flex items-center subLabel2">
+            <p>week</p>
+          </div>
+          <div className="rounded-xl border px-2 flex items-center subLabel2">
+            <p>month</p>
+          </div>
+        </div>
+        <div className="gap-2 flex-col flex mb-3">
+          <Card className={"rounded-sm py-3 gap-0"}>
+            <CardContent className={"flex flex-col py-1 px-1 gap-5"}>
+              <div className="flex items-center">
+                <div className="px-4 sm:px-8">
+                  <Coins
+                    className="aspect-square size-12 align-center justify-center"
+                    strokeWidth={2}
+                  />
+                </div>
+                <div className="flex flex-col gap-2 ">
+                  <p className="mainLabel2">Total spends</p>
+                  <div className="text-2xl flex font-bold mainLabel items-center">
+                    <div className="mainHeading">₹95,000</div>
+                    <ChevronRight />
+                  </div>
+                </div>
               </div>
-
-              <div className="text-2xl font-bold mainLabel">₹45,000</div>
-              <ChevronDown
-                className="aspect-square"
-                strokeWidth={2}
-                size={16}
-              ></ChevronDown>
-            </CardContent>
-          </Card>
-          <Card
-            className={
-              "rounded-sm py-3 gap-0 dark:bg-[#3D3D3D] bg-[#EFEFEF] border-1 border-[#8A8A8A]/50 "
-            }
-          >
-            <CardContent
-              className={"flex py-1 px-1 justify-around items-center gap-4"}
-            >
-              <MoveUpRight
-                className="aspect-square text-red-700"
-                strokeWidth={2}
-                size={18}
-              />
-              <div className="flex items-center gap-2">
-                <p className="subLabel">Expenses</p>
+              <div className="flex flex-col gap-2 px-3">
+                <div className="px-3 truncate flex items-center py-1 bg-(--muted-foreground)/10 rounded-sm flex-1">
+                  <ArrowUp className="" size={16}></ArrowUp>
+                  <div className="px-3 subLabel2 truncate">
+                    Spent 100 more than previous day
+                  </div>
+                </div>
+                <div className="px-3 truncate flex items-center py-1 bg-(--muted-foreground)/10 rounded-sm flex-1">
+                  <ArrowUp className="" size={16}></ArrowUp>
+                  <div className="px-3 subLabel2 truncate">
+                    Current Spend is less than Budget
+                  </div>
+                </div>
               </div>
-
-              <div className="text-2xl font-bold mainLabel">₹95,000</div>
-
-              <ChevronDown
-                className="aspect-square"
-                strokeWidth={2}
-                size={16}
-              ></ChevronDown>
             </CardContent>
           </Card>
         </div>
@@ -500,7 +495,7 @@ export default function Home() {
 
       <div
         ref={targetRef}
-        className="px-6 sticky bg sm:px-16 lg:px-16 top-0 z-100 rounded-b-sm border-b border-(--border-color)/10 dark:bg-[#3D3D3D] bg-[#EFEFEF]"
+        className="px-6 sticky bg sm:px-16 lg:px-16 top-0 z-100 rounded-b-xl border-b border-(--border-color)/10 dark:bg-[#3D3D3D] bg-[#f8f8f8]"
       >
         <div className="h-[8px]"></div>
         <div
