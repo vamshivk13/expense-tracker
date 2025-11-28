@@ -495,7 +495,7 @@ export default function Home() {
 
       <div
         ref={targetRef}
-        className="px-6 sticky bg sm:px-16 lg:px-16 top-0 z-100 rounded-b-xl border-b border-(--border-color)/10 dark:bg-[#3D3D3D] bg-[#f8f8f8]"
+        className="px-10 sticky bg sm:px-16 lg:px-16 top-0 z-100 rounded-b-xl border-b border-(--border-color)/10 dark:bg-[#3D3D3D] bg-[#f8f8f8]"
       >
         <div className="h-[8px]"></div>
         <div
@@ -558,7 +558,7 @@ export default function Home() {
       </div>
 
       {/* Quick Actions */}
-      <div className="flex flex-col gap-2 mt-6 mb-2 px-8 sm:px-16 lg:px-16">
+      <div className="flex flex-col gap-2 mt-8 mb-2 px-8 sm:px-16 lg:px-16">
         <div
           className={
             "mr-auto font-bold mb-3 text-sm mainLabelWide text-gray-700 dark:text-gray-400 "
@@ -619,12 +619,12 @@ export default function Home() {
           </div>
 
           <div className="flex flex-col gap-4">
-            <div className="grid grid-cols-4 gap-x-3 h-[44px] flex items-center text-gray-700 dark:text-gray-400 bg-(--background) sticky top-[91px]">
+            {/* <div className="grid grid-cols-4 gap-x-3 h-[44px] flex items-center text-gray-700 dark:text-gray-400 bg-(--background) sticky top-[91px]">
               <div className="text-sm col-span-3 sm:col-span-2">Expense</div>
               <div className="text-sm hidden sm:block text-center">Date</div>
               <div className="text-sm text-center">Amount</div>
               <Separator className={"absolute bottom-0"} />
-            </div>
+            </div> */}
             {transactions.slice(0, 5).map((expense) => (
               <div key={expense.date}>
                 <div className="hidden sm:block">
@@ -638,7 +638,7 @@ export default function Home() {
                 >
                   <Transactions expense={expense} />
                 </div>
-                <Separator />
+                {/* <Separator /> */}
               </div>
             ))}
           </div>
@@ -669,11 +669,11 @@ export default function Home() {
             </div>
           </div>
           <div className="flex flex-col gap-4">
-            <div className="z-20 grid grid-cols-4 gap-x-3 h-[44px] items-center text-gray-700 dark:text-gray-400 bg-(--background) sticky top-[91px]">
+            {/* <div className="z-20 grid grid-cols-4 gap-x-3 h-[44px] items-center text-gray-700 dark:text-gray-400 bg-(--background) sticky top-[91px]">
               <div className="text-sm col-span-3">Category</div>
               <div className="text-sm text-center">Amount</div>
               <Separator className={"absolute bottom-0"} />
-            </div>
+            </div> */}
 
             {budgets.slice(0, 5).map((budget) => {
               return (
@@ -712,7 +712,6 @@ export default function Home() {
                       </div>
                     </div>
                   </div>
-                  <Separator />
                 </div>
               );
             })}
@@ -730,7 +729,7 @@ export default function Home() {
           ref={(el) => (sectionRefs.current[3] = el)}
           data-section={"expenses"}
         >
-          <div className="my-5 text-lg z-20  bg-(--background) h-[55px] gap-x-3 grid grid-cols-4 items-center">
+          <div className="my-5 mb-8 text-lg z-20  bg-(--background) h-[55px] gap-x-3 grid grid-cols-4 items-center">
             <div className={"col-span-3 mainLabelWide2"}>Fixed Expenses</div>
             <div
               className={
@@ -744,16 +743,16 @@ export default function Home() {
             </div>
           </div>
           <div className="flex flex-col gap-4">
-            <div className="grid grid-cols-4 gap-x-3 h-[44px] items-center text-gray-700 dark:text-gray-400 bg-(--background) sticky top-[91px]">
+            {/* <div className="grid grid-cols-4 gap-x-3 h-[44px] items-center text-gray-700 dark:text-gray-400 bg-(--background) sticky top-[91px]">
               <div className="text-sm col-span-3 sm:col-span-2">Expense</div>
               <div className="text-sm hidden sm:block text-center">Date</div>
               <div className="text-sm text-center">Amount</div>
               <Separator className={"absolute bottom-0"} />
-            </div>
+            </div> */}
 
             {transactions.slice(0, 5).map((expense) => {
               return (
-                <div key={expense.date}>
+                <div key={expense.date} className="">
                   <div className="grid gap-x-3 grid-cols-4  mb-3">
                     <div className=" col-span-3 sm:col-span-2">
                       <div className="flex items-center gap-4">
@@ -785,7 +784,7 @@ export default function Home() {
                       </div>
                     </div>
                   </div>
-                  <Separator />
+                  {/* <Separator /> */}
                 </div>
               );
             })}
