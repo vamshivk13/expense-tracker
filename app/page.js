@@ -357,7 +357,7 @@ export default function Home() {
 
   return (
     <div>
-      <div className="w-full pb-5border-none z-100 relative px-6 sm:px-16 lg:px-16 py-3 flex flex-col gap-4 dark:bg-[#3D3D3D] bg-[#f8f8f8]">
+      <div className="w-full pb-3 border-none z-100 relative px-6 sm:px-16 lg:px-16 py-3 flex flex-col gap-4 dark:bg-[#3D3D3D] bg-[#f8f8f8]">
         <div
           className="flex items-center justify-around gap-2 mt-3 mb-6 my-3 sticky h-[50px] z-40"
           ref={greetingRef}
@@ -373,20 +373,27 @@ export default function Home() {
           </div>
           <DateSelect />
         </div>
-        <div className="flex gap-2">
-          <div className="rounded-xl border px-2 flex items-center bg-(--foreground) text-(--background) subLabel2">
-            <p>today</p>
-          </div>
-          <div className="rounded-xl border px-2 py-1 flex items-center subLabel2">
-            <p>week</p>
-          </div>
-          <div className="rounded-xl border px-2 flex items-center subLabel2">
-            <p>month</p>
-          </div>
-        </div>
+
         <div className="gap-2 flex-col flex mb-3">
-          <Card className={"rounded-sm py-3 gap-0"}>
-            <CardContent className={"flex flex-col py-1 px-1 gap-5"}>
+          <Card
+            className={
+              "rounded-sm border-none outline-none py-3 gap-0 dark:bg-[#3D3D3D] bg-[#f8f8f8]"
+            }
+          >
+            <CardContent
+              className={" border-none flex flex-col py-1 px-1 gap-5"}
+            >
+              <div className="flex gap-2 px-3">
+                <div className="rounded-xl border px-2 flex items-center bg-(--foreground) text-(--background) subLabel2">
+                  <p>today</p>
+                </div>
+                <div className="rounded-xl border px-2 py-1 flex items-center subLabel2">
+                  <p>week</p>
+                </div>
+                <div className="rounded-xl border px-2 flex items-center subLabel2">
+                  <p>month</p>
+                </div>
+              </div>
               <div className="flex items-center">
                 <div className="px-4 sm:px-8">
                   <Coins
