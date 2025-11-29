@@ -411,13 +411,13 @@ export default function Home() {
               </div>
               <div className="flex flex-col gap-2 px-3">
                 <div className="px-3 truncate flex items-center py-1 bg-(--muted-foreground)/10 rounded-sm flex-1">
-                  <ArrowUp className="" size={16}></ArrowUp>
+                  <ArrowUp className="text-orange-500" size={16}></ArrowUp>
                   <div className="px-3 subLabel2 truncate">
                     Spent 100 more than previous day
                   </div>
                 </div>
                 <div className="px-3 truncate flex items-center py-1 bg-(--muted-foreground)/10 rounded-sm flex-1">
-                  <ArrowUp className="" size={16}></ArrowUp>
+                  <ArrowUp className="text-orange-500" size={16}></ArrowUp>
                   <div className="px-3 subLabel2 truncate">
                     Current Spend is less than Budget
                   </div>
