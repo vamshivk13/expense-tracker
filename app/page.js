@@ -10,6 +10,7 @@ import { ArrowRightLeft } from "lucide-react";
 import { MoveDownLeft } from "lucide-react";
 import { MoveUpRight } from "lucide-react";
 import { Coins } from "lucide-react";
+import { CircleSmall } from "lucide-react";
 
 import { ChevronDown } from "lucide-react";
 
@@ -314,13 +315,13 @@ export default function Home() {
       console.log("CALCULATED CONNECTOR", { left, right, width, top });
       if (type == "type1") {
         setConnectorStyle1({
-          left: `${left + 4}px`,
-          width: `${width - 4}px`,
+          left: `${left - 4}px`,
+          width: `${width}px`,
         });
       } else {
         setConnectorStyle({
-          left: `${left + 4}px`,
-          width: `${width - 4}px`,
+          left: `${left - 5}px`,
+          width: `${width + 2}px`,
         });
       }
 
@@ -357,9 +358,24 @@ export default function Home() {
 
   return (
     <div>
-      <div className="w-full pb-3 border-none z-100 relative px-6 sm:px-16 lg:px-16 py-3 flex flex-col gap-4 dark:bg-[#3D3D3D] bg-[#f8f8f8]">
+      <div className="w-full pb-3 border-none z-100 py-3 relative flex flex-col gap-4">
         <div
-          className="flex items-center justify-around gap-2 mt-3 mb-6 my-3 sticky h-[50px] z-40"
+          className="absolute inset-0 z-0"
+          style={{
+            backgroundImage: `
+        linear-gradient(to right, #e2e8f0 1px, transparent 1px),
+        linear-gradient(to bottom, #e2e8f0 1px, transparent 1px)
+      `,
+            backgroundSize: "20px 30px",
+            WebkitMaskImage:
+              "radial-gradient(ellipse 70% 60% at 50% 0%, #000 60%, transparent 100%)",
+            maskImage:
+              "radial-gradient(ellipse 70% 60% at 50% 0%, #000 60%, transparent 100%)",
+          }}
+        />
+
+        <div
+          className="flex px-6 sm:px-16 lg:px-16 items-center justify-around gap-2 mt-3 mb-6 my-3 sticky h-[50px] z-40"
           ref={greetingRef}
         >
           <div className="h-full aspect-square p-1/2 bg-black rounded-full">
@@ -374,7 +390,7 @@ export default function Home() {
           <DateSelect />
         </div>
 
-        <div className="gap-2 flex-col flex mb-3">
+        <div className="gap-2 flex-col flex my-3">
           {/* <div className="flex gap-2 px-3 ">
             <div className="rounded-xl border px-2 flex items-center bg-(--foreground) text-(--background) subLabel2">
               <p>today</p>
@@ -386,6 +402,7 @@ export default function Home() {
               <p>month</p>
             </div>
           </div> */}
+
           <div className={" border-none flex flex-col my-3 py-1 px-1 gap-5"}>
             <div className="flex items-center justify-center">
               {/* <div className="px-4 sm:px-8">
@@ -394,7 +411,7 @@ export default function Home() {
                     strokeWidth={2}
                   />
                 </div> */}
-              <div className="flex flex-col gap-3 justify-centeritems-center">
+              <div className="flex flex-col gap-3 justify-center items-center">
                 <p className="subLabel2 text-center">Today's Expenses</p>
                 <div className="text-2xl flex font-bold mainLabel justify-center items-center">
                   <div className="text-3xl tracking-wide font-semibold text-center">
@@ -419,9 +436,386 @@ export default function Home() {
               </div>
             </div> */}
           </div>
+          {/* <div className="truncate px-10 sm:px-16 lg:px-16 flex gap-2  place-self-stretch items-center justify-center py-1 rounded-sm w-full">
+            <CircleSmall
+              size={16}
+              className="relative"
+              ref={(el) => (titleRef.current[0] = el)}
+            ></CircleSmall>
+            <div
+              ref={(el) => (valueRef.current[0] = el)}
+              className="subLabel2 truncate"
+            >
+              Spent 100 more today
+            </div>
+            {connectorStyle && (
+              <div
+                aria-hidden
+                style={{
+                  position: "absolute",
+                  height: "1px",
+                  background: "#8A8A8A",
+                  ...connectorStyle,
+                  zIndex: 1000,
+                }}
+              />
+            )}
+          </div>
+
+          <div className="truncate px-10 sm:px-16 lg:px-16 flex gap-2  place-self-stretch items-center justify-center py-1 rounded-sm w-full">
+            <CircleSmall
+              size={16}
+              className="relative"
+              ref={(el) => (titleRef.current[0] = el)}
+            ></CircleSmall>
+            <div
+              ref={(el) => (valueRef.current[0] = el)}
+              className="subLabel2 truncate"
+            >
+              Spent 100 more today
+            </div>
+            {connectorStyle && (
+              <div
+                aria-hidden
+                style={{
+                  position: "absolute",
+                  height: "1px",
+                  background: "#8A8A8A",
+                  ...connectorStyle,
+                  zIndex: 1000,
+                }}
+              />
+            )}
+          </div> */}
         </div>
       </div>
+      {/* MENU   */}
+      <div
+        ref={targetRef}
+        className="bg-(--background) px-10 border-b-[0.3px] rounded-b-sm sm:px-16 lg:px-16 sticky top-0 z-100"
+      >
+        <div className="h-[8px]"></div>
+        <div
+          ref={menuRef}
+          className="h-[75px] relative flex-1 py-3 grid grid-cols-3 justify-items-center text-sm text-gray-700 dark:text-gray-400"
+        >
+          <div
+            className={
+              `flex flex-col items-center justify-center cursor-pointer mx-auto gap-2` +
+              (activeSection == "transactions"
+                ? " text-(--foreground) font-bold"
+                : "")
+            }
+            onClick={handleScrollToTransactions}
+          >
+            <ArrowRightLeft strokeWidth={1} />
+            <div className="relative pointer-events-none subLabel2 select-none">
+              Transactions
+            </div>
+            {activeSection == "transactions" && (
+              <div className="absolute bottom-1 h-1 w-7 bg-(--foreground)"></div>
+            )}
+          </div>
+          <div
+            onClick={handleScrollToBudgets}
+            className={
+              `flex flex-col items-center justify-center cursor-pointer mx-auto gap-2` +
+              (activeSection == "budgets"
+                ? " text-(--foreground) font-bold"
+                : "")
+            }
+          >
+            <NotepadTextDashed strokeWidth={1} />
+            <div className="pointer-events-none subLabel2 select-none">
+              Budgets
+            </div>
+            {activeSection == "budgets" && (
+              <div className="absolute bottom-1 h-1 w-7 bg-(--foreground)"></div>
+            )}
+          </div>
+          <div
+            onClick={handleScrollToExpenses}
+            className={
+              `flex flex-col justify-center items-center cursor-pointer mx-auto gap-2` +
+              (activeSection == "expenses"
+                ? " text-(--foreground) font-bold"
+                : "")
+            }
+          >
+            <HandCoins strokeWidth={1} />
+            <div className="pointer-events-none select-none subLabel2 ">
+              Expenses
+            </div>
+            {activeSection == "expenses" && (
+              <div className="absolute bottom-1 h-1 w-7 bg-(--foreground)"></div>
+            )}
+          </div>
+        </div>
+        <div className="h-[8px]"></div>
+      </div>
+      <div className="bg-(--background) z-20 px-6 sm:px-16 lg:px-16  ">
+        <div className="flex flex-col gap-2 mt-8 mb-2">
+          <div
+            className={
+              "mr-auto font-bold mb-3 text-sm mainLabelWide text-gray-700 dark:text-gray-400 "
+            }
+          >
+            Quick Actions
+          </div>
+          <div className="-mx-8 sm:-mx-16 lg:-mx-16 overflow-x-auto relative">
+            <div className="px-8 sm:px-16 lg:px-16 overflow-x-auto flex gap-2 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden text-gray-700 dark:text-gray-400">
+              <Badge
+                variant={"secondary"}
+                className={
+                  "p-2 border-1 border-(--border-color) sm:text-sm rounded-2xl bg-(--color-muted)"
+                }
+              >
+                <Plus /> Add Expenses
+              </Badge>
+              <Badge
+                variant={"secondary"}
+                className={
+                  "p-2 border-1 border-(--border-color) sm:text-sm rounded-2xl bg-(--color-muted)"
+                }
+              >
+                <ChartGantt /> Update Budgets
+              </Badge>
+              <Badge
+                variant={"secondary"}
+                className={
+                  "p-2 border-1 border-(--border-color) sm:text-sm rounded-2xl bg-(--color-muted) "
+                }
+              >
+                <HandCoins /> Modify Fixed Expenses
+              </Badge>
+            </div>
+          </div>
+          <div className="pointer-events-none absolute top-0 bottom-0 left-0 w-8 sm:w-16 z-20 bg-gradient-to-r from-white/90 to-transparent dark:from-[#3D3D3D]/90 dark:to-transparent" />
+          <div className="pointer-events-none absolute top-0 bottom-0 right-0 w-8 sm:w-16 z-20 bg-gradient-to-l from-white/90 to-transparent dark:from-[#3D3D3D]/90 dark:to-transparent" />
+        </div>
+        <div className="mx-auto py-3 flex flex-col gap-4">
+          {/* Transactions  */}
+          <div
+            className={"flex flex-col mt-2 mb-2"}
+            ref={(el) => (sectionRefs.current[1] = el)}
+            data-section={"transactions"}
+          >
+            <div className="my-5 text-lg z-20  bg-(--background) h-[55px] gap-x-3 grid grid-cols-4 items-center">
+              <h4 className={"col-span-3 mainLabelWide2"}>your transactions</h4>
+              <div
+                className={
+                  "text-center mx-auto subLabel2 text-sm text-gray-700 dark:text-gray-400 border-b-2 border-blue-500 pb-1 cursor-pointer"
+                }
+                onClick={() => {
+                  router.push("/view/transactions");
+                }}
+              >
+                view all
+              </div>
+            </div>
 
+            <div className="flex flex-col gap-4">
+              {/* <div className="grid grid-cols-4 gap-x-3 h-[44px] flex items-center text-gray-700 dark:text-gray-400 bg-(--background) sticky top-[91px]">
+              <div className="text-sm col-span-3 sm:col-span-2">Expense</div>
+              <div className="text-sm hidden sm:block text-center">Date</div>
+              <div className="text-sm text-center">Amount</div>
+              <Separator className={"absolute bottom-0"} />
+            </div> */}
+              {transactions.slice(0, 5).map((expense) => (
+                <div key={expense.date}>
+                  <div className="hidden sm:block">
+                    <EditExpenseDialog>
+                      <Transactions expense={expense} />
+                    </EditExpenseDialog>
+                  </div>
+                  <div
+                    className="sm:hidden block"
+                    onClick={() => router.push("/edit")}
+                  >
+                    <Transactions expense={expense} />
+                  </div>
+                  {/* <Separator /> */}
+                </div>
+              ))}
+            </div>
+            <Button
+              variant="outline"
+              className={"mr-auto mt-7 p-1 rounded-none border-0"}
+            >
+              <div className={"border-1 border-(--foreground) p-1"}>
+                View All
+              </div>
+            </Button>
+          </div>
+          {/* Budgets  */}
+          <div
+            className={"flex flex-col my-3"}
+            ref={(el) => (sectionRefs.current[2] = el)}
+            data-section={"budgets"}
+          >
+            <div className="my-5 text-lg z-20 bg-(--background) h-[55px] gap-x-3 grid grid-cols-4 items-center">
+              <div className={"col-span-3 mainLabelWide2"}>Budgets</div>
+              <div
+                className={
+                  "text-center subLabel2 mx-auto text-sm text-gray-700 dark:text-gray-400 border-b-2 border-blue-500 pb-1 cursor-pointer"
+                }
+                onClick={() => {
+                  router.push("/view/budgets");
+                }}
+              >
+                view all
+              </div>
+            </div>
+            <div className="flex flex-col gap-4">
+              {/* <div className="z-20 grid grid-cols-4 gap-x-3 h-[44px] items-center text-gray-700 dark:text-gray-400 bg-(--background) sticky top-[91px]">
+              <div className="text-sm col-span-3">Category</div>
+              <div className="text-sm text-center">Amount</div>
+              <Separator className={"absolute bottom-0"} />
+            </div> */}
+
+              {budgets.slice(0, 5).map((budget) => {
+                return (
+                  <div key={budget.category}>
+                    <div className="grid gap-x-3 grid-cols-4  mb-3">
+                      <div className="col-span-3">
+                        <div className="flex items-center gap-4">
+                          <div
+                            style={{
+                              "--progress": `${
+                                String((budget.spent / budget.budget) * 100) +
+                                "%"
+                              }`,
+                            }}
+                            className={`h-10 w-10 flex-shrink-0 rounded-4xl  bg-[conic-gradient(#3b82f6_var(--progress),#e5e7eb_0%)] relative`}
+                          >
+                            <div className="h-8 w-8 rounded-4xl bg-(--background) flex justify-center items-center absolute top-[50%] left-[50%] transform translate-x-[-50%] translate-y-[-50%]">
+                              <div className="border border-(--border-color)/30 flex-shrink-0 bg-(--color-muted) p-2 rounded-full text-[var(--color)] dark:text-[var(--dark-color)]">
+                                <Utensils />
+                              </div>
+                            </div>
+                          </div>
+
+                          <div className="flex flex-col truncate gap-1">
+                            <div className="truncate text customLabel">
+                              {budget.category}
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="flex flex-row justify-center">
+                        <div>
+                          <div className="flex flex-col text-gray-700 dark:text-gray-400 belowLabel text-sm">
+                            {getFormattedAmount(budget.spent)} /
+                          </div>
+                          <div className="block customLabel">
+                            {budget.budget}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+            <Button
+              variant="outline"
+              className={"mr-auto mt-7 p-1 rounded-none border-0"}
+            >
+              <div className={"border-1 border-(--foreground) p-1"}>
+                View All
+              </div>
+            </Button>
+          </div>
+          {/* Fixed Expenses  */}
+          <div
+            className={"flex flex-col my-3 pb-15"}
+            ref={(el) => (sectionRefs.current[3] = el)}
+            data-section={"expenses"}
+          >
+            <div className="my-5 mb-8 text-lg z-20  bg-(--background) h-[55px] gap-x-3 grid grid-cols-4 items-center">
+              <div className={"col-span-3 mainLabelWide2"}>Fixed Expenses</div>
+              <div
+                className={
+                  "text-center subLabel2 mx-auto text-sm text-gray-700 dark:text-gray-400 border-b-2 border-blue-500 pb-1 cursor-pointer"
+                }
+                onClick={() => {
+                  router.push("/view/expenses");
+                }}
+              >
+                view all
+              </div>
+            </div>
+            <div className="flex flex-col gap-4">
+              {/* <div className="grid grid-cols-4 gap-x-3 h-[44px] items-center text-gray-700 dark:text-gray-400 bg-(--background) sticky top-[91px]">
+              <div className="text-sm col-span-3 sm:col-span-2">Expense</div>
+              <div className="text-sm hidden sm:block text-center">Date</div>
+              <div className="text-sm text-center">Amount</div>
+              <Separator className={"absolute bottom-0"} />
+            </div> */}
+
+              {transactions.slice(0, 5).map((expense) => {
+                return (
+                  <div key={expense.date} className="">
+                    <div className="grid gap-x-3 grid-cols-4  mb-3">
+                      <div className=" col-span-3 sm:col-span-2">
+                        <div className="flex items-center gap-4">
+                          <div className="flex-shrink-0 bg-(--color-muted) p-2 rounded-full text-[var(--color)] dark:text-[var(--dark-color)]">
+                            <Utensils />
+                          </div>
+                          <div className="flex flex-col gap-1 truncate">
+                            <div className="truncate customLabel">
+                              {expense.description}
+                            </div>
+                            <div className="text-sm text-gray-700 dark:text-gray-400 belowLabel">
+                              {expense.category}
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="hidden sm:block text-center customLabel">
+                        {getFormattedDate(expense.date)}
+                      </div>
+                      <div className="flex flex-col text-center gap-1">
+                        <div className=" sm:block hidden customLabel">
+                          {getFormattedAmount(expense.amount)}
+                        </div>
+                        <div className="sm:hidden block customLabel">
+                          {getFormattedAmount(expense.amount)}
+                        </div>
+                        <div className="text-sm block sm:hidden belowLabel text-gray-700 dark:text-gray-400">
+                          {getFormattedDateShort(expense.date)}
+                        </div>
+                      </div>
+                    </div>
+                    {/* <Separator /> */}
+                  </div>
+                );
+              })}
+            </div>
+            <Button
+              variant="outline"
+              className={"mr-auto mt-7 p-1 rounded-none border-0"}
+            >
+              <div className={"border-1 border-(--foreground) p-1"}>
+                View All
+              </div>
+            </Button>
+          </div>
+          <div className="fixed bottom-8 right-8 h-18 w-18 z-50 bg-muted/90 rounded-full sm:hidden flex justify-center items-center">
+            <Button
+              className={
+                "z-50 flex rounded-full h-13 w-13 bg-blue-500 hover:bg-blue-700 dark:hover:bg-blue-300"
+              }
+              size={"icon"}
+              onClick={() => {
+                router.push("/add");
+              }}
+            >
+              <Plus className="size-5"></Plus>
+            </Button>
+          </div>
+        </div>
+      </div>
       {/* Overview */}
       {/* <div className="flex sm:col-span-10 col-span-2 flex-col sm:items-stretch gap-2 items-center sm:mt-0 ">
           <div className="self-start mb-2 text-sm font-bold text-gray-700 dark:text-gray-400">
@@ -493,324 +887,7 @@ export default function Home() {
           </div>
         </div> */}
       {/* Menu */}
-
-      <div
-        ref={targetRef}
-        className="px-10 sticky bg sm:px-16 lg:px-16 top-0 z-100 rounded-b-xl border-b border-(--border-color)/10 dark:bg-[#3D3D3D] bg-[#f8f8f8]"
-      >
-        <div className="h-[8px]"></div>
-        <div
-          ref={menuRef}
-          className="h-[75px] relative flex-1 py-3 grid grid-cols-3 justify-items-center text-sm text-gray-700 dark:text-gray-400"
-        >
-          <div
-            className={
-              `flex flex-col items-center justify-center cursor-pointer mx-auto gap-2` +
-              (activeSection == "transactions"
-                ? " text-(--foreground) font-bold"
-                : "")
-            }
-            onClick={handleScrollToTransactions}
-          >
-            <ArrowRightLeft strokeWidth={1} />
-            <div className="relative pointer-events-none subLabel2 select-none">
-              Transactions
-            </div>
-            {activeSection == "transactions" && (
-              <div className="absolute bottom-1 h-1 w-7 bg-(--foreground)"></div>
-            )}
-          </div>
-          <div
-            onClick={handleScrollToBudgets}
-            className={
-              `flex flex-col items-center justify-center cursor-pointer mx-auto gap-2` +
-              (activeSection == "budgets"
-                ? " text-(--foreground) font-bold"
-                : "")
-            }
-          >
-            <NotepadTextDashed strokeWidth={1} />
-            <div className="pointer-events-none subLabel2 select-none">
-              Budgets
-            </div>
-            {activeSection == "budgets" && (
-              <div className="absolute bottom-1 h-1 w-7 bg-(--foreground)"></div>
-            )}
-          </div>
-          <div
-            onClick={handleScrollToExpenses}
-            className={
-              `flex flex-col justify-center items-center cursor-pointer mx-auto gap-2` +
-              (activeSection == "expenses"
-                ? " text-(--foreground) font-bold"
-                : "")
-            }
-          >
-            <HandCoins strokeWidth={1} />
-            <div className="pointer-events-none select-none subLabel2 ">
-              Expenses
-            </div>
-            {activeSection == "expenses" && (
-              <div className="absolute bottom-1 h-1 w-7 bg-(--foreground)"></div>
-            )}
-          </div>
-        </div>
-        <div className="h-[8px]"></div>
-      </div>
-
       {/* Quick Actions */}
-      <div className="flex flex-col gap-2 mt-8 mb-2 px-8 sm:px-16 lg:px-16">
-        <div
-          className={
-            "mr-auto font-bold mb-3 text-sm mainLabelWide text-gray-700 dark:text-gray-400 "
-          }
-        >
-          Quick Actions
-        </div>
-        <div className="-mx-8 sm:-mx-16 lg:-mx-16 overflow-x-auto relative">
-          <div className="px-8 sm:px-16 lg:px-16 overflow-x-auto flex gap-2 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden text-gray-700 dark:text-gray-400">
-            <Badge
-              variant={"secondary"}
-              className={
-                "p-2 border-1 border-(--border-color) sm:text-sm rounded-2xl bg-(--color-muted)"
-              }
-            >
-              <Plus /> Add Expenses
-            </Badge>
-            <Badge
-              variant={"secondary"}
-              className={
-                "p-2 border-1 border-(--border-color) sm:text-sm rounded-2xl bg-(--color-muted)"
-              }
-            >
-              <ChartGantt /> Update Budgets
-            </Badge>
-            <Badge
-              variant={"secondary"}
-              className={
-                "p-2 border-1 border-(--border-color) sm:text-sm rounded-2xl bg-(--color-muted) "
-              }
-            >
-              <HandCoins /> Modify Fixed Expenses
-            </Badge>
-          </div>
-        </div>
-        <div className="pointer-events-none absolute top-0 bottom-0 left-0 w-8 sm:w-16 z-20 bg-gradient-to-r from-white/90 to-transparent dark:from-[#3D3D3D]/90 dark:to-transparent" />
-        <div className="pointer-events-none absolute top-0 bottom-0 right-0 w-8 sm:w-16 z-20 bg-gradient-to-l from-white/90 to-transparent dark:from-[#3D3D3D]/90 dark:to-transparent" />
-      </div>
-      <div className="mx-auto px-8 sm:px-16 lg:px-16 py-3 flex flex-col gap-4">
-        {/* Transactions  */}
-        <div
-          className={"flex flex-col mt-2 mb-2"}
-          ref={(el) => (sectionRefs.current[1] = el)}
-          data-section={"transactions"}
-        >
-          <div className="my-5 text-lg z-20  bg-(--background) h-[55px] gap-x-3 grid grid-cols-4 items-center">
-            <h4 className={"col-span-3 mainLabelWide2"}>your transactions</h4>
-            <div
-              className={
-                "text-center mx-auto subLabel2 text-sm text-gray-700 dark:text-gray-400 border-b-2 border-blue-500 pb-1 cursor-pointer"
-              }
-              onClick={() => {
-                router.push("/view/transactions");
-              }}
-            >
-              view all
-            </div>
-          </div>
-
-          <div className="flex flex-col gap-4">
-            {/* <div className="grid grid-cols-4 gap-x-3 h-[44px] flex items-center text-gray-700 dark:text-gray-400 bg-(--background) sticky top-[91px]">
-              <div className="text-sm col-span-3 sm:col-span-2">Expense</div>
-              <div className="text-sm hidden sm:block text-center">Date</div>
-              <div className="text-sm text-center">Amount</div>
-              <Separator className={"absolute bottom-0"} />
-            </div> */}
-            {transactions.slice(0, 5).map((expense) => (
-              <div key={expense.date}>
-                <div className="hidden sm:block">
-                  <EditExpenseDialog>
-                    <Transactions expense={expense} />
-                  </EditExpenseDialog>
-                </div>
-                <div
-                  className="sm:hidden block"
-                  onClick={() => router.push("/edit")}
-                >
-                  <Transactions expense={expense} />
-                </div>
-                {/* <Separator /> */}
-              </div>
-            ))}
-          </div>
-          <Button
-            variant="outline"
-            className={"mr-auto mt-7 p-1 rounded-none border-0"}
-          >
-            <div className={"border-1 border-(--foreground) p-1"}>View All</div>
-          </Button>
-        </div>
-        {/* Budgets  */}
-        <div
-          className={"flex flex-col my-3"}
-          ref={(el) => (sectionRefs.current[2] = el)}
-          data-section={"budgets"}
-        >
-          <div className="my-5 text-lg z-20 bg-(--background) h-[55px] gap-x-3 grid grid-cols-4 items-center">
-            <div className={"col-span-3 mainLabelWide2"}>Budgets</div>
-            <div
-              className={
-                "text-center subLabel2 mx-auto text-sm text-gray-700 dark:text-gray-400 border-b-2 border-blue-500 pb-1 cursor-pointer"
-              }
-              onClick={() => {
-                router.push("/view/budgets");
-              }}
-            >
-              view all
-            </div>
-          </div>
-          <div className="flex flex-col gap-4">
-            {/* <div className="z-20 grid grid-cols-4 gap-x-3 h-[44px] items-center text-gray-700 dark:text-gray-400 bg-(--background) sticky top-[91px]">
-              <div className="text-sm col-span-3">Category</div>
-              <div className="text-sm text-center">Amount</div>
-              <Separator className={"absolute bottom-0"} />
-            </div> */}
-
-            {budgets.slice(0, 5).map((budget) => {
-              return (
-                <div key={budget.category}>
-                  <div className="grid gap-x-3 grid-cols-4  mb-3">
-                    <div className="col-span-3">
-                      <div className="flex items-center gap-4">
-                        <div
-                          style={{
-                            "--progress": `${
-                              String((budget.spent / budget.budget) * 100) + "%"
-                            }`,
-                          }}
-                          className={`h-10 w-10 flex-shrink-0 rounded-4xl  bg-[conic-gradient(#3b82f6_var(--progress),#e5e7eb_0%)] relative`}
-                        >
-                          <div className="h-8 w-8 rounded-4xl bg-(--background) flex justify-center items-center absolute top-[50%] left-[50%] transform translate-x-[-50%] translate-y-[-50%]">
-                            <div className="border border-(--border-color)/30 flex-shrink-0 bg-(--color-muted) p-2 rounded-full text-[var(--color)] dark:text-[var(--dark-color)]">
-                              <Utensils />
-                            </div>
-                          </div>
-                        </div>
-
-                        <div className="flex flex-col truncate gap-1">
-                          <div className="truncate text customLabel">
-                            {budget.category}
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="flex flex-row justify-center">
-                      <div>
-                        <div className="flex flex-col text-gray-700 dark:text-gray-400 belowLabel text-sm">
-                          {getFormattedAmount(budget.spent)} /
-                        </div>
-                        <div className="block customLabel">{budget.budget}</div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-          <Button
-            variant="outline"
-            className={"mr-auto mt-7 p-1 rounded-none border-0"}
-          >
-            <div className={"border-1 border-(--foreground) p-1"}>View All</div>
-          </Button>
-        </div>
-        {/* Fixed Expenses  */}
-        <div
-          className={"flex flex-col my-3 pb-15"}
-          ref={(el) => (sectionRefs.current[3] = el)}
-          data-section={"expenses"}
-        >
-          <div className="my-5 mb-8 text-lg z-20  bg-(--background) h-[55px] gap-x-3 grid grid-cols-4 items-center">
-            <div className={"col-span-3 mainLabelWide2"}>Fixed Expenses</div>
-            <div
-              className={
-                "text-center subLabel2 mx-auto text-sm text-gray-700 dark:text-gray-400 border-b-2 border-blue-500 pb-1 cursor-pointer"
-              }
-              onClick={() => {
-                router.push("/view/expenses");
-              }}
-            >
-              view all
-            </div>
-          </div>
-          <div className="flex flex-col gap-4">
-            {/* <div className="grid grid-cols-4 gap-x-3 h-[44px] items-center text-gray-700 dark:text-gray-400 bg-(--background) sticky top-[91px]">
-              <div className="text-sm col-span-3 sm:col-span-2">Expense</div>
-              <div className="text-sm hidden sm:block text-center">Date</div>
-              <div className="text-sm text-center">Amount</div>
-              <Separator className={"absolute bottom-0"} />
-            </div> */}
-
-            {transactions.slice(0, 5).map((expense) => {
-              return (
-                <div key={expense.date} className="">
-                  <div className="grid gap-x-3 grid-cols-4  mb-3">
-                    <div className=" col-span-3 sm:col-span-2">
-                      <div className="flex items-center gap-4">
-                        <div className="flex-shrink-0 bg-(--color-muted) p-2 rounded-full text-[var(--color)] dark:text-[var(--dark-color)]">
-                          <Utensils />
-                        </div>
-                        <div className="flex flex-col gap-1 truncate">
-                          <div className="truncate customLabel">
-                            {expense.description}
-                          </div>
-                          <div className="text-sm text-gray-700 dark:text-gray-400 belowLabel">
-                            {expense.category}
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="hidden sm:block text-center customLabel">
-                      {getFormattedDate(expense.date)}
-                    </div>
-                    <div className="flex flex-col text-center gap-1">
-                      <div className=" sm:block hidden customLabel">
-                        {getFormattedAmount(expense.amount)}
-                      </div>
-                      <div className="sm:hidden block customLabel">
-                        {getFormattedAmount(expense.amount)}
-                      </div>
-                      <div className="text-sm block sm:hidden belowLabel text-gray-700 dark:text-gray-400">
-                        {getFormattedDateShort(expense.date)}
-                      </div>
-                    </div>
-                  </div>
-                  {/* <Separator /> */}
-                </div>
-              );
-            })}
-          </div>
-          <Button
-            variant="outline"
-            className={"mr-auto mt-7 p-1 rounded-none border-0"}
-          >
-            <div className={"border-1 border-(--foreground) p-1"}>View All</div>
-          </Button>
-        </div>
-        <div className="fixed bottom-8 right-8 h-18 w-18 z-50 bg-muted/90 rounded-full sm:hidden flex justify-center items-center">
-          <Button
-            className={
-              "z-50 flex rounded-full h-13 w-13 bg-blue-500 hover:bg-blue-700 dark:hover:bg-blue-300"
-            }
-            size={"icon"}
-            onClick={() => {
-              router.push("/add");
-            }}
-          >
-            <Plus className="size-5"></Plus>
-          </Button>
-        </div>
-      </div>
     </div>
   );
 }

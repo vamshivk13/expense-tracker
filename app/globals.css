@@ -78,8 +78,8 @@
   --sidebar-ring: oklch(0.708 0 0);
   --header-height: 50px;
   --gray-dialog: oklch(18.791% 0.00162 16.574);
-  --border-color: #3d3d3d;
-  --border-color-light: #e0e0e0;
+  --border-color: #dedede;
+  --border-color-light: #e8e6e6;
 }
 
 .dark {
