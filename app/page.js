@@ -157,7 +157,7 @@ export default function Home() {
 
   const sectionRefs = useRef([]);
   const menuRef = useRef();
-  const [activeSection, setActiveSection] = useState(null);
+  const [activeSection, setActiveSection] = useState("transactions");
   const router = useRouter();
 
   console.log("active session", activeSection);
@@ -375,60 +375,55 @@ export default function Home() {
         </div>
 
         <div className="gap-2 flex-col flex mb-3">
-          <Card
-            className={
-              "rounded-sm border-none outline-none py-3 gap-0 dark:bg-[#3D3D3D] bg-[#f8f8f8]"
-            }
-          >
-            <CardContent
-              className={" border-none flex flex-col py-1 px-1 gap-5"}
-            >
-              <div className="flex gap-2 px-3">
-                <div className="rounded-xl border px-2 flex items-center bg-(--foreground) text-(--background) subLabel2">
-                  <p>today</p>
-                </div>
-                <div className="rounded-xl border px-2 py-1 flex items-center subLabel2">
-                  <p>week</p>
-                </div>
-                <div className="rounded-xl border px-2 flex items-center subLabel2">
-                  <p>month</p>
-                </div>
-              </div>
-              <div className="flex items-center">
-                <div className="px-4 sm:px-8">
+          {/* <div className="flex gap-2 px-3 ">
+            <div className="rounded-xl border px-2 flex items-center bg-(--foreground) text-(--background) subLabel2">
+              <p>today</p>
+            </div>
+            <div className="rounded-xl border px-3 py-3 flex items-center subLabel2">
+              <p>week</p>
+            </div>
+            <div className="rounded-xl border px-2 flex items-center subLabel2">
+              <p>month</p>
+            </div>
+          </div> */}
+          <div className={" border-none flex flex-col my-3 py-1 px-1 gap-5"}>
+            <div className="flex items-center justify-center">
+              {/* <div className="px-4 sm:px-8">
                   <Coins
                     className="aspect-square size-12 align-center justify-center"
                     strokeWidth={2}
                   />
-                </div>
-                <div className="flex flex-col gap-2 ">
-                  <p className="mainLabel2">Total spends</p>
-                  <div className="text-2xl flex font-bold mainLabel items-center">
-                    <div className="mainHeading">₹95,000</div>
-                    <ChevronRight />
+                </div> */}
+              <div className="flex flex-col gap-3 justify-centeritems-center">
+                <p className="subLabel2 text-center">Today's Expenses</p>
+                <div className="text-2xl flex font-bold mainLabel justify-center items-center">
+                  <div className="text-3xl tracking-wide font-semibold text-center">
+                    <span className="font-normal">₹</span>95,000
                   </div>
+                  <ChevronRight className="" size={24} strokeWidth={1} />
                 </div>
               </div>
-              <div className="flex flex-col gap-2 px-3">
-                <div className="px-3 truncate flex items-center py-1 bg-(--muted-foreground)/10 rounded-sm flex-1">
-                  <ArrowUp className="text-orange-500" size={16}></ArrowUp>
-                  <div className="px-3 subLabel2 truncate">
-                    Spent 100 more than previous day
-                  </div>
-                </div>
-                <div className="px-3 truncate flex items-center py-1 bg-(--muted-foreground)/10 rounded-sm flex-1">
-                  <ArrowUp className="text-orange-500" size={16}></ArrowUp>
-                  <div className="px-3 subLabel2 truncate">
-                    Current Spend is less than Budget
-                  </div>
+            </div>
+            {/* <div className="flex flex-col gap-2 px-3">
+              <div className="px-3 truncate flex items-center py-1 bg-(--muted-foreground)/10 rounded-sm flex-1">
+                <ArrowUp className="text-orange-500" size={16}></ArrowUp>
+                <div className="px-3 subLabel2 truncate">
+                  Spent 100 more than previous day
                 </div>
               </div>
-            </CardContent>
-          </Card>
+              <div className="px-3 truncate flex items-center py-1 bg-(--muted-foreground)/10 rounded-sm flex-1">
+                <ArrowUp className="text-orange-500" size={16}></ArrowUp>
+                <div className="px-3 subLabel2 truncate">
+                  Current Spend is less than Budget
+                </div>
+              </div>
+            </div> */}
+          </div>
         </div>
+      </div>
 
-        {/* Overview */}
-        {/* <div className="flex sm:col-span-10 col-span-2 flex-col sm:items-stretch gap-2 items-center sm:mt-0 ">
+      {/* Overview */}
+      {/* <div className="flex sm:col-span-10 col-span-2 flex-col sm:items-stretch gap-2 items-center sm:mt-0 ">
           <div className="self-start mb-2 text-sm font-bold text-gray-700 dark:text-gray-400">
             Overview
           </div>
@@ -497,7 +492,6 @@ export default function Home() {
             )}
           </div>
         </div> */}
-      </div>
       {/* Menu */}
 
       <div
