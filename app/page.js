@@ -219,7 +219,7 @@ export default function Home() {
   const targetRef = useRef(null);
 
   return (
-    <div>
+    <div className="w-full ">
       <div className="w-full pb-3 border-none z-40 py-3 relative flex flex-col gap-4 bg-(--top-container-color)">
         <div
           className="absolute inset-0 z-0"
@@ -332,46 +332,46 @@ export default function Home() {
         </div>
         <div className="h-[8px]"></div>
       </div>
-      <div className="bg-(--background) z-20 px-6 sm:px-16 lg:px-16  ">
-        <div className="flex flex-col gap-2 mt-8 mb-2">
-          <div
-            className={
-              "mr-auto font-bold mb-3 text-sm mainLabelWide text-gray-700 dark:text-gray-400 "
-            }
-          >
-            Quick Actions
-          </div>
-          <div className="-mx-8 sm:-mx-16 lg:-mx-16 overflow-x-auto relative">
-            <div className="px-8 sm:px-16 lg:px-16 overflow-x-auto flex gap-2 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden text-gray-700 dark:text-gray-400">
-              <Badge
-                variant={"secondary"}
-                className={
-                  "p-2 border-1 border-(--border-color) sm:text-sm rounded-2xl bg-(--color-muted)"
-                }
-              >
-                <Plus /> Add Expenses
-              </Badge>
-              <Badge
-                variant={"secondary"}
-                className={
-                  "p-2 border-1 border-(--border-color) sm:text-sm rounded-2xl bg-(--color-muted)"
-                }
-              >
-                <ChartGantt /> Update Budgets
-              </Badge>
-              <Badge
-                variant={"secondary"}
-                className={
-                  "p-2 border-1 border-(--border-color) sm:text-sm rounded-2xl bg-(--color-muted) "
-                }
-              >
-                <HandCoins /> Modify Fixed Expenses
-              </Badge>
-            </div>
-          </div>
-          <div className="pointer-events-none absolute top-0 bottom-0 left-0 w-8 sm:w-16 z-20 bg-gradient-to-r from-white/90 to-transparent dark:from-[#3D3D3D]/90 dark:to-transparent" />
-          <div className="pointer-events-none absolute top-0 bottom-0 right-0 w-8 sm:w-16 z-20 bg-gradient-to-l from-white/90 to-transparent dark:from-[#3D3D3D]/90 dark:to-transparent" />
+      <div className="flex flex-col gap-2 mt-8 mb-2">
+        <div
+          className={
+            "mr-auto px-6 font-bold mb-3 text-sm mainLabelWide text-gray-700 dark:text-gray-400 "
+          }
+        >
+          Quick Actions
         </div>
+        <div className="sm:-mx-16 lg:-mx-16 overflow-x-auto relative">
+          <div className="px-6 sm:px-16 lg:px-16 overflow-x-auto flex gap-2 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden text-gray-700 dark:text-gray-400">
+            <Badge
+              variant={"secondary"}
+              className={
+                "p-2 border-1 border-(--border-color) sm:text-sm rounded-2xl bg-(--color-muted)"
+              }
+            >
+              <Plus /> Add Expenses
+            </Badge>
+            <Badge
+              variant={"secondary"}
+              className={
+                "p-2 border-1 border-(--border-color) sm:text-sm rounded-2xl bg-(--color-muted)"
+              }
+            >
+              <ChartGantt /> Update Budgets
+            </Badge>
+            <Badge
+              variant={"secondary"}
+              className={
+                "p-2 border-1 border-(--border-color) sm:text-sm rounded-2xl bg-(--color-muted) "
+              }
+            >
+              <HandCoins /> Modify Fixed Expenses
+            </Badge>
+          </div>
+        </div>
+        <div className="pointer-events-none absolute top-0 bottom-0 left-0 w-8 sm:w-16 z-20 bg-gradient-to-r from-white/90 to-transparent dark:from-[#3D3D3D]/90 dark:to-transparent" />
+        <div className="pointer-events-none absolute top-0 bottom-0 right-0 w-8 sm:w-16 z-20 bg-gradient-to-l from-white/90 to-transparent dark:from-[#3D3D3D]/90 dark:to-transparent" />
+      </div>
+      <div className="bg-(--background) z-20 px-6 sm:px-16 lg:px-16  ">
         <div className="mx-auto py-3 flex flex-col gap-4">
           {/* Transactions  */}
           <div
@@ -558,20 +558,6 @@ export default function Home() {
                 View All
               </div>
             </Button>
-          </div>
-          <div className="fixed bottom-8 right-8 h-18 w-18 z-50 bg-muted/90 rounded-full sm:hidden flex justify-center items-center">
-            {/* <Button
-              className={
-                "z-50 flex rounded-full h-13 w-13 bg-blue-500 hover:bg-blue-700 dark:hover:bg-blue-300"
-              }
-              size={"icon"}
-              onClick={() => {
-                router.push("/add");
-              }}
-            >
-              <Plus className="size-5"></Plus>
-            </Button> */}
-            <AddDrawer />
           </div>
         </div>
       </div>

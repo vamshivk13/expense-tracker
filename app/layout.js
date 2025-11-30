@@ -9,6 +9,7 @@ import {
 import "./globals.css";
 import Header from "./components/Header";
 import { ThemeProvider } from "next-themes";
+import { AddDrawer } from "./components/AddDrawer";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -49,6 +50,7 @@ export default function RootLayout({ children }) {
         >
           {/* <Header /> */}
           {children}
+          <AddDrawer />
         </ThemeProvider>
       </body>
     </html>
