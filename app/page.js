@@ -358,7 +358,7 @@ export default function Home() {
 
   return (
     <div>
-      <div className="w-full pb-3 border-none z-100 py-3 relative flex flex-col gap-4">
+      <div className="w-full pb-3 border-none z-100 py-3 relative flex flex-col gap-4 bg-(--top-container-color)">
         <div
           className="absolute inset-0 z-0"
           style={{
@@ -492,7 +492,7 @@ export default function Home() {
       {/* MENU   */}
       <div
         ref={targetRef}
-        className="bg-(--background) px-10 border-b-[0.3px] rounded-b-sm sm:px-16 lg:px-16 sticky top-0 z-100"
+        className="px-10 border-b-[0.3px] bg-(--top-container-color) rounded-b-sm sm:px-16 lg:px-16 sticky top-0 z-100"
       >
         <div className="h-[8px]"></div>
         <div
