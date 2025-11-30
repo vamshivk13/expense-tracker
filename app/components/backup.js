@@ -1,10 +1,18 @@
 "use client";
 
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { Separator } from "@/components/ui/separator";
 import DateSelect from "./components/DateSelect";
 import { Badge } from "@/components/ui/badge";
-import { ChevronRight } from "lucide-react";
+import { ArrowDown, ArrowUp, ChevronRight } from "lucide-react";
 import { ArrowRightLeft } from "lucide-react";
+import { MoveDownLeft } from "lucide-react";
+import { MoveUpRight } from "lucide-react";
+import { Coins } from "lucide-react";
+import { CircleSmall } from "lucide-react";
+
+import { ChevronDown } from "lucide-react";
 
 import {
   getFormattedAmount,
@@ -12,16 +20,21 @@ import {
   getFormattedDateShort,
 } from "./util/DateUtility";
 
-import { NotepadTextDashed, HandCoins } from "lucide-react";
+import { BadgeDollarSign, NotepadTextDashed, HandCoins } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { Plus } from "lucide-react";
 import { Utensils } from "lucide-react";
 import { ChartGantt } from "lucide-react";
+import { BadgeInfo } from "lucide-react";
 
 import { useRouter } from "next/navigation";
+import AddExpenseDialog from "./components/AddExpenseDialog";
 import EditExpenseDialog from "./components/EditExpenseDialog";
 import Transactions from "./components/transactions/Transactions";
-
+import { stringToDarkHSL, stringToHSL } from "./util/ColorUtility";
+import { Arrow } from "@radix-ui/react-select";
+import { Plus_Jakarta_Sans } from "next/font/google";
+import { ChartBarDefault } from "./components/Chart";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 export default function Home() {
@@ -148,6 +161,7 @@ export default function Home() {
   const [activeSection, setActiveSection] = useState("transactions");
   const router = useRouter();
 
+  console.log("active session", activeSection);
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
@@ -213,9 +227,134 @@ export default function Home() {
     }, 2000);
   };
 
+  const [opacity, setOpacity] = useState(1);
+  const [hasScrolledToTarget, setHasScrolledToTarget] = useState(false);
   const greetingRef = useRef();
 
   const targetRef = useRef(null);
+  const [showFloating, setShowFloating] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (!targetRef.current) return;
+      const rect = targetRef.current.getBoundingClientRect();
+      console.log("TOP", rect);
+      setShowFloating(rect.top <= 100);
+    };
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    handleScroll(); // run once on mount
+
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (sectionRefs.current[0]) {
+        const fadeStart = 50; // px from top where fade starts
+        const fadeEnd = 250; // px from top where fade ends
+
+        const currentScroll = window.scrollY;
+
+        let newOpacity = 1;
+        if (currentScroll <= fadeStart) {
+          newOpacity = 1;
+        } else if (currentScroll >= fadeEnd) {
+          newOpacity = 0;
+        } else {
+          const scrolled = currentScroll - fadeStart;
+          newOpacity = 1 - scrolled / (fadeEnd - fadeStart);
+        }
+
+        setOpacity(newOpacity);
+
+        // if (!isClicked && newOpacity < 0.5 && !hasScrolledToTarget) {
+        //   console.log("Scrolling to view ", hasScrolledToTarget);
+        //   const yOffset = -105; // scroll 100px above
+        //   const y =
+        //     menuRef.current?.getBoundingClientRect().top +
+        //     window.pageYOffset +
+        //     yOffset;
+
+        //   window.scrollTo({ top: y, behavior: "smooth" });
+        //   setHasScrolledToTarget(true);
+        // }
+
+        // if (newOpacity >= 0.6 && hasScrolledToTarget) {
+        //   window.scrollTo({ top: 0, behavior: "smooth" });
+        //   setHasScrolledToTarget(false);
+        // }
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, [hasScrolledToTarget, isClicked]);
+
+  console.log("TOP", showFloating);
+  console.log("Opactity", opacity);
+
+  const titleRef = useRef([]);
+  const valueRef = useRef([]);
+
+  const [connectorStyle1, setConnectorStyle1] = useState(null);
+  const [connectorStyle, setConnectorStyle] = useState(null);
+
+  useEffect(() => {
+    const updateConnector = (titleRef, valueRef, type) => {
+      console.log("UPDATING CONNECTOR", titleRef, valueRef);
+      if (!titleRef || !valueRef) return;
+      const container = titleRef.closest(".connector-wrap") || document.body;
+      const containerRect = container.getBoundingClientRect();
+      const a = titleRef.getBoundingClientRect();
+      const b = valueRef.getBoundingClientRect();
+      const left = Math.round(a.right - containerRect.left);
+      const right = Math.round(b.left - containerRect.left);
+      const width = Math.max(0, right - left);
+      const top = Math.round((a.top + a.bottom) / 2 - containerRect.top);
+      console.log("CALCULATED CONNECTOR", { left, right, width, top });
+      if (type == "type1") {
+        setConnectorStyle1({
+          left: `${left - 4}px`,
+          width: `${width}px`,
+        });
+      } else {
+        setConnectorStyle({
+          left: `${left - 5}px`,
+          width: `${width + 2}px`,
+        });
+      }
+
+      console.log("CONNECTOR UPDATED");
+    };
+
+    const toRemove = [];
+    titleRef?.current.forEach((_, index) => {
+      console.log("SETTING UP CONNECTOR FOR INDEX", index);
+      const updateConnector1 = () =>
+        updateConnector(
+          titleRef.current[index],
+          valueRef.current[index],
+          "type" + index
+        );
+      updateConnector1();
+      window.addEventListener("resize", updateConnector1);
+      window.addEventListener("scroll", updateConnector1, { passive: true });
+      toRemove.push(updateConnector1);
+    });
+    return () => {
+      toRemove.forEach((_, index) => {
+        window.removeEventListener("resize", toRemove[index]);
+        window.removeEventListener("scroll", toRemove[index], {
+          passive: true,
+        });
+      });
+    };
+  }, [titleRef, valueRef]);
+
+  console.log("CONNECTOR STYLE", connectorStyle);
+  console.log("TITLE REF", titleRef.current);
+  console.log("VALUE REF", valueRef.current);
 
   return (
     <div>
@@ -252,8 +391,26 @@ export default function Home() {
         </div>
 
         <div className="gap-2 flex-col flex my-3">
+          {/* <div className="flex gap-2 px-3 ">
+            <div className="rounded-xl border px-2 flex items-center bg-(--foreground) text-(--background) subLabel2">
+              <p>today</p>
+            </div>
+            <div className="rounded-xl border px-3 py-3 flex items-center subLabel2">
+              <p>week</p>
+            </div>
+            <div className="rounded-xl border px-2 flex items-center subLabel2">
+              <p>month</p>
+            </div>
+          </div> */}
+
           <div className={" border-none flex flex-col my-3 py-1 px-1 gap-5"}>
             <div className="flex items-center justify-center">
+              {/* <div className="px-4 sm:px-8">
+                  <Coins
+                    className="aspect-square size-12 align-center justify-center"
+                    strokeWidth={2}
+                  />
+                </div> */}
               <div className="flex flex-col gap-3 justify-center items-center">
                 <p className="subLabel2 text-center">Today's Expenses</p>
                 <div className="text-2xl flex font-bold mainLabel justify-center items-center">
@@ -264,7 +421,72 @@ export default function Home() {
                 </div>
               </div>
             </div>
+            {/* <div className="flex flex-col gap-2 px-3">
+              <div className="px-3 truncate flex items-center py-1 bg-(--muted-foreground)/10 rounded-sm flex-1">
+                <ArrowUp className="text-orange-500" size={16}></ArrowUp>
+                <div className="px-3 subLabel2 truncate">
+                  Spent 100 more than previous day
+                </div>
+              </div>
+              <div className="px-3 truncate flex items-center py-1 bg-(--muted-foreground)/10 rounded-sm flex-1">
+                <ArrowUp className="text-orange-500" size={16}></ArrowUp>
+                <div className="px-3 subLabel2 truncate">
+                  Current Spend is less than Budget
+                </div>
+              </div>
+            </div> */}
           </div>
+          {/* <div className="truncate px-10 sm:px-16 lg:px-16 flex gap-2  place-self-stretch items-center justify-center py-1 rounded-sm w-full">
+            <CircleSmall
+              size={16}
+              className="relative"
+              ref={(el) => (titleRef.current[0] = el)}
+            ></CircleSmall>
+            <div
+              ref={(el) => (valueRef.current[0] = el)}
+              className="subLabel2 truncate"
+            >
+              Spent 100 more today
+            </div>
+            {connectorStyle && (
+              <div
+                aria-hidden
+                style={{
+                  position: "absolute",
+                  height: "1px",
+                  background: "#8A8A8A",
+                  ...connectorStyle,
+                  zIndex: 1000,
+                }}
+              />
+            )}
+          </div>
+
+          <div className="truncate px-10 sm:px-16 lg:px-16 flex gap-2  place-self-stretch items-center justify-center py-1 rounded-sm w-full">
+            <CircleSmall
+              size={16}
+              className="relative"
+              ref={(el) => (titleRef.current[0] = el)}
+            ></CircleSmall>
+            <div
+              ref={(el) => (valueRef.current[0] = el)}
+              className="subLabel2 truncate"
+            >
+              Spent 100 more today
+            </div>
+            {connectorStyle && (
+              <div
+                aria-hidden
+                style={{
+                  position: "absolute",
+                  height: "1px",
+                  background: "#8A8A8A",
+                  ...connectorStyle,
+                  zIndex: 1000,
+                }}
+              />
+            )}
+          </div> */}
         </div>
       </div>
       {/* MENU   */}
@@ -393,6 +615,12 @@ export default function Home() {
             </div>
 
             <div className="flex flex-col gap-4">
+              {/* <div className="grid grid-cols-4 gap-x-3 h-[44px] flex items-center text-gray-700 dark:text-gray-400 bg-(--background) sticky top-[91px]">
+              <div className="text-sm col-span-3 sm:col-span-2">Expense</div>
+              <div className="text-sm hidden sm:block text-center">Date</div>
+              <div className="text-sm text-center">Amount</div>
+              <Separator className={"absolute bottom-0"} />
+            </div> */}
               {transactions.slice(0, 5).map((expense) => (
                 <div key={expense.date}>
                   <div className="hidden sm:block">
@@ -406,6 +634,7 @@ export default function Home() {
                   >
                     <Transactions expense={expense} />
                   </div>
+                  {/* <Separator /> */}
                 </div>
               ))}
             </div>
@@ -438,6 +667,12 @@ export default function Home() {
               </div>
             </div>
             <div className="flex flex-col gap-4">
+              {/* <div className="z-20 grid grid-cols-4 gap-x-3 h-[44px] items-center text-gray-700 dark:text-gray-400 bg-(--background) sticky top-[91px]">
+              <div className="text-sm col-span-3">Category</div>
+              <div className="text-sm text-center">Amount</div>
+              <Separator className={"absolute bottom-0"} />
+            </div> */}
+
               {budgets.slice(0, 5).map((budget) => {
                 return (
                   <div key={budget.category}>
@@ -511,6 +746,13 @@ export default function Home() {
               </div>
             </div>
             <div className="flex flex-col gap-4">
+              {/* <div className="grid grid-cols-4 gap-x-3 h-[44px] items-center text-gray-700 dark:text-gray-400 bg-(--background) sticky top-[91px]">
+              <div className="text-sm col-span-3 sm:col-span-2">Expense</div>
+              <div className="text-sm hidden sm:block text-center">Date</div>
+              <div className="text-sm text-center">Amount</div>
+              <Separator className={"absolute bottom-0"} />
+            </div> */}
+
               {transactions.slice(0, 5).map((expense) => {
                 return (
                   <div key={expense.date} className="">
@@ -545,6 +787,7 @@ export default function Home() {
                         </div>
                       </div>
                     </div>
+                    {/* <Separator /> */}
                   </div>
                 );
               })}
@@ -573,6 +816,78 @@ export default function Home() {
           </div>
         </div>
       </div>
+      {/* Overview */}
+      {/* <div className="flex sm:col-span-10 col-span-2 flex-col sm:items-stretch gap-2 items-center sm:mt-0 ">
+          <div className="self-start mb-2 text-sm font-bold text-gray-700 dark:text-gray-400">
+            Overview
+          </div>
+          <div className="grid grid-cols-3 sm:grid-cols-6 items-center gap-5">
+            <div className="flex col-span-1 justify-center">
+              <h3
+                ref={(el) => (titleRef.current[0] = el)}
+                className="text-sm text-gray-700 dark:text-gray-400"
+              >
+                Today's Expenses
+              </h3>
+            </div>
+            <div
+              ref={(el) => (valueRef.current[0] = el)}
+              className="border-1 border-[#8A8A8A] col-span-2 sm:col-span-5 flex-1 grid grid-cols-2 text-center gap-2 p-2 sm:justify-around items-center"
+            >
+              <div className="">Rs 96,000</div>
+              <div className="text-sm font-thin flex items-center  justify-center text-gray-700 dark:text-gray-400 ">
+                <BadgeInfo className="h-3" />
+                Rs 100 <ArrowUp className="h-4" />
+              </div>
+            </div>
+            {connectorStyle && (
+              <div
+                aria-hidden
+                style={{
+                  position: "absolute",
+                  height: "1px",
+                  background: "#8A8A8A",
+                  ...connectorStyle,
+                  zIndex: 1,
+                }}
+              />
+            )}
+          </div>
+          <div className="grid grid-cols-3 sm:grid-cols-6 items-center gap-5">
+            <div className="flex col-span-1 justify-center">
+              <h3
+                ref={(el) => (titleRef.current[1] = el)}
+                className="text-sm text-gray-700 dark:text-gray-400"
+              >
+                Fixed Expenses
+              </h3>
+            </div>
+            <div
+              ref={(el) => (valueRef.current[1] = el)}
+              className="border-1 border-[#8A8A8A] col-span-2 sm:col-span-5 flex-1 grid grid-cols-2 text-center gap-2 p-2 sm:justify-around items-center"
+            >
+              <div className="">Rs 96,000</div>
+              <div className="text-sm font-thin flex items-center  justify-center text-gray-700 dark:text-gray-400 ">
+                <BadgeInfo className="h-3" />
+                70% of Income <ArrowUp className="h-4" />
+              </div>
+            </div>
+            {connectorStyle1 && (
+              <div
+                aria-hidden
+                style={{
+                  position: "absolute",
+                  height: "1px",
+                  background: "#8A8A8A",
+                  ...connectorStyle1,
+                  zIndex: 1,
+                }}
+              />
+            )}
+          </div>
+        </div> */}
+      {/* Menu */}
+      {/* Quick Actions */}
     </div>
   );
 }
