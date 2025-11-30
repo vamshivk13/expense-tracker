@@ -23,6 +23,7 @@ import EditExpenseDialog from "./components/EditExpenseDialog";
 import Transactions from "./components/transactions/Transactions";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { AddDrawer } from "./components/AddDrawer";
 
 export default function Home() {
   const transactions = [
@@ -219,7 +220,7 @@ export default function Home() {
 
   return (
     <div>
-      <div className="w-full pb-3 border-none z-100 py-3 relative flex flex-col gap-4 bg-(--top-container-color)">
+      <div className="w-full pb-3 border-none z-40 py-3 relative flex flex-col gap-4 bg-(--top-container-color)">
         <div
           className="absolute inset-0 z-0"
           style={{
@@ -270,7 +271,7 @@ export default function Home() {
       {/* MENU   */}
       <div
         ref={targetRef}
-        className="px-10 border-b-[0.3px] bg-(--top-container-color) rounded-b-sm sm:px-16 lg:px-16 sticky top-0 z-100"
+        className="px-10 border-b-[0.3px] bg-(--top-container-color) rounded-b-sm sm:px-16 lg:px-16 sticky top-0 z-40"
       >
         <div className="h-[8px]"></div>
         <div
@@ -559,7 +560,7 @@ export default function Home() {
             </Button>
           </div>
           <div className="fixed bottom-8 right-8 h-18 w-18 z-50 bg-muted/90 rounded-full sm:hidden flex justify-center items-center">
-            <Button
+            {/* <Button
               className={
                 "z-50 flex rounded-full h-13 w-13 bg-blue-500 hover:bg-blue-700 dark:hover:bg-blue-300"
               }
@@ -569,7 +570,8 @@ export default function Home() {
               }}
             >
               <Plus className="size-5"></Plus>
-            </Button>
+            </Button> */}
+            <AddDrawer />
           </div>
         </div>
       </div>

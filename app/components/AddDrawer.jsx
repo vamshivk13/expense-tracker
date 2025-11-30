@@ -31,7 +31,7 @@ export function AddDrawer() {
         </Button>
       </DrawerTrigger>
       <DrawerContent>
-        <div className="mx-auto w-full h-lvh z-50 max-w-sm">
+        <div className="mx-auto w-full h-lvh z-1500 max-w-sm">
           <DrawerHeader>
             <DrawerTitle className={"mr-auto"}>New Expense</DrawerTitle>
           </DrawerHeader>
