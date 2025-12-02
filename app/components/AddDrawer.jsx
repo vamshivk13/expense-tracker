@@ -49,6 +49,11 @@ export function AddDrawer() {
                 />
               </div>
             </div>
+            <div>
+              <div className="border border-(--border-color) rounded-full px-4 py-2 w-max subLabel2 text-muted-foreground hover:bg-secondary/60 cursor-pointer mb-4">
+                Others
+              </div>
+            </div>
             {/* Amount Numbers Gird */}
             <div>
               <div className="w-full grid grid-cols-4 gap-4">
