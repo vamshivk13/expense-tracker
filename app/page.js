@@ -335,12 +335,12 @@ export default function Home() {
       <div className="flex flex-col gap-2 mt-8 mb-2">
         <div
           className={
-            "mr-auto px-6 font-bold mb-3 text-sm mainLabelWide text-gray-700 dark:text-gray-400 "
+            "mr-auto px-6 sm:px-16 lg:px-16 font-bold mb-3 text-sm mainLabelWide text-gray-700 dark:text-gray-400 "
           }
         >
           Quick Actions
         </div>
-        <div className="sm:-mx-16 lg:-mx-16 overflow-x-auto relative">
+        <div className="overflow-x-auto relative">
           <div className="px-6 sm:px-16 lg:px-16 overflow-x-auto flex gap-2 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden text-gray-700 dark:text-gray-400">
             <Badge
               variant={"secondary"}
