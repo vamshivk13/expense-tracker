@@ -4,11 +4,12 @@ import * as React from "react";
 import { Plus } from "lucide-react";
 import { CalendarDays } from "lucide-react";
 
-import { Check } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Drawer, DrawerContent, DrawerTrigger } from "@/components/ui/drawer";
 import { ArrowLeft } from "lucide-react";
 import { ChevronsUpDown } from "lucide-react";
+import { Card, CardContent } from "@/components/ui/card";
 
 export function AddDrawer() {
   const [expenseAmount, setExpenseAmount] = React.useState("0");
@@ -51,50 +52,50 @@ export function AddDrawer() {
                   />
                 </div>
               </div>
-              <div className="my-1 flex w-full gap-2">
-                <div className="flex w-full flex-1">
-                  <input
-                    className="outline-none w-full p-3 rounded-sm sm:subLabel subLabel2 border-none shadow-none bg-secondary/40"
-                    placeholder="Add Note"
-                  ></input>
-                </div>
-                <div className="flex gap-2 items-center">
-                  <div className="border border-(--border-color) rounded-full px-2 py-2 sm:subLabel subLabel2 text-muted-foreground hover:bg-secondary/60 cursor-pointer">
-                    Others
-                  </div>
-                </div>
-              </div>
-              <div className="w-full relative grid grid-cols-3 items-center mt-4 mb-4 gap-2">
-                <input
-                  className="outline-none p-3 rounded-sm subLabel2 border-none w-full shadow-none bg-secondary/40"
-                  placeholder="Add Tag"
-                ></input>
-                <div className="flex col-span-2">
-                  <div className="flex gap-1 relative items-center overflow-x-auto [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
-                    <div className="flex gap-1 overflow-x-auto [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
-                      <div className="border border-(--border-color) rounded-full px-2 py-1 subLabel2 text-muted-foreground hover:bg-secondary/60 cursor-pointer">
-                        Tea
-                      </div>
-                      <div className="border border-(--border-color) rounded-full px-2 py-1 subLabel2 text-muted-foreground hover:bg-secondary/60 cursor-pointer">
-                        Groceries
-                      </div>
-                      <div className="border border-(--border-color) rounded-full px-2 py-1 subLabel2 text-muted-foreground hover:bg-secondary/60 cursor-pointer">
-                        Groceries
-                      </div>
-                      <div className="border border-(--border-color) rounded-full px-2 py-1 subLabel2 text-muted-foreground hover:bg-secondary/60 cursor-pointer">
-                        Groceries
-                      </div>
-                      <div className="border border-(--border-color) rounded-full px-2 py-1 subLabel2 text-muted-foreground hover:bg-secondary/60 cursor-pointer">
-                        Groceries
+              {/* Note and Category */}
+              <Card className=" bg-secondary/70 p-0 border-none mt-4 mb-6">
+                <CardContent className="py-1 px-2">
+                  <div className="my-1 flex w-full gap-2">
+                    <div className="flex w-full flex-1">
+                      <input
+                        className="outline-none w-full p-3 rounded-sm sm:subLabel subLabel2 border-none shadow-none"
+                        placeholder="Add Note"
+                      ></input>
+                    </div>
+                    <div className="flex gap-2 items-center">
+                      <div className="border border-(--border-color) rounded-full px-2 py-1 sm:subLabel subLabel2 bg-foreground text-background hover:bg-secondary/60 cursor-pointer">
+                        Others
                       </div>
                     </div>
-                    <div className="pointer-events-none absolute top-0 bottom-0 right-0 w-1 sm:w-4 z-5 bg-gradient-to-l from-white/90 to-transparent dark:from-[#3D3D3D]/90 dark:to-transparent" />
                   </div>
-                  <div className="aspect-square px-1 py-1 items-center bg-background flex ">
-                    <ChevronsUpDown size={16} />
+                  {/* Tag */}
+                  <div className="w-full relative grid grid-cols-3 items-center my-1 gap-2">
+                    <input
+                      className="outline-none p-3 rounded-sm subLabel2 border-none w-full shadow-none"
+                      placeholder="Add Tag"
+                    ></input>
+                    <div className="flex col-span-2">
+                      <div className="flex gap-1 relative items-center overflow-x-auto [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
+                        <div className="flex gap-1  overflow-x-auto [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
+                          <div className="border bg-foreground text-background border-(--border-color) rounded-full px-2 py-1 subLabel2 hover:bg-secondary/60 cursor-pointer">
+                            Tea
+                          </div>
+                          <div className="border bg-foreground text-background border-(--border-color) rounded-full px-2 py-1 subLabel2 hover:bg-secondary/60 cursor-pointer">
+                            Water
+                          </div>
+                          <div className="border bg-foreground text-background border-(--border-color) rounded-full px-2 py-1 subLabel2 hover:bg-secondary/60 cursor-pointer">
+                            Grocery
+                          </div>
+                        </div>
+                        {/* <div className="pointer-events-none absolute top-0 bottom-0 right-0 w-1 sm:w-4 z-5 bg-gradient-to-l from-white/90 to-transparent dark:from-[#3D3D3D]/90 dark:to-transparent" /> */}
+                      </div>
+                      <div className="aspect-square px-1 border  rounded-r-full py-1 items-center flex ">
+                        <ChevronsUpDown size={12} />
+                      </div>
+                    </div>
                   </div>
-                </div>
-              </div>
+                </CardContent>
+              </Card>
             </div>
             {/* Amount Numbers Gird */}
             <div className="flex-grow flex items-stretch pb-4">
@@ -103,10 +104,13 @@ export function AddDrawer() {
                   {[1, 2, 3, 4, 5, 6, 7, 8, 9, ".", 0].map((item) => (
                     <Button
                       key={item}
-                      className="h-20 w-20 rounded-full font-semibold text-xl active:scale-95 active:bg-secondary transition-all duration-300"
+                      className="h-18 w-18 rounded-full font-semibold text-xl active:scale-95 active:bg-secondary transition-all duration-300"
                       onClick={() => {
                         setExpenseAmount((prev) => {
-                          return prev === "0"
+                          if (prev.includes(".") && item === ".") {
+                            return prev;
+                          }
+                          return prev == "0"
                             ? item.toString()
                             : prev + item.toString();
                         });
