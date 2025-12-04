@@ -6,13 +6,48 @@ import { CalendarDays } from "lucide-react";
 
 import { ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Drawer, DrawerContent, DrawerTrigger } from "@/components/ui/drawer";
+import {
+  Drawer,
+  DrawerClose,
+  DrawerContent,
+  DrawerTrigger,
+} from "@/components/ui/drawer";
 import { ArrowLeft } from "lucide-react";
 import { ChevronsUpDown } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
+import { description } from "./Chart";
 
-export function AddDrawer() {
+export function AddDrawer({ setTransactions }) {
   const [expenseAmount, setExpenseAmount] = React.useState("0");
+  const [note, setNote] = React.useState("");
+  const [category, setCategory] = React.useState("Others");
+  const [tag, setTag] = React.useState("");
+  const [allTags, setAllTags] = React.useState([]);
+  const [expense, setExpense] = React.useState({
+    amount: 0,
+    note: "",
+    category: "Others",
+    tags: [],
+    date: new Date(),
+  });
+
+  const handleAddExpense = () => {
+    const newExpense = {
+      amount: parseFloat(expenseAmount),
+      description: note || category + " Expense",
+      category: category,
+      tags: allTags,
+      date: new Date(),
+    };
+    setExpense(newExpense);
+    setTransactions((prev) => [newExpense, ...prev]);
+
+    // Reset fields
+    setExpenseAmount("0");
+    setNote("");
+    setCategory("Others");
+    setTag("");
+  };
 
   return (
     <Drawer className="p-0">
@@ -60,6 +95,7 @@ export function AddDrawer() {
                       <input
                         className="outline-none w-full p-3 rounded-sm sm:subLabel subLabel2 border-none shadow-none"
                         placeholder="Add Note"
+                        onChange={(e) => setNote(e.target.value)}
                       ></input>
                     </div>
                     <div className="flex gap-2 items-center">
@@ -70,28 +106,40 @@ export function AddDrawer() {
                   </div>
                   {/* Tag */}
                   <div className="w-full relative grid grid-cols-3 items-center my-1 gap-2">
-                    <input
-                      className="outline-none p-3 rounded-sm subLabel2 border-none w-full shadow-none"
-                      placeholder="Add Tag"
-                    ></input>
+                    <form
+                      onSubmit={(e) => {
+                        e.preventDefault();
+                        if (tag && !allTags.includes(tag)) {
+                          setAllTags((prev) => [...prev, tag]);
+                          setTag("");
+                        }
+                      }}
+                    >
+                      <input
+                        className="outline-none p-3 rounded-sm subLabel2 border-none w-full shadow-none"
+                        placeholder="Add Tag"
+                        onChange={(e) => setTag(e.target.value)}
+                      ></input>
+                    </form>
                     <div className="flex col-span-2">
                       <div className="flex gap-1 relative items-center overflow-x-auto [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
                         <div className="flex gap-1  overflow-x-auto [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
-                          <div className="border bg-foreground text-background border-(--border-color) rounded-full px-2 py-1 subLabel2 hover:bg-secondary/60 cursor-pointer">
-                            Tea
-                          </div>
-                          <div className="border bg-foreground text-background border-(--border-color) rounded-full px-2 py-1 subLabel2 hover:bg-secondary/60 cursor-pointer">
-                            Water
-                          </div>
-                          <div className="border bg-foreground text-background border-(--border-color) rounded-full px-2 py-1 subLabel2 hover:bg-secondary/60 cursor-pointer">
-                            Grocery
-                          </div>
+                          {allTags.map((tagItem, index) => (
+                            <div
+                              key={tagItem}
+                              className="border bg-foreground text-background border-(--border-color) rounded-full px-2 py-1 subLabel2 hover:bg-secondary/60 cursor-pointer"
+                            >
+                              {tagItem}
+                            </div>
+                          ))}
                         </div>
                         {/* <div className="pointer-events-none absolute top-0 bottom-0 right-0 w-1 sm:w-4 z-5 bg-gradient-to-l from-white/90 to-transparent dark:from-[#3D3D3D]/90 dark:to-transparent" /> */}
                       </div>
-                      <div className="aspect-square px-1 border  rounded-r-full py-1 items-center flex ">
-                        <ChevronsUpDown size={12} />
-                      </div>
+                      {allTags != null && allTags.length != 0 && (
+                        <div className="aspect-square px-1 border  rounded-r-full py-1 items-center flex ">
+                          <ChevronsUpDown size={12} />
+                        </div>
+                      )}
                     </div>
                   </div>
                 </CardContent>
@@ -119,12 +167,15 @@ export function AddDrawer() {
                       {item}
                     </Button>
                   ))}
-                  <Button
-                    variant="outline"
-                    className="h-20 w-20 rounded-full mainLabel bg-orange-400 flex-col font-semibold text-md active:scale-95 active:bg-secondary transition-all duration-300"
-                  >
-                    <div>Save</div>
-                  </Button>
+                  <DrawerClose asChild>
+                    <Button
+                      onClick={handleAddExpense}
+                      variant="outline"
+                      className="h-20 w-20 rounded-full mainLabel bg-orange-400 flex-col font-semibold text-md active:scale-95 active:bg-secondary transition-all duration-300"
+                    >
+                      Save
+                    </Button>
+                  </DrawerClose>
                 </div>
               </div>
             </div>

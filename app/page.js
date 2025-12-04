@@ -26,78 +26,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { AddDrawer } from "./components/AddDrawer";
 
 export default function Home() {
-  const transactions = [
-    {
-      description: "Grocery shopping at Reliance Fresh",
-      tag: "groceries",
-      amount: 2200.5,
-      date: "2025-07-10",
-      category: "Food & Essentials",
-    },
-    {
-      description: "Uber to office",
-      tag: "commute",
-      amount: 185.75,
-      date: "2025-07-11",
-      category: "Transport",
-    },
-    {
-      description: "Monthly Netflix subscription",
-      tag: "entertainment",
-      amount: 649.0,
-      date: "2025-07-01",
-      category: "Subscriptions",
-    },
-    {
-      description: "Lunch at Café Madras",
-      tag: "dining",
-      amount: 430.0,
-      date: "2025-07-12",
-      category: "Food & Dining",
-    },
-    {
-      description: "Mobile recharge - Airtel",
-      tag: "utilities",
-      amount: 299.0,
-      date: "2025-07-05",
-      category: "Utilities",
-    },
-    {
-      description: "Bought React course on Udemy",
-      tag: "education",
-      amount: 1299.0,
-      date: "2025-07-07",
-      category: "Learning",
-    },
-    {
-      description: "Domino's Friday treat",
-      tag: "dining",
-      amount: 799.0,
-      date: "2025-07-13",
-      category: "Food & Dining",
-    },
-    {
-      description: "Medicines from Apollo Pharmacy",
-      tag: "health",
-      amount: 560.25,
-      date: "2025-07-08",
-      category: "Healthcare",
-    },
-    {
-      description: "Internet bill - JioFiber",
-      tag: "utilities",
-      amount: 999.0,
-      date: "2025-07-03",
-      category: "Utilities",
-    },
-    {
-      description: "Gift for friend's birthday",
-      tag: "gift",
-      amount: 1500.0,
-      date: "2025-07-09",
-      category: "Personal",
-    },
-  ];
+  const [transactions, setTransactions] = useState([]);
 
   const budgets = [
     {
@@ -561,7 +490,7 @@ export default function Home() {
           </div>
         </div>
       </div>
-      <AddDrawer />
+      <AddDrawer setTransactions={setTransactions} />
     </div>
   );
 }
