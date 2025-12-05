@@ -21,12 +21,38 @@ import { ChartGantt } from "lucide-react";
 import { useRouter } from "next/navigation";
 import EditExpenseDialog from "./components/EditExpenseDialog";
 import Transactions from "./components/transactions/Transactions";
-
+import { ref, onValue, db, update } from "./firebaseConfig";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { AddDrawer } from "./components/AddDrawer";
 
 export default function Home() {
   const [transactions, setTransactions] = useState([]);
+
+  // READ Operation: Listen for real-time updates
+  useEffect(() => {
+    const itemsRef = ref(db, "expenses");
+    const unsubscribe = onValue(itemsRef, (snapshot) => {
+      const data = snapshot.val();
+      const loadedItems = [];
+      for (const key in data) {
+        loadedItems.push({ id: key, data: data[key] });
+      }
+      console.log("Loaded items:", loadedItems);
+      setTransactions(
+        loadedItems.map(({ id, data }) => ({
+          id: id,
+          amount: data.amount,
+          description: data.description,
+          category: data.category,
+          date: data.date,
+          tags: data.tags,
+        }))
+      );
+    });
+
+    // Clean up the listener when the component unmounts
+    return () => unsubscribe();
+  }, []);
 
   const budgets = [
     {
@@ -310,43 +336,53 @@ export default function Home() {
           >
             <div className="my-5 text-lg z-20  bg-(--background) h-[55px] gap-x-3 grid grid-cols-4 items-center">
               <h4 className={"col-span-3 mainLabelWide2"}>your transactions</h4>
-              <div
-                className={
-                  "text-center mx-auto subLabel2 text-sm text-gray-700 dark:text-gray-400 border-b-2 border-blue-500 pb-1 cursor-pointer"
-                }
-                onClick={() => {
-                  router.push("/view/transactions");
-                }}
-              >
-                view all
-              </div>
+              {transactions != null && transactions.length != 0 && (
+                <div
+                  className={
+                    "text-center mx-auto subLabel2 text-sm text-gray-700 dark:text-gray-400 border-b-2 border-blue-500 pb-1 cursor-pointer"
+                  }
+                  onClick={() => {
+                    router.push("/view/transactions");
+                  }}
+                >
+                  view all
+                </div>
+              )}
             </div>
 
-            <div className="flex flex-col gap-4">
-              {transactions.slice(0, 5).map((expense) => (
-                <div key={expense.date}>
-                  <div className="hidden sm:block">
-                    <EditExpenseDialog>
-                      <Transactions expense={expense} />
-                    </EditExpenseDialog>
-                  </div>
-                  <div
-                    className="sm:hidden block"
-                    onClick={() => router.push("/edit")}
-                  >
-                    <Transactions expense={expense} />
-                  </div>
-                </div>
-              ))}
-            </div>
-            <Button
-              variant="outline"
-              className={"mr-auto mt-7 p-1 rounded-none border-0"}
-            >
-              <div className={"border-1 border-(--foreground) p-1"}>
-                View All
+            {transactions.length == 0 ? (
+              <div className="subLabel2 bg-secondary/50 p-4 rounded-md text-center text-gray-700 dark:text-gray-400">
+                You dont have any transactions yet, Add some to see them here.
               </div>
-            </Button>
+            ) : (
+              <div className="flex flex-col gap-4">
+                {transactions.slice(0, 5).map((expense) => (
+                  <div key={expense.date}>
+                    <div className="hidden sm:block">
+                      <EditExpenseDialog>
+                        <Transactions expense={expense} />
+                      </EditExpenseDialog>
+                    </div>
+                    <div
+                      className="sm:hidden block"
+                      onClick={() => router.push("/edit")}
+                    >
+                      <Transactions expense={expense} />
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+            {transactions != null && transactions.length != 0 && (
+              <Button
+                variant="outline"
+                className={"mr-auto mt-7 p-1 rounded-none border-0"}
+              >
+                <div className={"border-1 border-(--foreground) p-1"}>
+                  View All
+                </div>
+              </Button>
+            )}
           </div>
           {/* Budgets  */}
           <div

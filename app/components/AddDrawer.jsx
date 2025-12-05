@@ -15,7 +15,7 @@ import {
 import { ArrowLeft } from "lucide-react";
 import { ChevronsUpDown } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
-import { description } from "./Chart";
+import { ref, onValue, db, update, push, set } from "../firebaseConfig";
 
 export function AddDrawer({ setTransactions }) {
   const [expenseAmount, setExpenseAmount] = React.useState("0");
@@ -23,13 +23,6 @@ export function AddDrawer({ setTransactions }) {
   const [category, setCategory] = React.useState("Others");
   const [tag, setTag] = React.useState("");
   const [allTags, setAllTags] = React.useState([]);
-  const [expense, setExpense] = React.useState({
-    amount: 0,
-    note: "",
-    category: "Others",
-    tags: [],
-    date: new Date(),
-  });
 
   const handleAddExpense = () => {
     const newExpense = {
@@ -39,14 +32,26 @@ export function AddDrawer({ setTransactions }) {
       tags: allTags,
       date: new Date(),
     };
-    setExpense(newExpense);
     setTransactions((prev) => [newExpense, ...prev]);
 
+    // ADD TO FIREBASE REALTIME DATABASE
+    const expensesRef = ref(db, "expenses/");
+    const newExpenseRef = push(expensesRef);
+    const dataToSave = { ...newExpense, date: newExpense.date.toISOString() };
+    set(newExpenseRef, dataToSave).catch((err) =>
+      console.error("Failed to save expense:", err)
+    );
+
     // Reset fields
+    resetFields();
+  };
+
+  const resetFields = () => {
     setExpenseAmount("0");
     setNote("");
     setCategory("Others");
     setTag("");
+    setAllTags([]);
   };
 
   return (
