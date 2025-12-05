@@ -13,7 +13,7 @@ export default function Page() {
         </div>
       </div>
       <AddExpense />
-      <div className="absolute bottom-10 right-10 flex-1/4 flex items-center">
+      <div className="fixed bottom-10 right-10 flex-1/4 flex items-center">
         <Button
           className={
             "ml-auto rounded-full h-14 w-14 bg-blue-500 hover:bg-blue-700 dark:hover:bg-blue-300"
