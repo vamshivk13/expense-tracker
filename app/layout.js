@@ -10,6 +10,7 @@ import "./globals.css";
 import Header from "./components/Header";
 import { ThemeProvider } from "next-themes";
 import { AddDrawer } from "./components/AddDrawer";
+import { Suspense } from "react";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -49,7 +50,10 @@ export default function RootLayout({ children }) {
           disableTransitionOnChange
         >
           {/* <Header /> */}
-          {children}
+          <Suspense fallback={<div>Loading...</div>}>
+            {/* <AddDrawer /> */}
+            {children}
+          </Suspense>
         </ThemeProvider>
       </body>
     </html>
