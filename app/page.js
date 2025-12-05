@@ -24,11 +24,12 @@ import Transactions from "./components/transactions/Transactions";
 import { ref, onValue, db, update } from "./firebaseConfig";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { AddDrawer } from "./components/AddDrawer";
+import { Spinner } from "@/components/ui/spinner";
 
 export default function Home() {
   const [transactions, setTransactions] = useState([]);
+  const [isTransactionsLoading, setIsTransactionsLoading] = useState(true);
 
-  // READ Operation: Listen for real-time updates
   useEffect(() => {
     const itemsRef = ref(db, "expenses");
     const unsubscribe = onValue(itemsRef, (snapshot) => {
@@ -48,9 +49,9 @@ export default function Home() {
           tags: data.tags,
         }))
       );
+      setIsTransactionsLoading(false);
     });
 
-    // Clean up the listener when the component unmounts
     return () => unsubscribe();
   }, []);
 
@@ -336,21 +337,29 @@ export default function Home() {
           >
             <div className="my-5 text-lg z-20  bg-(--background) h-[55px] gap-x-3 grid grid-cols-4 items-center">
               <h4 className={"col-span-3 mainLabelWide2"}>your transactions</h4>
-              {transactions != null && transactions.length != 0 && (
-                <div
-                  className={
-                    "text-center mx-auto subLabel2 text-sm text-gray-700 dark:text-gray-400 border-b-2 border-blue-500 pb-1 cursor-pointer"
-                  }
-                  onClick={() => {
-                    router.push("/view/transactions");
-                  }}
-                >
-                  view all
-                </div>
-              )}
+              {transactions != null &&
+                transactions.length != 0 &&
+                !isTransactionsLoading && (
+                  <div
+                    className={
+                      "text-center mx-auto subLabel2 text-sm text-gray-700 dark:text-gray-400 border-b-2 border-blue-500 pb-1 cursor-pointer"
+                    }
+                    onClick={() => {
+                      router.push("/view/transactions");
+                    }}
+                  >
+                    view all
+                  </div>
+                )}
             </div>
+            {isTransactionsLoading && (
+              <div className="flex w-full subLabel2 gap-2 justify-center items-center">
+                <Spinner />
+                <div> Loading transactions...</div>
+              </div>
+            )}
 
-            {transactions.length == 0 ? (
+            {!isTransactionsLoading && transactions.length == 0 ? (
               <div className="subLabel2 bg-secondary/50 p-4 rounded-md text-center text-gray-700 dark:text-gray-400">
                 You dont have any transactions yet, Add some to see them here.
               </div>
