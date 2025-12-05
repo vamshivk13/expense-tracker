@@ -13,7 +13,7 @@ import {
 } from "./util/DateUtility";
 
 import { NotepadTextDashed, HandCoins } from "lucide-react";
-import { useEffect, useRef, useState } from "react";
+import { Suspense, useEffect, useRef, useState } from "react";
 import { Plus } from "lucide-react";
 import { Utensils } from "lucide-react";
 import { ChartGantt } from "lucide-react";
@@ -188,7 +188,7 @@ export default function Home() {
   };
 
   return (
-    <div>
+    <Suspense fallback={<div>Loading...</div>}>
       {view == null && (
         <div className="w-full ">
           <div className="w-full pb-3 border-none z-40 py-3 relative flex flex-col gap-4 bg-(--top-container-color)">
@@ -582,6 +582,6 @@ export default function Home() {
           />
         </div>
       </div>
-    </div>
+    </Suspense>
   );
 }
