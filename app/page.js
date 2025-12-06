@@ -36,6 +36,7 @@ import { AddDrawer } from "./components/AddDrawer";
 import { Spinner } from "@/components/ui/spinner";
 import EditExpense from "./components/EditExpense";
 import { Arrow } from "@radix-ui/react-select";
+import ViewTransactions from "./view/transactions/ViewTransactions";
 
 export default function Home() {
   const [transactions, setTransactions] = useState([]);
@@ -388,7 +389,9 @@ export default function Home() {
                         className={
                           "text-center mx-auto subLabel2 text-sm text-gray-700 dark:text-gray-400 border-b-2 border-blue-500 pb-1 cursor-pointer"
                         }
-                        onClick={() => {}}
+                        onClick={() => {
+                          goTo("viewTransactions");
+                        }}
                       >
                         view all
                       </div>
@@ -432,6 +435,9 @@ export default function Home() {
                 {transactions != null && transactions.length != 0 && (
                   <Button
                     variant="outline"
+                    onClick={() => {
+                      goTo("viewTransactions");
+                    }}
                     className={"mr-auto mt-7 p-1 rounded-none border-0"}
                   >
                     <div className={"border-1 border-(--foreground) p-1"}>
@@ -602,6 +608,25 @@ export default function Home() {
             expense={currentExpense}
             goTo={goTo}
             setTransactions={setTransactions}
+          />
+        </div>
+      </div>
+
+      <div
+        className={`
+    fixed inset-x-0 bottom-0 z-[120] 
+    h-full w-full bg-background 
+    transition-transform duration-300 ease-in-out
+    rounded-t-2xl shadow-lg
+    ${view == "viewTransactions" ? "translate-y-0" : "translate-y-full"}
+  `}
+      >
+        <div className="">
+          <ViewTransactions
+            transactions={transactions}
+            goTo={goTo}
+            setTransactions={setTransactions}
+            setCurrentExpense={setCurrentExpense}
           />
         </div>
       </div>

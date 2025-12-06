@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Separator } from "@radix-ui/react-select";
 import { Utensils, Plus } from "lucide-react";
 
-export default function ExpensesView() {
+export default function ViewFixedExpenses() {
   const transactions = [
     {
       description: "Grocery shopping at Reliance Fresh",
