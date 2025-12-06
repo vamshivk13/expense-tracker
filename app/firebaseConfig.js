@@ -8,6 +8,10 @@ import {
   onValue,
   update,
   remove,
+  query,
+  orderByChild,
+  startAt,
+  endAt,
 } from "firebase/database";
 
 const firebaseConfig = {
@@ -24,4 +28,16 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
 
-export { db, ref, push, set, onValue, update, remove };
+export {
+  db,
+  ref,
+  push,
+  set,
+  onValue,
+  update,
+  remove,
+  query,
+  orderByChild,
+  startAt,
+  endAt,
+};

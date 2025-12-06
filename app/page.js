@@ -21,7 +21,16 @@ import { ChartGantt } from "lucide-react";
 import { useRouter, useSearchParams } from "next/navigation";
 import EditExpenseDialog from "./components/EditExpenseDialog";
 import Transactions from "./components/transactions/Transactions";
-import { ref, onValue, db, update } from "./firebaseConfig";
+import {
+  ref,
+  onValue,
+  db,
+  update,
+  query,
+  orderByChild,
+  startAt,
+  endAt,
+} from "./firebaseConfig";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { AddDrawer } from "./components/AddDrawer";
 import { Spinner } from "@/components/ui/spinner";
@@ -32,10 +41,22 @@ export default function Home() {
   const [transactions, setTransactions] = useState([]);
   const [currentExpense, setCurrentExpense] = useState(null);
   const [isTransactionsLoading, setIsTransactionsLoading] = useState(true);
-
   useEffect(() => {
-    const itemsRef = ref(db, "expenses");
-    const unsubscribe = onValue(itemsRef, (snapshot) => {
+    let month = new Date().getMonth();
+    let year = new Date().getFullYear();
+    const mm = String(month + 1).padStart(2, "0");
+
+    const start = `${year}-${mm}-01T00:00:00.000Z`;
+    const end = `${year}-${mm}-31T23:59:59.999Z`;
+
+    const q = query(
+      ref(db, `expenses`),
+      orderByChild("date"),
+      startAt(start),
+      endAt(end)
+    );
+
+    const unsubscribe = onValue(q, (snapshot) => {
       const data = snapshot.val();
       const loadedItems = [];
       for (const key in data) {
@@ -43,14 +64,16 @@ export default function Home() {
       }
       console.log("Loaded items:", loadedItems);
       setTransactions(
-        loadedItems.map(({ id, data }) => ({
-          id: id,
-          amount: data.amount,
-          description: data.description,
-          category: data.category,
-          date: data.date,
-          tags: data.tags,
-        }))
+        loadedItems
+          .map(({ id, data }) => ({
+            id: id,
+            amount: data.amount,
+            description: data.description,
+            category: data.category,
+            date: data.date,
+            tags: data.tags,
+          }))
+          .sort((a, b) => new Date(b.date) - new Date(a.date))
       );
       setIsTransactionsLoading(false);
     });
@@ -515,7 +538,7 @@ export default function Home() {
                 <div className="flex flex-col gap-4">
                   {transactions.slice(0, 5).map((expense) => {
                     return (
-                      <div key={expense.date} className="">
+                      <div key={expense.id} className="">
                         <div className="grid gap-x-3 grid-cols-4  mb-3">
                           <div className=" col-span-3 sm:col-span-2">
                             <div className="flex items-center gap-4">
