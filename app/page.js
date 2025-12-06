@@ -42,6 +42,20 @@ export default function Home() {
   const [transactions, setTransactions] = useState([]);
   const [currentExpense, setCurrentExpense] = useState(null);
   const [isTransactionsLoading, setIsTransactionsLoading] = useState(true);
+  const [todaysExpense, setTodaysExpense] = useState(0);
+
+  useEffect(() => {
+    // Calculate today's expenses
+    const today = new Date();
+    const todayString = today.toISOString().split("T")[0];
+
+    const total = transactions
+      .filter((tx) => tx.date.startsWith(todayString))
+      .reduce((sum, tx) => sum + tx.amount, 0);
+
+    setTodaysExpense(total);
+  }, [transactions]);
+
   useEffect(() => {
     let month = new Date().getMonth();
     let year = new Date().getFullYear();
@@ -258,7 +272,8 @@ export default function Home() {
                     <p className="subLabel2 text-center">Today's Expenses</p>
                     <div className="text-2xl flex font-bold mainLabel justify-center items-center">
                       <div className="text-3xl tracking-wide font-semibold text-center">
-                        <span className="font-normal">₹</span>95,000
+                        <span className="font-normal">₹</span>
+                        {todaysExpense}
                       </div>
                       <ChevronRight className="" size={24} strokeWidth={1} />
                     </div>

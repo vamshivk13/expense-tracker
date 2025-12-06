@@ -19,7 +19,7 @@ export default function Transactions({ expense }) {
               <Utensils />
             </div>
             <div className="flex flex-col truncate gap-1">
-              <div className="truncate uppercase customLabel">
+              <div className="truncate mainLabel2 font-semibold tracking-normal">
                 {expense.description}
               </div>
               <div className="text-sm lowercase text-gray-700 dark:text-gray-400 belowLabel">
