@@ -251,7 +251,7 @@ export default function Home() {
     <Suspense fallback={<div>Loading...</div>}>
       {view == null && (
         <div className="w-full ">
-          <div className="w-full pb-3 border-none z-40 py-3 relative flex flex-col gap-4 bg-(--top-container-color)">
+          <div className="w-full pb-3 border-none z-30 py-3 relative flex flex-col gap-4 bg-(--top-container-color)">
             <div
               className="absolute inset-0 z-0"
               style={{
@@ -268,7 +268,7 @@ export default function Home() {
             />
 
             <div
-              className="flex px-6 sm:px-16 lg:px-16 items-center border-none justify-around gap-2 mt-3 mb-6 my-3 sticky h-[50px] z-40"
+              className="flex px-6 sm:px-16 lg:px-16 items-center border-none justify-around gap-2 mt-3 mb-6 my-3 sticky h-[50px] z-30"
               ref={greetingRef}
             >
               <div className="h-full aspect-square p-1/2 bg-black rounded-full">
@@ -324,7 +324,7 @@ export default function Home() {
           {/* MENU   */}
           <div
             ref={targetRef}
-            className="px-10 border-none border-b-[0.3px] bg-(--top-container-color) rounded-b-sm sm:px-16 lg:px-16 sticky top-0 z-40"
+            className="px-10 border-none border-b-[0.3px] bg-(--top-container-color) rounded-b-sm sm:px-16 lg:px-16 sticky top-0 z-30"
           >
             <div className="h-[8px]"></div>
             <div
@@ -650,7 +650,7 @@ export default function Home() {
       )}
       <div
         className={`
-    fixed inset-x-0 bottom-0 z-[120] 
+    fixed inset-x-0 bottom-0 z-40] 
     h-full w-full bg-background 
     transition-transform duration-300 ease-in-out
     rounded-t-2xl shadow-lg
@@ -669,7 +669,7 @@ export default function Home() {
 
       <div
         className={`
-    fixed inset-x-0 bottom-0 z-[120] 
+    fixed inset-x-0 bottom-0 z-40 
     h-full w-full bg-background 
     transition-transform duration-300 ease-in-out
     rounded-t-2xl shadow-lg

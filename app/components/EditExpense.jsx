@@ -6,13 +6,25 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Arrow } from "@radix-ui/react-select";
-import { ArrowLeft, ArrowRight, IndianRupee, Save, Trash } from "lucide-react";
+import {
+  ArrowLeft,
+  ArrowRight,
+  Calendar1,
+  CalendarDays,
+  IndianRupee,
+  Save,
+  Trash,
+} from "lucide-react";
 import { Shapes } from "lucide-react";
 import { ChevronRight } from "lucide-react";
 import { Notebook } from "lucide-react";
 import { Tag } from "lucide-react";
 import React, { useEffect } from "react";
 import { db, push, ref, remove, update } from "../firebaseConfig";
+import { Calendar } from "@/components/ui/calendar";
+import CalenderDrawer from "./CalenderDrawer";
+import { getFormattedDateShort } from "../util/DateUtility";
+import { da } from "date-fns/locale";
 
 export default function EditExpense({
   expense,
@@ -27,6 +39,7 @@ export default function EditExpense({
   );
   const [tags, setTags] = React.useState(expense?.tags || []);
   const [currentTag, setCurrentTag] = React.useState("");
+  const [date, setDate] = React.useState(new Date(expense?.date) || new Date());
 
   useEffect(() => {
     if (expense) {
@@ -34,6 +47,7 @@ export default function EditExpense({
       setCategory(expense.category || "Others");
       setDescription(expense.description || "");
       setTags(expense.tags || []);
+      setDate(new Date(expense.date) || new Date());
     }
   }, [expense]);
 
@@ -44,6 +58,7 @@ export default function EditExpense({
       category: category,
       description: description,
       tags: tags,
+      date: date.toISOString(),
     };
 
     setTransactions((prev) => {
@@ -56,6 +71,7 @@ export default function EditExpense({
       category: category,
       description: description,
       tags: tags,
+      date: date.toISOString(),
     }).catch((err) => console.error("Failed to update expense:", err));
     goTo(null);
   };
@@ -72,6 +88,7 @@ export default function EditExpense({
     goTo(null);
   };
 
+  const openCalender = () => {};
   return (
     <div
       className={
@@ -199,6 +216,20 @@ export default function EditExpense({
               </Badge>
             );
           })}
+        </div>
+        <div className="flex gap-2 items-center cursor-pointer" id="category">
+          <CalendarDays className={"h-5"} />
+          <Input
+            value={getFormattedDateShort(date)}
+            onChange={(e) => setDate(new Date(e.target.value))}
+            id="description"
+            readOnly
+            placeHolder="write a description"
+            className={
+              "text-sm dark:bg-(--background) bg-(--background) resize-none min-h-2 border-none focus-visible:ring-0 focus-visible:ring-offset-0 focus:outline-none"
+            }
+          />
+          <CalenderDrawer date={date} setDate={setDate} />
         </div>
       </div>
       <div className="fixed bottom-10 right-10 flex-1/4 flex items-center">
