@@ -1,4 +1,4 @@
-import { Utensils } from "lucide-react";
+import { ChartBarStacked, ChevronRight, Utensils } from "lucide-react";
 import {
   getFormattedAmount,
   getFormattedDate,
@@ -12,11 +12,11 @@ export default function Transactions({ expense }) {
 
   return (
     <div key={expense.date} className="py-2 rounded-xl cursor-pointer mb-2">
-      <div className="grid gap-x-3 grid-cols-4 items-center">
-        <div className=" col-span-3 sm:col-span-2">
+      <div className="grid gap-x-3 grid-cols-7 items-center">
+        <div className=" col-span-5 sm:col-span-4">
           <div className="flex items-center gap-4">
-            <div className="flex-shrink-0 bg-(--color-muted) border border-(--border-color)/30 p-2 rounded-full text-[var(--color)] dark:text-[var(--dark-color)]">
-              <Utensils />
+            <div className="flex-shrink-0 bg-background border border-(--border-color)/60 p-2 rounded-full text-[var(--color)] dark:text-[var(--dark-color)]">
+              <ChartBarStacked strokeWidth={1} />
             </div>
             <div className="flex flex-col truncate gap-1">
               <div className="truncate mainLabel2 font-semibold tracking-normal">
@@ -28,19 +28,22 @@ export default function Transactions({ expense }) {
             </div>
           </div>
         </div>
-        <div className="hidden sm:block text-center text-gray-700 dark:text-gray-400">
+        <div className="hidden sm:block text-center mainHeading3 text-gray-700 dark:text-gray-400">
           {getFormattedDate(expense.date)}
         </div>
-        <div className="flex flex-col text-center gap-1">
-          <div className="sm:block hidden customLabel">
-            {getFormattedAmount(expense.amount)}
+        <div className="flex col-span-2 sm:col-span-2place-items-center mx-auto items-center gap-1">
+          <div className="flex flex-col text-center gap-1">
+            <div className="sm:block hidden customLabel">
+              {getFormattedAmount(expense.amount)}
+            </div>
+            <div className="sm:hidden block customLabel text-(--foreground)">
+              {getFormattedAmount(expense.amount)}
+            </div>
+            <div className="text-sm block belowLabel sm:hidden text-gray-700 dark:text-gray-400">
+              {getFormattedDateShort(expense.date)}
+            </div>
           </div>
-          <div className="sm:hidden block customLabel text-(--foreground)">
-            {getFormattedAmount(expense.amount)}
-          </div>
-          <div className="text-sm block belowLabel sm:hidden text-gray-700 dark:text-gray-400">
-            {getFormattedDateShort(expense.date)}
-          </div>
+          <ChevronRight strokeWidth={1} size={16} />
         </div>
       </div>
     </div>

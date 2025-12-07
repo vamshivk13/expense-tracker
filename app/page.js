@@ -400,8 +400,8 @@ export default function Home() {
                 ref={(el) => (sectionRefs.current[1] = el)}
                 data-section={"transactions"}
               >
-                <div className="my-5 text-lg z-20  bg-(--background) h-[55px] gap-x-3 grid grid-cols-4 items-center">
-                  <h4 className={"col-span-3 mainLabelWide2"}>
+                <div className="my-5 text-lg z-20  bg-(--background) h-[55px] gap-x-3 grid grid-cols-7 items-center">
+                  <h4 className={"col-span-5 mainLabelWide2"}>
                     your transactions
                   </h4>
                   {transactions != null &&
@@ -409,7 +409,7 @@ export default function Home() {
                     !isTransactionsLoading && (
                       <div
                         className={
-                          "text-center mx-auto subLabel2 text-sm text-gray-700 dark:text-gray-400 border-b-2 border-blue-500 pb-1 cursor-pointer"
+                          "text-center place-items-center col-span-2 mx-auto subLabel2 text-sm text-gray-700 dark:text-gray-400 border-b-2 border-blue-500 pb-1 cursor-pointer"
                         }
                         onClick={() => {
                           goTo("viewTransactions");
