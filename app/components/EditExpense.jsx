@@ -6,13 +6,13 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Arrow } from "@radix-ui/react-select";
-import { ArrowLeft, ArrowRight, IndianRupee, Save } from "lucide-react";
+import { ArrowLeft, ArrowRight, IndianRupee, Save, Trash } from "lucide-react";
 import { Shapes } from "lucide-react";
 import { ChevronRight } from "lucide-react";
 import { Notebook } from "lucide-react";
 import { Tag } from "lucide-react";
 import React, { useEffect } from "react";
-import { db, push, ref, update } from "../firebaseConfig";
+import { db, push, ref, remove, update } from "../firebaseConfig";
 
 export default function EditExpense({
   expense,
@@ -60,19 +60,37 @@ export default function EditExpense({
     goTo(null);
   };
 
+  const handleDeleteExpense = (expenseId) => {
+    setTransactions((prev) => {
+      return prev.filter((tx) => tx.id !== expenseId);
+    });
+
+    const expenseRef = ref(db, "expenses/" + expenseId);
+    remove(expenseRef).catch((err) =>
+      console.error("Failed to delete expense:", err)
+    );
+    goTo(null);
+  };
+
   return (
     <div
       className={
         "flex flex-col gap-5 sm:container mx-auto px-8 sm:px-16 lg:px-16 py-3"
       }
     >
-      <div className="flex mr-auto items-center gap-2">
-        <Button variant={"outline"} onClick={() => goBack()}>
-          <ArrowLeft />
-        </Button>
-      </div>
-      <div className="text-gray-700 mr-auto dark:text-gray-400 text-lg border-b border-gray-500 ">
-        Edit Expense
+      <div className="text-lg bg-background py-4 w-full">
+        <div className="flex gap-2 col-span-3 items-center">
+          <ArrowLeft onClick={() => goBack()} />
+          <div>Your Transaction</div>
+          <img
+            src={"/bin.png"}
+            alt="delete"
+            className="ml-auto h-6 w-6 cursor-pointer"
+            onClick={() => {
+              handleDeleteExpense(expense.id);
+            }}
+          />
+        </div>
       </div>
       <div className="grid w-full gap-1">
         <div className="flex flex-col gap-1">
