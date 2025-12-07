@@ -47,10 +47,17 @@ export default function Home() {
   useEffect(() => {
     // Calculate today's expenses
     const today = new Date();
-    const todayString = today.toISOString().split("T")[0];
-
+    const todayString = today.toLocaleString();
+    console.log("Calculating today's expenses for date:", todayString);
+    for (const tx of transactions) {
+      console.log("Transaction date:", new Date(tx.date).toLocaleString());
+    }
     const total = transactions
-      .filter((tx) => tx.date.startsWith(todayString))
+      .filter(
+        (tx) =>
+          new Date(tx.date).toLocaleString().split(",")[0] ==
+          todayString.split(",")[0]
+      )
       .reduce((sum, tx) => sum + tx.amount, 0);
 
     setTodaysExpense(total);
