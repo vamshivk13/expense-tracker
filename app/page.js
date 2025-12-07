@@ -282,23 +282,25 @@ export default function Home() {
                 <div>Hi,</div>
                 <span className="text-xl">Vamshi</span>
               </div>
-              {theme == "light" ? (
-                <Moon
-                  strokeWidth={1.5}
-                  className="ml-auto mr-3"
-                  onClick={() => {
-                    setTheme(theme === "dark" ? "light" : "dark");
-                  }}
-                />
-              ) : (
-                <Sun
-                  strokeWidth={1.5}
-                  className="ml-auto mr-3"
-                  onClick={() => {
-                    setTheme(theme === "dark" ? "light" : "dark");
-                  }}
-                ></Sun>
-              )}
+              <div className="cursor-pointer flex items-center justify-center rounded-full aspect-square ml-auto hover:bg-secondary/50 scale-95 active:bg-secondary/50 transition-all duration-150">
+                {theme == "light" ? (
+                  <Moon
+                    strokeWidth={1.5}
+                    className="ml-auto mr-3 "
+                    onClick={() => {
+                      setTheme(theme === "dark" ? "light" : "dark");
+                    }}
+                  />
+                ) : (
+                  <Sun
+                    strokeWidth={1.5}
+                    className="ml-auto mr-3"
+                    onClick={() => {
+                      setTheme(theme === "dark" ? "light" : "dark");
+                    }}
+                  ></Sun>
+                )}
+              </div>
               <DateSelect />
             </div>
 

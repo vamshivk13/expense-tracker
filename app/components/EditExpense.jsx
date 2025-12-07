@@ -83,7 +83,7 @@ export default function EditExpense({
           <ArrowLeft onClick={() => goBack()} />
           <div>Your Transaction</div>
           <img
-            src={"/bin.png"}
+            src={"/dustbin.png"}
             alt="delete"
             className="ml-auto h-6 w-6 cursor-pointer"
             onClick={() => {
