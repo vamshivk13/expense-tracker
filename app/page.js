@@ -3,7 +3,7 @@
 import { Button } from "@/components/ui/button";
 import DateSelect from "./components/DateSelect";
 import { Badge } from "@/components/ui/badge";
-import { ArrowLeft, ChevronRight } from "lucide-react";
+import { ArrowLeft, ChevronRight, Moon, Sun } from "lucide-react";
 import { ArrowRightLeft } from "lucide-react";
 
 import {
@@ -37,6 +37,7 @@ import { Spinner } from "@/components/ui/spinner";
 import EditExpense from "./components/EditExpense";
 import { Arrow } from "@radix-ui/react-select";
 import ViewTransactions from "./view/transactions/ViewTransactions";
+import { ThemeProvider, useTheme } from "next-themes";
 
 export default function Home() {
   const [transactions, setTransactions] = useState([]);
@@ -243,6 +244,9 @@ export default function Home() {
     }
   };
 
+  const { theme, setTheme } = useTheme();
+  let themebgColor = theme === "dark" ? "black" : "#e2e8f0";
+
   return (
     <Suspense fallback={<div>Loading...</div>}>
       {view == null && (
@@ -252,8 +256,8 @@ export default function Home() {
               className="absolute inset-0 z-0"
               style={{
                 backgroundImage: `
-        linear-gradient(to right, #e2e8f0 1px, transparent 1px),
-        linear-gradient(to bottom, #e2e8f0 1px, transparent 1px)
+        linear-gradient(to right, ${themebgColor} 1px, transparent 1px),
+        linear-gradient(to bottom, ${themebgColor} 1px, transparent 1px)
       `,
                 backgroundSize: "20px 30px",
                 WebkitMaskImage:
@@ -264,7 +268,7 @@ export default function Home() {
             />
 
             <div
-              className="flex px-6 sm:px-16 lg:px-16 items-center justify-around gap-2 mt-3 mb-6 my-3 sticky h-[50px] z-40"
+              className="flex px-6 sm:px-16 lg:px-16 items-center border-none justify-around gap-2 mt-3 mb-6 my-3 sticky h-[50px] z-40"
               ref={greetingRef}
             >
               <div className="h-full aspect-square p-1/2 bg-black rounded-full">
@@ -278,13 +282,28 @@ export default function Home() {
                 <div>Hi,</div>
                 <span className="text-xl">Vamshi</span>
               </div>
+              {theme == "light" ? (
+                <Moon
+                  strokeWidth={1.5}
+                  className="ml-auto mr-3"
+                  onClick={() => {
+                    setTheme(theme === "dark" ? "light" : "dark");
+                  }}
+                />
+              ) : (
+                <Sun
+                  strokeWidth={1.5}
+                  className="ml-auto mr-3"
+                  onClick={() => {
+                    setTheme(theme === "dark" ? "light" : "dark");
+                  }}
+                ></Sun>
+              )}
               <DateSelect />
             </div>
 
-            <div className="gap-2 flex-col flex my-3">
-              <div
-                className={" border-none flex flex-col my-3 py-1 px-1 gap-5"}
-              >
+            <div className="border-none gap-2 flex-col flex my-3">
+              <div className={"border-none flex flex-col my-3 py-1 px-1 gap-5"}>
                 <div className="flex items-center justify-center">
                   <div className="flex flex-col gap-3 justify-center items-center">
                     <p className="subLabel2 text-center">Today's Expenses</p>
@@ -303,7 +322,7 @@ export default function Home() {
           {/* MENU   */}
           <div
             ref={targetRef}
-            className="px-10 border-b-[0.3px] bg-(--top-container-color) rounded-b-sm sm:px-16 lg:px-16 sticky top-0 z-40"
+            className="px-10 border-none border-b-[0.3px] bg-(--top-container-color) rounded-b-sm sm:px-16 lg:px-16 sticky top-0 z-40"
           >
             <div className="h-[8px]"></div>
             <div
@@ -399,9 +418,9 @@ export default function Home() {
                   <HandCoins /> Modify Fixed Expenses
                 </Badge>
               </div>
+              <div className="pointer-events-none absolute top-0 bottom-0 left-0 w-8 sm:w-16 z-20 bg-gradient-to-r from-white/90 to-transparent dark:from-[black]/40 dark:to-transparent" />
+              <div className="pointer-events-none absolute top-0 bottom-0 right-0 w-8 sm:w-16 z-20 bg-gradient-to-l from-white/90 to-transparent dark:from-[black]/40 dark:to-transparent" />
             </div>
-            <div className="pointer-events-none absolute top-0 bottom-0 left-0 w-8 sm:w-16 z-20 bg-gradient-to-r from-white/90 to-transparent dark:from-[#3D3D3D]/90 dark:to-transparent" />
-            <div className="pointer-events-none absolute top-0 bottom-0 right-0 w-8 sm:w-16 z-20 bg-gradient-to-l from-white/90 to-transparent dark:from-[#3D3D3D]/90 dark:to-transparent" />
           </div>
           <div className="bg-(--background) z-20 px-6 sm:px-16 lg:px-16  ">
             <div className="mx-auto py-3 flex flex-col gap-4">

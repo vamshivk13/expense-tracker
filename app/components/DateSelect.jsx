@@ -22,7 +22,7 @@ const DateSelect = () => {
     { value: 11, name: "Dec" },
   ];
   return (
-    <div className="ml-auto">
+    <div className="">
       <Select onValueChange={(value) => console.log(value)}>
         <SelectTrigger className="border-b-2 border-blue-500">
           <SelectValue placeholder="June" />
