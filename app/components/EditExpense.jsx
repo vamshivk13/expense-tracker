@@ -14,7 +14,12 @@ import { Tag } from "lucide-react";
 import React, { useEffect } from "react";
 import { db, push, ref, update } from "../firebaseConfig";
 
-export default function EditExpense({ expense, goTo, setTransactions }) {
+export default function EditExpense({
+  expense,
+  goTo,
+  setTransactions,
+  goBack,
+}) {
   const [amount, setAmount] = React.useState(expense?.amount || 0);
   const [category, setCategory] = React.useState(expense?.category || "Others");
   const [description, setDescription] = React.useState(
@@ -62,7 +67,7 @@ export default function EditExpense({ expense, goTo, setTransactions }) {
       }
     >
       <div className="flex mr-auto items-center gap-2">
-        <Button variant={"outline"} onClick={() => goTo(null)}>
+        <Button variant={"outline"} onClick={() => goBack()}>
           <ArrowLeft />
         </Button>
       </div>

@@ -43,7 +43,11 @@ export default function Transactions({ expense }) {
               {getFormattedDateShort(expense.date)}
             </div>
           </div>
-          <ChevronRight strokeWidth={1} size={16} />
+          <ChevronRight
+            strokeWidth={1}
+            size={16}
+            className="self-start text-foreground"
+          />
         </div>
       </div>
     </div>

@@ -43,7 +43,7 @@ export default function Home() {
   const [currentExpense, setCurrentExpense] = useState(null);
   const [isTransactionsLoading, setIsTransactionsLoading] = useState(true);
   const [todaysExpense, setTodaysExpense] = useState(0);
-
+  const [history, setHistory] = useState([]);
   useEffect(() => {
     // Calculate today's expenses
     const today = new Date();
@@ -230,6 +230,17 @@ export default function Home() {
     if (view == null) {
       router.push(`/`);
     } else router.push(`?view=${view}`);
+  };
+
+  const goBack = () => {
+    if (history.length > 0) {
+      const newHistory = [...history];
+      const lastView = newHistory.shift();
+      setHistory(newHistory);
+      goTo(lastView);
+    } else {
+      goTo(null);
+    }
   };
 
   return (
@@ -627,6 +638,7 @@ export default function Home() {
       >
         <div className="">
           <EditExpense
+            goBack={goBack}
             expense={currentExpense}
             goTo={goTo}
             setTransactions={setTransactions}
@@ -645,6 +657,8 @@ export default function Home() {
       >
         <div className="">
           <ViewTransactions
+            setHistory={setHistory}
+            history={history}
             transactions={transactions}
             goTo={goTo}
             setTransactions={setTransactions}

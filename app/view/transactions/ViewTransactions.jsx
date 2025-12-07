@@ -11,6 +11,8 @@ export default function ViewTransactions({
   transactions,
   goTo,
   setCurrentExpense,
+  setHistory,
+  history,
 }) {
   return (
     <div className="px-6 h-[100vh] sm:px-16 lg:px-16 overflow-y-auto">
@@ -36,6 +38,7 @@ export default function ViewTransactions({
                 className="sm:hidden block"
                 onClick={() => {
                   setCurrentExpense(expense);
+                  setHistory([...history, "viewTransactions"]);
                   goTo("editTransaction");
                 }}
               >
