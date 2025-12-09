@@ -2,6 +2,7 @@
 import DateSelect from "@/app/components/DateSelect";
 import EditExpenseDialog from "@/app/components/EditExpenseDialog";
 import Transactions from "@/app/components/transactions/Transactions";
+import { getFormattedAmount } from "@/app/util/DateUtility";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@radix-ui/react-select";
 import { set } from "date-fns";
@@ -47,6 +48,10 @@ export default function ViewTransactions({
       groupedTransactions.push({
         date: date,
         transactions: transactionsByDate[date],
+        totalAmount: transactionsByDate[date].reduce(
+          (acc, curr) => acc + curr.amount,
+          0
+        ),
       });
     }
     console.log("Transactions grouped by date:", groupedTransactions);
@@ -66,11 +71,14 @@ export default function ViewTransactions({
         </div>
       </div>
       <div className="flex flex-col mt-4 mb-4 overflow-y-auto gap-6">
-        <div className="flex flex-col gap-4 overflow-y-auto">
+        <div className="flex flex-col gap-6 overflow-y-auto">
           {transactionsByDate.map((group) => (
-            <div key={group.date} className="flex flex-col gap-4">
-              <div className="font-semibold text-(--foreground) mainLabel2">
-                {group.date}
+            <div key={group.date} className="flex flex-col gap-6">
+              <div className="grid grid-cols-7 justify-between items-center">
+                <div className="mainLabel2 col-span-5">{group.date}</div>
+                <div className="font-medium col-span-2 subLabel place-self-center text-(--foreground)/70">
+                  {getFormattedAmount(group?.totalAmount?.toFixed(2))}
+                </div>
               </div>
               <div className="flex flex-col gap-4">
                 {group.transactions.map((expense) => (
