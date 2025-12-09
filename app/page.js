@@ -432,7 +432,7 @@ export default function Home() {
                 ref={(el) => (sectionRefs.current[1] = el)}
                 data-section={"transactions"}
               >
-                <div className="my-5 text-lg z-20  bg-(--background) h-[55px] gap-x-3 grid grid-cols-7 items-center">
+                <div className="my-5 text-lg h-[55px] gap-x-3 grid grid-cols-7 items-center">
                   <h4 className={"col-span-5 mainLabelWide2"}>
                     your transactions
                   </h4>
@@ -506,7 +506,7 @@ export default function Home() {
                 ref={(el) => (sectionRefs.current[2] = el)}
                 data-section={"budgets"}
               >
-                <div className="my-5 text-lg z-20 bg-(--background) h-[55px] gap-x-3 grid grid-cols-4 items-center">
+                <div className="my-5 text-lg h-[55px] gap-x-3 grid grid-cols-4 items-center">
                   <div className={"col-span-3 mainLabelWide2"}>Budgets</div>
                   <div
                     className={
@@ -580,7 +580,7 @@ export default function Home() {
                 ref={(el) => (sectionRefs.current[3] = el)}
                 data-section={"expenses"}
               >
-                <div className="my-5 mb-8 text-lg z-20  bg-(--background) h-[55px] gap-x-3 grid grid-cols-4 items-center">
+                <div className="my-5 mb-8 text-lg h-[55px] gap-x-3 grid grid-cols-4 items-center">
                   <div className={"col-span-3 mainLabelWide2"}>
                     Fixed Expenses
                   </div>
@@ -671,7 +671,7 @@ export default function Home() {
         className={`
     fixed inset-x-0 bottom-0 z-40 
     h-full w-full bg-background 
-    transition-transform duration-300 ease-in-out
+    transition-transform duration-400 ease-in-out
     rounded-t-2xl shadow-lg
     ${view == "viewTransactions" ? "translate-y-0" : "translate-y-full"}
   `}
