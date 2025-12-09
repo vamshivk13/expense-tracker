@@ -35,7 +35,6 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { AddDrawer } from "./components/AddDrawer";
 import { Spinner } from "@/components/ui/spinner";
 import EditExpense from "./components/EditExpense";
-import { Arrow } from "@radix-ui/react-select";
 import ViewTransactions from "./view/transactions/ViewTransactions";
 import { ThemeProvider, useTheme } from "next-themes";
 
@@ -492,9 +491,13 @@ export default function Home() {
                     onClick={() => {
                       goTo("viewTransactions");
                     }}
-                    className={"mr-auto mt-7 p-1 rounded-none border-0"}
+                    className={"mr-auto mt-10 p-1 rounded-none border-0"}
                   >
-                    <div className={"border-1 border-(--foreground) p-1"}>
+                    <div
+                      className={
+                        "border-1 border-(--foreground) p-2 mainLabel2"
+                      }
+                    >
                       View All
                     </div>
                   </Button>
@@ -567,9 +570,11 @@ export default function Home() {
                 </div>
                 <Button
                   variant="outline"
-                  className={"mr-auto mt-7 p-1 rounded-none border-0"}
+                  className={"mr-auto mt-10 p-1 rounded-none border-0"}
                 >
-                  <div className={"border-1 border-(--foreground) p-1"}>
+                  <div
+                    className={"border-1 border-(--foreground) p-2 mainLabel2"}
+                  >
                     View All
                   </div>
                 </Button>
@@ -636,9 +641,11 @@ export default function Home() {
                 </div>
                 <Button
                   variant="outline"
-                  className={"mr-auto mt-7 p-1 rounded-none border-0"}
+                  className={"mr-auto mt-10 p-1 rounded-none border-0"}
                 >
-                  <div className={"border-1 border-(--foreground) p-1"}>
+                  <div
+                    className={"border-1 border-(--foreground) p-2 mainLabel2"}
+                  >
                     View All
                   </div>
                 </Button>
