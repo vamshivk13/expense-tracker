@@ -43,6 +43,7 @@ export default function Home() {
   const [currentExpense, setCurrentExpense] = useState(null);
   const [isTransactionsLoading, setIsTransactionsLoading] = useState(true);
   const [todaysExpense, setTodaysExpense] = useState(0);
+  const [suggestedTags, setSuggestedTags] = useState([]);
   const [history, setHistory] = useState([]);
   useEffect(() => {
     // Calculate today's expenses
@@ -97,6 +98,29 @@ export default function Home() {
           }))
           .sort((a, b) => new Date(b.date) - new Date(a.date))
       );
+      const tags = loadedItems.reduce((acc, curr) => {
+        if (curr.data.tags && Array.isArray(curr.data.tags)) {
+          curr.data.tags.forEach((tag) => {
+            tag = tag.toUpperCase();
+            if (!acc.has(tag)) {
+              acc.set(tag, 0);
+            } else {
+              acc.set(tag, acc.get(tag) + 1);
+            }
+          });
+        }
+        return acc;
+      }, new Map());
+
+      console.log("Tags map:", tags);
+
+      const sortedTags = Array.from(tags.entries())
+        .sort((a, b) => b[1] - a[1])
+        .map((entry) => entry[0]);
+
+      console.log("Sorted tags:", sortedTags);
+      setSuggestedTags(sortedTags);
+
       setIsTransactionsLoading(false);
     });
 
@@ -652,7 +676,10 @@ export default function Home() {
               </div>
             </div>
           </div>
-          <AddDrawer setTransactions={setTransactions} />
+          <AddDrawer
+            setTransactions={setTransactions}
+            suggestedTagsProp={[...suggestedTags]}
+          />
         </div>
       )}
       <div

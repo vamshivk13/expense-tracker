@@ -22,7 +22,7 @@ export default function AddExpense() {
     { id: "education", tag: "Education", category: "Learning" },
     { id: "subscriptions", tag: "Subscriptions", category: "Recurring" },
     { id: "entertainment", tag: "Entertainment", category: "Leisure" },
-    { id: "others", tag: "Others", category: "Miscellaneous" },
+    { id: "others", tag: "Other", category: "Miscellaneous" },
   ];
   return (
     <div
@@ -60,7 +60,7 @@ export default function AddExpense() {
         </Label>
         <div className="flex gap-2 items-center cursor-pointer" id="category">
           <Shapes className={"h-5"} />
-          <div className="text-lg">Others</div>
+          <div className="text-lg">Other</div>
           <ChevronRight className="h-5 ml-auto" />
         </div>
       </div>

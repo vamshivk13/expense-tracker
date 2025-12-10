@@ -33,7 +33,7 @@ export default function EditExpense({
   goBack,
 }) {
   const [amount, setAmount] = React.useState(expense?.amount || 0);
-  const [category, setCategory] = React.useState(expense?.category || "Others");
+  const [category, setCategory] = React.useState(expense?.category || "Other");
   const [description, setDescription] = React.useState(
     expense?.description || ""
   );
@@ -44,7 +44,7 @@ export default function EditExpense({
   useEffect(() => {
     if (expense) {
       setAmount(expense.amount || 0);
-      setCategory(expense.category || "Others");
+      setCategory(expense.category || "Other");
       setDescription(expense.description || "");
       setTags(expense.tags || []);
       setDate(new Date(expense.date) || new Date());
