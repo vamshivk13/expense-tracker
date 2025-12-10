@@ -16,13 +16,15 @@ import { ArrowLeft } from "lucide-react";
 import { ChevronsUpDown } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { ref, onValue, db, update, push, set } from "../firebaseConfig";
+import CalenderDrawer from "./CalenderDrawer";
 
-export function AddDrawer({ setTransactions }) {
+export function AddDrawer({ setTransactions, goTo, setHistory, view }) {
   const [expenseAmount, setExpenseAmount] = React.useState("0");
   const [note, setNote] = React.useState("");
   const [category, setCategory] = React.useState("Others");
   const [tag, setTag] = React.useState("");
   const [allTags, setAllTags] = React.useState([]);
+  const [date, setDate] = React.useState(new Date());
 
   const handleAddExpense = () => {
     const newExpense = {
@@ -30,7 +32,7 @@ export function AddDrawer({ setTransactions }) {
       description: note || category + " Expense",
       category: category,
       tags: allTags,
-      date: new Date(),
+      date: date,
     };
     setTransactions((prev) => [newExpense, ...prev]);
 
@@ -91,6 +93,7 @@ export function AddDrawer({ setTransactions }) {
                     }}
                   />
                 </div>
+                <CalenderDrawer date={date} setDate={setDate} />
               </div>
               {/* Note and Category */}
               <Card className=" bg-secondary/70 p-0 border-none mt-4 mb-6">
