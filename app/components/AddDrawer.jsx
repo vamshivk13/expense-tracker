@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { Plus } from "lucide-react";
+import { Check, Plus } from "lucide-react";
 import { CalendarDays } from "lucide-react";
 
 import { ArrowRight } from "lucide-react";
@@ -20,6 +20,7 @@ import CalenderDrawer from "./CalenderDrawer";
 import { Categories, expenseCategories } from "./Categories";
 import { ca } from "date-fns/locale";
 import { getFormattedAmount, getFormattedDate } from "../util/DateUtility";
+import { Arrow } from "@radix-ui/react-select";
 
 export function AddDrawer({ setTransactions, suggestedTagsProp }) {
   const [expenseAmount, setExpenseAmount] = React.useState("0");
@@ -85,7 +86,7 @@ export function AddDrawer({ setTransactions, suggestedTagsProp }) {
 
   return (
     <Drawer
-      className="p-0 h-lvh"
+      className="p-0"
       onOpenChange={(open) => {
         if (open) {
         } else {
@@ -106,7 +107,7 @@ export function AddDrawer({ setTransactions, suggestedTagsProp }) {
           </Button>
         </div>
       </DrawerTrigger>
-      <DrawerContent className={"p-0 h-full"}>
+      <DrawerContent className={"p-0"}>
         <div className="mx-auto h-full z-150 w-full max-w-md flex-col overflow-y-auto p-6">
           <div className="flex h-full flex-col gap-5">
             {/* Amount Display */}
@@ -122,7 +123,7 @@ export function AddDrawer({ setTransactions, suggestedTagsProp }) {
                       {expenseAmount}
                     </span>
                   </div>
-                  <div className="subLabel3">{getFormattedDate(date)}</div>
+
                   <Categories setCategory={setCategory}>
                     <div className="subLabel2 mt-2 border-1 border-blue-400 px-2 py-1">
                       {category}
@@ -166,8 +167,19 @@ export function AddDrawer({ setTransactions, suggestedTagsProp }) {
             {mode == "categoryTagEntry" && (
               <div className="h-full flex flex-col">
                 <div className="flex-grow p-0 border-none mt-1 mb-6">
-                  <div className="py-1 px-2">
-                    <div className="my-1 flex w-full gap-2">
+                  <div className="py-1 flex flex-col gap-4 px-2">
+                    <div className="flex items-center gap-2 ">
+                      <div className="flex w-full flex-col gap-3 flex-1">
+                        <label className="subLabel2" htmlFor="note">
+                          Add Date
+                        </label>
+                        <div className="subLabel3 mr-auto">
+                          {getFormattedDate(date)}
+                        </div>
+                      </div>
+                      <CalenderDrawer date={date} setDate={setDate} />
+                    </div>
+                    <div className="flex w-full gap-2">
                       <div className="flex w-full flex-col gap-2 flex-1">
                         <label className="subLabel2" htmlFor="note">
                           Add Note
@@ -181,7 +193,7 @@ export function AddDrawer({ setTransactions, suggestedTagsProp }) {
                       </div>
                     </div>
                     {/* Tag */}
-                    <div className="w-full relative grid grid-cols-3 items-center my-2 gap-2">
+                    <div className="w-full relative grid grid-cols-3 items-center gap-2">
                       <label className="subLabel2 col-span-3" htmlFor="note">
                         Add Tag
                       </label>
@@ -254,32 +266,34 @@ export function AddDrawer({ setTransactions, suggestedTagsProp }) {
                     </div>
                   </div>
                 </div>
-                <div className="flex mb-3 justify-between">
-                  <DrawerClose asChild>
-                    <Button
-                      onClick={handleAddExpense}
-                      variant="outline"
-                      className="rounded-full p-5 subLabel bg-gray-400 flex-col font-semibold text-md active:scale-95 active:bg-secondary transition-all duration-300"
-                    >
-                      Back
-                    </Button>
-                  </DrawerClose>
-                  <DrawerClose asChild>
-                    <Button
-                      onClick={handleAddExpense}
-                      variant="outline"
-                      className="p-5 rounded-full subLabel bg-orange-300 flex-col font-semibold text-md active:scale-95 active:bg-secondary transition-all duration-300"
-                    >
-                      Save
-                    </Button>
-                  </DrawerClose>
-                </div>
+              </div>
+            )}
+            {mode == "categoryTagEntry" && (
+              <div className="flex mt-auto justify-between">
+                <DrawerClose asChild>
+                  <Button
+                    onClick={handleAddExpense}
+                    variant="outline"
+                    className="rounded-full h-14 w-14 subLabel bg-gray-400 flex-col font-semibold text-md active:scale-95 active:bg-secondary transition-all duration-300"
+                  >
+                    <ArrowLeft />
+                  </Button>
+                </DrawerClose>
+                <DrawerClose asChild>
+                  <Button
+                    onClick={handleAddExpense}
+                    variant="outline"
+                    className="rounded-full h-14 w-14 subLabel bg-orange-300 flex-col font-semibold text-md active:scale-95 active:bg-secondary transition-all duration-300"
+                  >
+                    <Check />
+                  </Button>
+                </DrawerClose>
               </div>
             )}
             {mode == "amountEntry" && (
               <div className="flex-grow flex mt-6 items-stretch px-2 pb-4">
                 <div className="w-full grid grid-cols-3 gap-4">
-                  <div className="grid col-span-3 grid-cols-3 gap-x-3 place-items-center">
+                  <div className="grid col-span-3 grid-cols-3 gap-x-3 gap-y-2 place-items-center">
                     {[1, 2, 3, 4, 5, 6, 7, 8, 9, ".", 0].map((item) => (
                       <Button
                         key={item}
