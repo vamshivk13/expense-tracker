@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { Arrow } from "@radix-ui/react-select";
+import { Arrow, Separator } from "@radix-ui/react-select";
 import {
   ArrowLeft,
   ArrowRight,
@@ -25,6 +25,7 @@ import { Calendar } from "@/components/ui/calendar";
 import CalenderDrawer from "./CalenderDrawer";
 import { getFormattedDateShort } from "../util/DateUtility";
 import { da } from "date-fns/locale";
+import { Categories } from "./Categories";
 
 export default function EditExpense({
   expense,
@@ -109,19 +110,18 @@ export default function EditExpense({
           />
         </div>
       </div>
-      <div className="grid w-full gap-1">
+      <div className="grid w-full gap-2">
         <div className="flex flex-col gap-1">
           <Label
-            className="text-sm text-gray-700 dark:text-gray-400"
+            className="text-sm subLabel2 text-gray-700 dark:text-gray-400"
             htmlFor="amount"
           >
             Amount
           </Label>
           <div className="flex items-center">
-            <IndianRupee className={"h-5"} />
-            <Input
+            <input
               className={
-                "text-lg border-none dark:bg-(--background) bg-(--background) focus-visible:ring-0 focus-visible:ring-offset-0 focus:outline-none"
+                "text-lg mainLabel2 p-1 border-none dark:bg-(--background) bg-(--background) focus-visible:ring-0 focus-visible:ring-offset-0 focus:outline-none"
               }
               value={amount}
               onChange={(e) => setAmount(e.target.value)}
@@ -132,45 +132,49 @@ export default function EditExpense({
           </div>
         </div>
       </div>
-      <div className="flex flex-col w-full gap-1">
+      <Separator className="p-0 border-b" />
+      <div className="flex flex-col w-full gap-2">
         <Label
-          className="text-sm text-gray-700 dark:text-gray-400"
+          className="text-sm subLabel2 text-gray-700 dark:text-gray-400"
           htmlFor="category"
         >
           Category
         </Label>
         <div className="flex gap-2 items-center cursor-pointer" id="category">
-          <Shapes className={"h-5"} />
-          <div className="text-lg">{category}</div>
-          <ChevronRight className="h-5 ml-auto" />
+          <Categories setCategory={setCategory}>
+            <div className="subLabel2 flex items-center justify-between gap-2 mt-2 border-1 border-blue-400 px-2 py-1">
+              <div className="">{category}</div>
+              <ChevronRight strokeWidth={1} size={12} className="h-5" />
+            </div>
+          </Categories>
         </div>
       </div>
+      <Separator className="border-b" />
       {/* Description */}
-      <div className="flex flex-col w-full gap-1">
+      <div className="flex flex-col w-full gap-2">
         <Label
-          className="text-sm text-gray-700 dark:text-gray-400"
+          className="text-sm subLabel2 text-gray-700 dark:text-gray-400"
           htmlFor="amount"
         >
           Description
         </Label>
         <div className="flex gap-2 items-center cursor-pointer" id="category">
-          <Notebook className={"h-5"} />
-          <Textarea
+          <input
             value={description}
             onChange={(e) => setDescription(e.target.value)}
             id="description"
             placeHolder="write a description"
             className={
-              "text-sm dark:bg-(--background) bg-(--background) resize-none min-h-2 border-none focus-visible:ring-0 focus-visible:ring-offset-0 focus:outline-none"
+              "text-sm mainLabel2 p-1 dark:bg-(--background) bg-(--background) resize-none min-h-2 border-none focus-visible:ring-0 focus-visible:ring-offset-0 focus:outline-none"
             }
           />
         </div>
       </div>
-
+      <Separator className="border-b" />
       {/* tags */}
-      <div className="flex flex-col w-full gap-1">
+      <div className="flex flex-col w-full gap-2">
         <Label
-          className="text-sm text-gray-700 dark:text-gray-400"
+          className="text-sm subLabel2 text-gray-700 dark:text-gray-400"
           htmlFor="amount"
         >
           Tags
@@ -186,12 +190,11 @@ export default function EditExpense({
           className="flex gap-2 items-center cursor-pointer"
           id="category"
         >
-          <Tag className={"h-5"} />
-          <Input
+          <input
             placeHolder="add tags"
             type="text"
             className={
-              "text-sm dark:bg-(--background) bg-(--background) resize-none min-h-2 border-none focus-visible:ring-0 focus-visible:ring-offset-0 focus:outline-none"
+              "text-sm p-1 mainLabel2 w-full dark:bg-(--background) bg-(--background) resize-none min-h-2 border-none focus-visible:ring-0 focus-visible:ring-offset-0 focus:outline-none"
             }
             value={currentTag}
             onChange={(e) => setCurrentTag(e.target.value)}
@@ -204,11 +207,12 @@ export default function EditExpense({
                 setCurrentTag("");
               }
             }}
+            className={"h-8 w-8 rounded-full"}
           >
             <ArrowRight />
           </Button>
         </form>
-        <div className="flex gap-1 mt-2 flex-wrap">
+        <div className="flex gap-1 my-2 flex-wrap">
           {tags.map((tag) => {
             return (
               <Badge className={"cursor-pointer"} key={tag.id}>
@@ -217,21 +221,26 @@ export default function EditExpense({
             );
           })}
         </div>
-        <div className="flex gap-2 items-center cursor-pointer" id="category">
-          <CalendarDays className={"h-5"} />
-          <Input
+        <Separator className="p-0 border-b" />
+        <div
+          className="flex gap-2 mt-4 mb-2 items-center cursor-pointer"
+          id="category"
+        >
+          <input
             value={getFormattedDateShort(date)}
             onChange={(e) => setDate(new Date(e.target.value))}
             id="description"
             readOnly
             placeHolder="write a description"
             className={
-              "text-sm dark:bg-(--background) bg-(--background) resize-none min-h-2 border-none focus-visible:ring-0 focus-visible:ring-offset-0 focus:outline-none"
+              "text-sm mainLabel2 w-full p-1 dark:bg-(--background) bg-(--background) resize-none min-h-2 border-none focus-visible:ring-0 focus-visible:ring-offset-0 focus:outline-none"
             }
           />
           <CalenderDrawer date={date} setDate={setDate} />
         </div>
+        <Separator className="p-0 border-b" />
       </div>
+
       <div className="fixed bottom-10 right-10 flex-1/4 flex items-center">
         <Button
           className={
