@@ -204,7 +204,6 @@ export default function EditExpense({
             onClick={() => {
               if (currentTag.trim() !== "") {
                 setTags((prev) => [...prev, currentTag.trim()]);
-                setCurrentTag("");
               }
             }}
             className={"h-8 w-8 rounded-full"}
@@ -215,9 +214,17 @@ export default function EditExpense({
         <div className="flex gap-1 my-2 flex-wrap">
           {tags.map((tag) => {
             return (
-              <Badge className={"cursor-pointer"} key={tag.id}>
+              <div
+                onClick={() => {
+                  setTags((prev) => prev.filter((t) => t !== tag));
+                }}
+                className={
+                  "cursor-pointer subLabel2 text-background bg-foreground px-2 py-1 rounded-full"
+                }
+                key={tag.id}
+              >
                 {tag}
-              </Badge>
+              </div>
             );
           })}
         </div>
