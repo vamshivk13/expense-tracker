@@ -4,11 +4,30 @@ import {
   getFormattedDate,
   getFormattedDateShort,
 } from "../../util/DateUtility";
-import { stringToDarkHSL, stringToHSL } from "@/app/util/ColorUtility";
+import React, { useEffect, useState } from "react";
+import { expenseCategories } from "../Categories";
 
 export default function Transactions({ expense }) {
-  const lightColor = stringToHSL(expense.description);
-  const darkColor = stringToDarkHSL(expense.description);
+  const [Icon, setCategoryIcon] = React.useState(null);
+  const categoryIcons = expenseCategories;
+  const [category, setCategory] = useState(expense.category || "Other");
+
+  useEffect(() => {
+    setCategory(expense.category);
+  }, [expense]);
+
+  React.useEffect(() => {
+    // Update category icon based on selected category
+    if (category) {
+      const foundCategory = categoryIcons.find((cat) => cat.name === category);
+      if (foundCategory) {
+        setCategoryIcon(foundCategory.icon);
+      } else {
+        const otherCategory = categoryIcons.find((cat) => cat.name === "Other");
+        setCategoryIcon(otherCategory.icon);
+      }
+    }
+  }, [category]);
 
   return (
     <div key={expense.date} className="py-2 rounded-xl cursor-pointer mb-2">
@@ -16,7 +35,7 @@ export default function Transactions({ expense }) {
         <div className=" col-span-5 sm:col-span-4">
           <div className="flex items-center gap-4">
             <div className="flex-shrink-0 bg-background border border-(--border-color)/60 p-2 rounded-full text-[var(--color)] dark:text-[var(--dark-color)]">
-              <ChartBarStacked strokeWidth={1} />
+              {Icon && <Icon strokeWidth={1} />}
             </div>
             <div className="flex flex-col truncate gap-1">
               <div className="truncate mainLabel2 font-semibold tracking-normal">

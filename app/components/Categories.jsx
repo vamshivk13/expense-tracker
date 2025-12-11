@@ -56,10 +56,12 @@ export function Categories({ children, setCategory }) {
                   setCategory(name);
                 }}
                 key={name}
-                className="flex items-center gap-3 p-3 rounded-lg border hover:bg-muted/50 transition"
+                className="flex rounded-full truncate items-center gap-3 p-3 border hover:bg-secondary/50 transition items"
               >
-                <Icon className="w-5 h-5 text-primary" />
-                <span className="text-sm font-medium">{name}</span>
+                <Icon className="w-5 h-5 text-primary" strokeWidth={1} />
+                <span className="text-sm truncate font-medium subLabel2">
+                  {name}
+                </span>
               </div>
             </DrawerClose>
           ))}
