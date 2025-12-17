@@ -1,5 +1,11 @@
 import { Button } from "@/components/ui/button";
-import { DrawerContent, DrawerTrigger, Drawer } from "@/components/ui/drawer";
+import {
+  DrawerContent,
+  DrawerTrigger,
+  Drawer,
+  DrawerFooter,
+  DrawerClose,
+} from "@/components/ui/drawer";
 import {
   Select,
   SelectContent,
@@ -7,9 +13,10 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { ArrowRight } from "lucide-react";
 import { useCallback, useEffect, useRef, useState } from "react";
 
-const DateSelect = () => {
+const DateSelect = ({ setCurMonth, setCurYear, curMonth }) => {
   const months = [
     { value: 0, name: "Jan" },
     { value: 1, name: "Feb" },
@@ -90,7 +97,9 @@ const DateSelect = () => {
       }}
     >
       <DrawerTrigger asChild className="border-b-2 border-blue-500">
-        <div className="flex justify-center items-center">June</div>
+        <div className="flex justify-center items-center">
+          {months.find((month) => month.value == curMonth)?.name}
+        </div>
       </DrawerTrigger>
       <DrawerContent className={"p-1"}>
         <div className="flex justify-around items-center p-3">
@@ -136,6 +145,17 @@ const DateSelect = () => {
               </div>
             ))}
           </div>
+          <DrawerClose>
+            <Button
+              className="rounded-full h-14 w-14 subLabel bg-gray-500 flex-col font-semibold text-md active:scale-95 active:bg-secondary transition-all duration-300"
+              onClick={() => {
+                setCurMonth(selectedMonth);
+                setCurYear(selectedYear);
+              }}
+            >
+              <ArrowRight></ArrowRight>
+            </Button>
+          </DrawerClose>
         </div>
       </DrawerContent>
     </Drawer>

@@ -45,6 +45,8 @@ export default function Home() {
   const [todaysExpense, setTodaysExpense] = useState(0);
   const [suggestedTags, setSuggestedTags] = useState([]);
   const [history, setHistory] = useState([]);
+  const [curYear, setCurYear] = useState(null);
+  const [curMonth, setCurMonth] = useState(null);
   useEffect(() => {
     // Calculate today's expenses
     const today = new Date();
@@ -67,10 +69,16 @@ export default function Home() {
   useEffect(() => {
     let month = new Date().getMonth();
     let year = new Date().getFullYear();
-    const mm = String(month + 1).padStart(2, "0");
+    setCurMonth(month);
+    setCurYear(year);
+  }, []);
 
-    const start = `${year}-${mm}-01T00:00:00.000Z`;
-    const end = `${year}-${mm}-31T23:59:59.999Z`;
+  useEffect(() => {
+    if (curMonth == null || curYear == null) return;
+    const mm = String(curMonth + 1).padStart(2, "0");
+
+    const start = `${curYear}-${mm}-01T00:00:00.000Z`;
+    const end = `${curYear}-${mm}-31T23:59:59.999Z`;
 
     const q = query(
       ref(db, `expenses`),
@@ -125,7 +133,7 @@ export default function Home() {
     });
 
     return () => unsubscribe();
-  }, []);
+  }, [curMonth, curYear]);
 
   const budgets = [
     {
@@ -324,7 +332,11 @@ export default function Home() {
                   ></Sun>
                 )}
               </div>
-              <DateSelect />
+              <DateSelect
+                setCurMonth={setCurMonth}
+                setCurYear={setCurYear}
+                curMonth={curMonth}
+              />
             </div>
 
             <div className="border-none gap-2 flex-col flex my-3">
