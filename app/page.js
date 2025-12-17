@@ -37,6 +37,7 @@ import { Spinner } from "@/components/ui/spinner";
 import EditExpense from "./components/EditExpense";
 import ViewTransactions from "./view/transactions/ViewTransactions";
 import { ThemeProvider, useTheme } from "next-themes";
+import ExpenseSummary from "./view/ExpenseSummary";
 
 export default function Home() {
   const [transactions, setTransactions] = useState([]);
@@ -339,7 +340,12 @@ export default function Home() {
               />
             </div>
 
-            <div className="border-none gap-2 flex-col flex my-3">
+            <div
+              className="border-none gap-2 z-40 flex-col flex my-3"
+              onClick={() => {
+                goTo("expenseSummary");
+              }}
+            >
               <div className={"border-none flex flex-col my-3 py-1 px-1 gap-5"}>
                 <div className="flex items-center justify-center">
                   <div className="flex flex-col gap-3 justify-center items-center">
@@ -734,6 +740,19 @@ export default function Home() {
             setTransactions={setTransactions}
             setCurrentExpense={setCurrentExpense}
           />
+        </div>
+      </div>
+      <div
+        className={`
+    fixed inset-x-0 bottom-0 z-40] 
+    h-full w-full bg-background 
+    transition-transform duration-300 ease-in-out
+    rounded-t-2xl shadow-lg
+    ${view == "expenseSummary" ? "translate-y-0" : "translate-y-full"}
+  `}
+      >
+        <div className="">
+          <ExpenseSummary />
         </div>
       </div>
     </Suspense>

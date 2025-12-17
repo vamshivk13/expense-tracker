@@ -1,4 +1,4 @@
 const ExpenseSummary = () => {
-  return <div>ExpenseSummary</div>;
+  return <div className="h-lvh">ExpenseSummary</div>;
 };
 export default ExpenseSummary;
