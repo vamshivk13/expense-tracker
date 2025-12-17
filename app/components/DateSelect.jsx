@@ -7,6 +7,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 const DateSelect = () => {
   const months = [
@@ -34,6 +35,45 @@ const DateSelect = () => {
     return list;
   };
 
+  const [selectedMonth, setSelectedMonth] = useState(null);
+  const [selectedYear, setSelectedYear] = useState(null);
+  const yearRefs = useRef(Object.create(null));
+
+  const itemRefs = useRef(Object.create(null));
+
+  useEffect(() => {
+    setTimeout(() => {
+      const node = itemRefs.current[selectedMonth];
+      if (node) {
+        console.log("NODE", node);
+        node.scrollIntoView({
+          behavior: "smooth",
+          block: "center", // center the selected item within the container
+          inline: "nearest",
+        });
+      }
+    }, 100);
+  }, [selectedMonth]);
+
+  useEffect(() => {
+    const node = yearRefs.current[selectedYear];
+    if (node) {
+      console.log("NODE", node);
+      node.scrollIntoView({
+        behavior: "smooth",
+        block: "center", // center the selected item within the container
+        inline: "nearest",
+      });
+    }
+  }, [selectedYear]);
+
+  const setItemRef = (value, el) => {
+    itemRefs.current[value] = el;
+  };
+
+  const setYearRef = (value, el) => {
+    yearRefs.current[value] = el;
+  };
   console.log("YEARS", years());
 
   return (
@@ -41,7 +81,11 @@ const DateSelect = () => {
       className="p-0"
       onOpenChange={(open) => {
         if (open) {
+          setSelectedMonth(new Date().getMonth());
+          setSelectedYear(new Date().getFullYear());
         } else {
+          setSelectedMonth(null);
+          setSelectedYear(null);
         }
       }}
     >
@@ -52,22 +96,42 @@ const DateSelect = () => {
         <div className="flex justify-around items-center p-3">
           <div
             className={
-              "text-base h-60 overflow-y-auto overflow-hidden [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden"
+              "bg-secondary/50 rounded-full w-[30%] text-base h-60 overflow-y-auto overflow-hidden [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden"
             }
           >
             {months.map((month) => (
-              <div className="h-20 flex items-center justify-center">
+              <div
+                key={month.value}
+                onClick={() => setSelectedMonth(month.value)}
+                ref={(el) => setItemRef(month.value, el)}
+                className={`h-20 flex items-center justify-center active:scale-95 transition-all duration-300
+    ${
+      selectedMonth == month.value
+        ? "bg-black text-white"
+        : "bg-transparent text-foreground hover:bg-foreground/5 active:bg-foreground/10"
+    }`}
+              >
                 <div>{month.name}</div>
               </div>
             ))}
           </div>
           <div
             className={
-              "text-base h-60 overflow-y-auto overflow-hidden [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden"
+              "bg-secondary/50 rounded-full w-[30%] text-base h-60 overflow-y-auto overflow-hidden [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden"
             }
           >
             {years().map((year) => (
-              <div className="h-20 flex items-center justify-center">
+              <div
+                key={year}
+                onClick={() => setSelectedYear(year)}
+                ref={(el) => setYearRef(year, el)}
+                className={`h-20 flex items-center justify-center active:scale-95 transition-all duration-300
+    ${
+      selectedYear == year
+        ? "bg-black text-white"
+        : "bg-transparent text-foreground hover:bg-foreground/5 active:bg-foreground/10"
+    }`}
+              >
                 <div>{year}</div>
               </div>
             ))}

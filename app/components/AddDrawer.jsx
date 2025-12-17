@@ -270,15 +270,15 @@ export function AddDrawer({ setTransactions, suggestedTagsProp }) {
             )}
             {mode == "categoryTagEntry" && (
               <div className="flex mt-auto justify-between">
-                <DrawerClose asChild>
-                  <Button
-                    onClick={handleAddExpense}
-                    variant="outline"
-                    className="rounded-full h-14 w-14 subLabel bg-gray-400 flex-col font-semibold text-md active:scale-95 active:bg-secondary transition-all duration-300"
-                  >
-                    <ArrowLeft />
-                  </Button>
-                </DrawerClose>
+                <Button
+                  onClick={() => {
+                    setMode("amountEntry");
+                  }}
+                  variant="outline"
+                  className="rounded-full h-14 w-14 subLabel bg-gray-400 flex-col font-semibold text-md active:scale-95 active:bg-secondary transition-all duration-300"
+                >
+                  <ArrowLeft />
+                </Button>
                 <DrawerClose asChild>
                   <Button
                     onClick={handleAddExpense}
