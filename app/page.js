@@ -724,6 +724,9 @@ export default function Home() {
       >
         <div className="">
           <ViewTransactions
+            setCurMonth={setCurMonth}
+            setCurYear={setCurYear}
+            curMonth={curMonth}
             setHistory={setHistory}
             history={history}
             transactions={transactions}

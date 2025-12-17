@@ -97,7 +97,7 @@ const DateSelect = ({ setCurMonth, setCurYear, curMonth }) => {
       }}
     >
       <DrawerTrigger asChild className="border-b-2 border-blue-500">
-        <div className="flex justify-center items-center">
+        <div className="flex subLabel justify-center items-center">
           {months.find((month) => month.value == curMonth)?.name}
         </div>
       </DrawerTrigger>

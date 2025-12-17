@@ -16,12 +16,13 @@ export default function ViewTransactions({
   setCurrentExpense,
   setHistory,
   history,
+  setCurMonth,
+  setCurYear,
+  curMonth,
 }) {
   const [transactionsByDate, setTransactionsByDate] = React.useState([]);
+  console.log("TRANS", transactions);
   useEffect(() => {
-    if (transactions.length === 0) {
-      return;
-    }
     console.log(
       "Start Array of Transaction objects represented by date as object key",
       transactions
@@ -66,45 +67,55 @@ export default function ViewTransactions({
             <div>Your Transactions</div>
           </div>
           <div className="ml-auto">
-            <DateSelect />
+            <DateSelect
+              curMonth={curMonth}
+              setCurMonth={setCurMonth}
+              setCurYear={setCurYear}
+            />
           </div>
         </div>
       </div>
-      <div className="flex flex-col mt-4 mb-4 overflow-y-auto gap-6">
-        <div className="flex flex-col gap-6 overflow-y-auto">
-          {transactionsByDate.map((group) => (
-            <div key={group.date} className="flex flex-col gap-6">
-              <div className="grid grid-cols-7 justify-between items-center">
-                <div className="mainLabel2 col-span-5">{group.date}</div>
-                <div className="font-medium col-span-2 subLabel place-self-center text-(--foreground)/70">
-                  {getFormattedAmount(group?.totalAmount?.toFixed(2))}
+      {transactionsByDate.length == 0 ? (
+        <div className="subLabel2 bg-secondary/50 p-4 rounded-md text-center text-gray-700 dark:text-gray-400">
+          You dont have any transactions yet, Add some to see them here.
+        </div>
+      ) : (
+        <div className="flex flex-col mt-4 mb-4 overflow-y-auto gap-6">
+          <div className="flex flex-col gap-6 overflow-y-auto">
+            {transactionsByDate.map((group) => (
+              <div key={group.date} className="flex flex-col gap-6">
+                <div className="grid grid-cols-7 justify-between items-center">
+                  <div className="mainLabel2 col-span-5">{group.date}</div>
+                  <div className="font-medium col-span-2 subLabel place-self-center text-(--foreground)/70">
+                    {getFormattedAmount(group?.totalAmount?.toFixed(2))}
+                  </div>
+                </div>
+                <div className="flex flex-col gap-4">
+                  {group.transactions.map((expense) => (
+                    <div key={expense.id}>
+                      <div className="hidden sm:block">
+                        <EditExpenseDialog>
+                          <Transactions expense={expense} />
+                        </EditExpenseDialog>
+                      </div>
+                      <div
+                        className="sm:hidden block"
+                        onClick={() => {
+                          setCurrentExpense(expense);
+                          setHistory([...history, "viewTransactions"]);
+                          goTo("editTransaction");
+                        }}
+                      >
+                        <Transactions expense={expense} />
+                      </div>
+                    </div>
+                  ))}
                 </div>
               </div>
-              <div className="flex flex-col gap-4">
-                {group.transactions.map((expense) => (
-                  <div key={expense.id}>
-                    <div className="hidden sm:block">
-                      <EditExpenseDialog>
-                        <Transactions expense={expense} />
-                      </EditExpenseDialog>
-                    </div>
-                    <div
-                      className="sm:hidden block"
-                      onClick={() => {
-                        setCurrentExpense(expense);
-                        setHistory([...history, "viewTransactions"]);
-                        goTo("editTransaction");
-                      }}
-                    >
-                      <Transactions expense={expense} />
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
-      </div>
+      )}
     </div>
   );
 }
