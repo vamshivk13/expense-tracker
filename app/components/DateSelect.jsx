@@ -116,7 +116,7 @@ const DateSelect = ({ setCurMonth, setCurYear, curMonth }) => {
                 className={`h-20 flex items-center justify-center active:scale-95 transition-all duration-300
     ${
       selectedMonth == month.value
-        ? "bg-black text-white"
+        ? "bg-black text-white dark:bg-foreground/80 dark:text-black"
         : "bg-transparent text-foreground hover:bg-foreground/5 active:bg-foreground/10"
     }`}
               >
@@ -137,7 +137,7 @@ const DateSelect = ({ setCurMonth, setCurYear, curMonth }) => {
                 className={`h-20 flex items-center justify-center active:scale-95 transition-all duration-300
     ${
       selectedYear == year
-        ? "bg-black text-white"
+        ? "bg-black text-white dark:bg-foreground/80 dark:text-black"
         : "bg-transparent text-foreground hover:bg-foreground/5 active:bg-foreground/10"
     }`}
               >

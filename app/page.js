@@ -752,7 +752,7 @@ export default function Home() {
   `}
       >
         <div className="">
-          <ExpenseSummary />
+          <ExpenseSummary goBack={goBack} />
         </div>
       </div>
     </Suspense>
