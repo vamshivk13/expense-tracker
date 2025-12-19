@@ -96,16 +96,19 @@ const DateSelect = ({ setCurMonth, setCurYear, curMonth }) => {
         }
       }}
     >
-      <DrawerTrigger asChild className="border-b-2 border-blue-500">
+      <DrawerTrigger
+        asChild
+        className="border-b-2 cursor-pointer border-blue-500"
+      >
         <div className="flex subLabel justify-center items-center">
           {months.find((month) => month.value == curMonth)?.name}
         </div>
       </DrawerTrigger>
       <DrawerContent className={"p-1"}>
-        <div className="flex justify-around items-center p-3">
+        <div className="flex sm:container sm:mx-auto sm:max-w-[50%] justify-around items-center p-3">
           <div
             className={
-              "bg-secondary/50 rounded-full w-[30%] text-base h-60 overflow-y-auto overflow-hidden [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden"
+              "bg-secondary/50 rounded-full w-[30%] sm:w-[15%] text-base h-60 overflow-y-auto overflow-hidden [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden"
             }
           >
             {months.map((month) => (
@@ -126,7 +129,7 @@ const DateSelect = ({ setCurMonth, setCurYear, curMonth }) => {
           </div>
           <div
             className={
-              "bg-secondary/50 rounded-full w-[30%] text-base h-60 overflow-y-auto overflow-hidden [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden"
+              "bg-secondary/50 rounded-full w-[30%] sm:w-[15%] text-base h-60 overflow-y-auto overflow-hidden [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden"
             }
           >
             {years().map((year) => (

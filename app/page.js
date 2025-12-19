@@ -341,7 +341,7 @@ export default function Home() {
             </div>
 
             <div
-              className="border-none gap-2 z-40 flex-col flex my-3 select-none"
+              className="border-none cursor-pointer gap-2 z-40 flex-col flex my-3 select-none"
               onClick={() => {
                 goTo("expenseSummary");
               }}
@@ -509,7 +509,7 @@ export default function Home() {
                     {transactions.slice(0, 5).map((expense) => (
                       <div key={expense.id}>
                         <div
-                          className="sm:hidden select-none block"
+                          className="select-none block"
                           onClick={() => {
                             setMode("editTransaction");
                             setCurrentExpense(expense);
@@ -534,7 +534,7 @@ export default function Home() {
                   >
                     <div
                       className={
-                        "border-1 border-(--foreground) p-2 mainLabel2"
+                        "border-1 cursor-pointer border-(--foreground) p-2 mainLabel2"
                       }
                     >
                       View All
@@ -612,7 +612,9 @@ export default function Home() {
                   className={"mr-auto mt-10 p-1 rounded-none border-0"}
                 >
                   <div
-                    className={"border-1 border-(--foreground) p-2 mainLabel2"}
+                    className={
+                      "border-1 cursor-pointer border-(--foreground) p-2 mainLabel2"
+                    }
                   >
                     View All
                   </div>
@@ -683,7 +685,9 @@ export default function Home() {
                   className={"mr-auto mt-10 p-1 rounded-none border-0"}
                 >
                   <div
-                    className={"border-1 border-(--foreground) p-2 mainLabel2"}
+                    className={
+                      "border-1 cursor-pointer border-(--foreground) p-2 mainLabel2"
+                    }
                   >
                     View All
                   </div>

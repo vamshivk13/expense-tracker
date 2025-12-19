@@ -14,7 +14,7 @@ const CalenderDrawer = ({ date, setDate }) => {
   return (
     <Drawer className="p-0 z-[150]">
       <DrawerTrigger asChild className="">
-        <div className=" z-[150] rounded-full sm:hidden flex justify-center items-center">
+        <div className=" z-[150] rounded-full flex justify-center items-center">
           <button
             className={"z-50 flex rounded-full"}
             size={"icon"}

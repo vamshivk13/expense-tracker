@@ -32,7 +32,7 @@ export default function Transactions({ expense }) {
   return (
     <div key={expense.date} className="py-2 rounded-xl cursor-pointer mb-2">
       <div className="grid gap-x-3 grid-cols-8 items-center">
-        <div className=" col-span-6 sm:col-span-4">
+        <div className=" col-span-6">
           <div className="flex items-center gap-4">
             <div className="flex-shrink-0 bg-background border border-(--border-color)/60 p-2 rounded-full text-[var(--color)] dark:text-[var(--dark-color)]">
               {Icon && <Icon strokeWidth={1} />}
@@ -47,10 +47,10 @@ export default function Transactions({ expense }) {
             </div>
           </div>
         </div>
-        <div className="hidden sm:block text-center mainHeading3 text-gray-700 dark:text-gray-400">
+        {/* <div className="hidden sm:block text-center mainHeading3 text-gray-700 dark:text-gray-400">
           {getFormattedDate(expense.date)}
-        </div>
-        <div className="flex col-span-2 sm:col-span-2 place-items-center mx-auto items-center gap-1">
+        </div> */}
+        <div className="flex col-span-2 place-items-center mx-auto items-center gap-1">
           <div className="flex flex-col text-center gap-1">
             <div className="sm:block hidden customLabel">
               {getFormattedAmount(expense.amount)}

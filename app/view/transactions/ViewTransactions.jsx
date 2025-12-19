@@ -130,13 +130,8 @@ export default function ViewTransactions({
                 <div className="flex flex-col gap-4">
                   {group.transactions.map((expense) => (
                     <div key={expense.id}>
-                      <div className="hidden sm:block">
-                        <EditExpenseDialog>
-                          <Transactions expense={expense} />
-                        </EditExpenseDialog>
-                      </div>
                       <div
-                        className="sm:hidden block"
+                        className="block"
                         onClick={() => {
                           setCurrentExpense(expense);
                           setHistory([...history, "viewTransactions"]);
