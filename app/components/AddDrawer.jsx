@@ -96,7 +96,7 @@ export function AddDrawer({ setTransactions, suggestedTagsProp }) {
       }}
     >
       <DrawerTrigger asChild className="fixed bottom-8 right-8">
-        <div className=" h-18 w-18 z-50 bg-muted/90 rounded-full sm:hidden flex justify-center items-center">
+        <div className=" h-18 w-18 z-50 bg-muted/90 rounded-full flex justify-center items-center">
           <Button
             className={
               "z-50 flex rounded-full h-13 w-13 bg-blue-500 hover:bg-blue-700 dark:hover:bg-blue-300"
