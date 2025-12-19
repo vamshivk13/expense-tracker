@@ -84,7 +84,7 @@ const ExpenseSummary = ({ goBack, transactions: allTransactions }) => {
             className="absolute left-2 top-[50%] translate-y-[-50%]"
             onClick={() => goBack()}
           />
-          <div className="mx-auto subLabel px-4 py-2 rounded-full border-[0.3px] border-(--border-color)">
+          <div className="mx-auto subLabel px-4 py-2 rounded-full border-[0.3px] border-blue-400">
             Expenses Summary
           </div>
         </div>

@@ -314,7 +314,7 @@ export default function Home() {
                 <div>Hi,</div>
                 <span className="text-xl">Vamshi</span>
               </div>
-              <div className="cursor-pointer flex items-center justify-center rounded-full aspect-square ml-auto hover:bg-secondary/50 scale-95 active:bg-secondary/50 transition-all duration-150">
+              <div className="cursor-pointer select-none flex items-center justify-center rounded-full aspect-square ml-auto hover:bg-secondary/50 scale-95 active:bg-secondary/50 transition-all duration-150">
                 {theme == "light" ? (
                   <Moon
                     strokeWidth={1.5}
@@ -326,7 +326,7 @@ export default function Home() {
                 ) : (
                   <Sun
                     strokeWidth={1.5}
-                    className="ml-auto mr-3"
+                    className="ml-auto mr-3 select-none"
                     onClick={() => {
                       setTheme(theme === "dark" ? "light" : "dark");
                     }}
@@ -341,7 +341,7 @@ export default function Home() {
             </div>
 
             <div
-              className="border-none gap-2 z-40 flex-col flex my-3"
+              className="border-none gap-2 z-40 flex-col flex my-3 select-none"
               onClick={() => {
                 goTo("expenseSummary");
               }}
@@ -374,7 +374,7 @@ export default function Home() {
             >
               <div
                 className={
-                  `flex flex-col items-center justify-center cursor-pointer mx-auto gap-2` +
+                  `flex flex-col items-center justify-center select-none cursor-pointer mx-auto gap-2` +
                   (activeSection == "transactions"
                     ? " text-(--foreground) font-bold"
                     : "")
@@ -392,7 +392,7 @@ export default function Home() {
               <div
                 onClick={handleScrollToBudgets}
                 className={
-                  `flex flex-col items-center justify-center cursor-pointer mx-auto gap-2` +
+                  `flex flex-col select-none items-center justify-center cursor-pointer mx-auto gap-2` +
                   (activeSection == "budgets"
                     ? " text-(--foreground) font-bold"
                     : "")
@@ -409,7 +409,7 @@ export default function Home() {
               <div
                 onClick={handleScrollToExpenses}
                 className={
-                  `flex flex-col justify-center items-center cursor-pointer mx-auto gap-2` +
+                  `flex flex-col select-none justify-center items-center cursor-pointer mx-auto gap-2` +
                   (activeSection == "expenses"
                     ? " text-(--foreground) font-bold"
                     : "")
@@ -473,8 +473,8 @@ export default function Home() {
                 ref={(el) => (sectionRefs.current[1] = el)}
                 data-section={"transactions"}
               >
-                <div className="my-5 text-lg h-[55px] gap-x-3 grid grid-cols-7 items-center">
-                  <h4 className={"col-span-5 mainLabelWide2"}>
+                <div className="my-5 text-lg h-[55px] gap-x-3 grid grid-cols-8 items-center">
+                  <h4 className={"col-span-6 mainLabelWide2"}>
                     your transactions
                   </h4>
                   {transactions != null &&
@@ -482,7 +482,7 @@ export default function Home() {
                     !isTransactionsLoading && (
                       <div
                         className={
-                          "text-center place-items-center col-span-2 mx-auto subLabel2 text-sm text-gray-700 dark:text-gray-400 border-b-2 border-blue-500 pb-1 cursor-pointer"
+                          "text-center select-none place-items-center col-span-2 mx-auto subLabel2 text-sm text-gray-700 dark:text-gray-400 border-b-2 border-blue-500 pb-1 cursor-pointer"
                         }
                         onClick={() => {
                           goTo("viewTransactions");
@@ -508,13 +508,8 @@ export default function Home() {
                   <div className="flex flex-col gap-4">
                     {transactions.slice(0, 5).map((expense) => (
                       <div key={expense.id}>
-                        <div className="hidden sm:block">
-                          <EditExpenseDialog>
-                            <Transactions expense={expense} />
-                          </EditExpenseDialog>
-                        </div>
                         <div
-                          className="sm:hidden block"
+                          className="sm:hidden select-none block"
                           onClick={() => {
                             setMode("editTransaction");
                             setCurrentExpense(expense);
@@ -533,7 +528,9 @@ export default function Home() {
                     onClick={() => {
                       goTo("viewTransactions");
                     }}
-                    className={"mr-auto mt-10 p-1 rounded-none border-0"}
+                    className={
+                      "select-none mr-auto mt-10 p-1 rounded-none border-0"
+                    }
                   >
                     <div
                       className={
@@ -555,7 +552,7 @@ export default function Home() {
                   <div className={"col-span-3 mainLabelWide2"}>Budgets</div>
                   <div
                     className={
-                      "text-center subLabel2 mx-auto text-sm text-gray-700 dark:text-gray-400 border-b-2 border-blue-500 pb-1 cursor-pointer"
+                      "text-center subLabel2 select-none mx-auto text-sm text-gray-700 dark:text-gray-400 border-b-2 border-blue-500 pb-1 cursor-pointer"
                     }
                     onClick={() => {
                       router.push("/view/budgets");
@@ -633,7 +630,7 @@ export default function Home() {
                   </div>
                   <div
                     className={
-                      "text-center subLabel2 mx-auto text-sm text-gray-700 dark:text-gray-400 border-b-2 border-blue-500 pb-1 cursor-pointer"
+                      "text-center subLabel2 mx-auto select-none text-sm text-gray-700 dark:text-gray-400 border-b-2 border-blue-500 pb-1 cursor-pointer"
                     }
                     onClick={() => {
                       router.push("/view/expenses");
