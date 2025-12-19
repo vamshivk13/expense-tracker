@@ -176,8 +176,8 @@ export function ExpenseSummaryChart({ transactions }) {
   const nice = niceMinMax(yMin, yMax, 3);
 
   return (
-    <Card className="py-4 w-full sm:py-0 border-none outline-none shadow-none">
-      <CardHeader className=" border-none flex flex-col items-stretch border-b !p-0 sm:flex-row">
+    <Card className="py-4 bg-background w-full sm:py-0 border-none outline-none shadow-none">
+      <CardHeader className="border-none flex flex-col items-stretch border-b !p-0 sm:flex-row">
         <div className="!p-0 flex flex-1 flex-col justify-center gap-1 px-6 pb-3 sm:pb-0">
           <CardTitle className={"!p-0 mainLabel"}>Expense History</CardTitle>
         </div>
