@@ -170,7 +170,7 @@ export default function EditExpense({
             id="description"
             placeHolder="write a description"
             className={
-              "text-sm mainLabel2 p-1 dark:bg-(--background) bg-(--background) resize-none min-h-2 border-none focus-visible:ring-0 focus-visible:ring-offset-0 focus:outline-none"
+              "text-sm mainLabel2 w-full p-1 dark:bg-(--background) bg-(--background) resize-none min-h-2 border-none focus-visible:ring-0 focus-visible:ring-offset-0 focus:outline-none"
             }
           />
         </div>

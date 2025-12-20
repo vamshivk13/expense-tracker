@@ -42,6 +42,7 @@ import { ExpenseManager } from "./components/ExpenseManager";
 
 export default function Home() {
   const [transactions, setTransactions] = useState([]);
+  const [bills, setBills] = useState([]);
   const [currentExpense, setCurrentExpense] = useState(null);
   const [isTransactionsLoading, setIsTransactionsLoading] = useState(true);
   const [todaysExpense, setTodaysExpense] = useState(0);
@@ -133,6 +134,49 @@ export default function Home() {
 
       setIsTransactionsLoading(false);
     });
+
+    return () => unsubscribe();
+  }, [curMonth, curYear]);
+
+  // Load BILLS
+
+  useEffect(() => {
+    if (curMonth == null || curYear == null) return;
+    const mm = String(curMonth + 1).padStart(2, "0");
+
+    const start = `${curYear}-${mm}-01T00:00:00.000Z`;
+    const end = `${curYear}-${mm}-31T23:59:59.999Z`;
+
+    const q = query(
+      ref(db, `bills`),
+      orderByChild("date"),
+      startAt(start),
+      endAt(end)
+    );
+
+    const unsubscribe = onValue(
+      q,
+      (snapshot) => {
+        const data = snapshot.val();
+        const loadedItems = [];
+        for (const key in data) {
+          loadedItems.push({ id: key, data: data[key] });
+        }
+        console.log("Loaded items:", loadedItems);
+        setBills(
+          loadedItems
+            .map(({ id, data }) => ({
+              id: id,
+              amount: data.amount,
+              expense: data.expense,
+              date: data.date,
+              isPaid: data.isPaid,
+            }))
+            .sort((a, b) => new Date(b.date) - new Date(a.date))
+        );
+      },
+      new Map()
+    );
 
     return () => unsubscribe();
   }, [curMonth, curYear]);
@@ -447,15 +491,6 @@ export default function Home() {
                   <div>Add Expenses</div>
                 </Badge>
                 <Badge
-                  variant={"secondary"}
-                  className={
-                    "p-2 cursor-pointer border-1 subLabel2 border-gray-500/40 flex items-center gap-2 sm:text-sm rounded-2xl bg-(--color-muted)"
-                  }
-                >
-                  <ChartGantt strokeWidth={2} />
-                  <p>Update Budgets</p>
-                </Badge>
-                <Badge
                   onClick={() => goTo("expenseManager")}
                   variant={"secondary"}
                   className={
@@ -464,6 +499,15 @@ export default function Home() {
                 >
                   <HandCoins strokeWidth={2} />
                   <div>Manage Expenses</div>
+                </Badge>
+                <Badge
+                  variant={"secondary"}
+                  className={
+                    "p-2 cursor-pointer border-1 subLabel2 border-gray-500/40 flex items-center gap-2 sm:text-sm rounded-2xl bg-(--color-muted)"
+                  }
+                >
+                  <ChartGantt strokeWidth={2} />
+                  <p>Update Budgets</p>
                 </Badge>
               </div>
               <div className="absolute top-0 bottom-0 left-0 w-8 sm:w-16 z-20 bg-gradient-to-r from-white/90 to-transparent dark:from-[black]/40 dark:to-transparent" />
@@ -771,7 +815,7 @@ export default function Home() {
   `}
       >
         <div className="">
-          <ExpenseManager transactions={transactions} goBack={goBack} />
+          <ExpenseManager bills={bills} setBills={setBills} goBack={goBack} />
         </div>
       </div>
     </Suspense>
