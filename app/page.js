@@ -440,7 +440,7 @@ export default function Home() {
                 <Badge
                   variant={"secondary"}
                   className={
-                    "p-2 border-1 subLabel2 border-gray-500/40 flex items-center gap-2 sm:text-sm rounded-2xl bg-(--color-muted)"
+                    "p-2 cursor-pointer border-1 subLabel2 border-gray-500/40 flex items-center gap-2 sm:text-sm rounded-2xl bg-(--color-muted)"
                   }
                 >
                   <Plus strokeWidth={2} />
@@ -449,7 +449,7 @@ export default function Home() {
                 <Badge
                   variant={"secondary"}
                   className={
-                    "p-2 border-1 subLabel2 border-gray-500/40 flex items-center gap-2 sm:text-sm rounded-2xl bg-(--color-muted)"
+                    "p-2 cursor-pointer border-1 subLabel2 border-gray-500/40 flex items-center gap-2 sm:text-sm rounded-2xl bg-(--color-muted)"
                   }
                 >
                   <ChartGantt strokeWidth={2} />
@@ -459,7 +459,7 @@ export default function Home() {
                   onClick={() => goTo("expenseManager")}
                   variant={"secondary"}
                   className={
-                    "p-2 border-1 subLabel2 border-gray-500/40 flex items-center gap-2 sm:text-sm rounded-2xl bg-(--color-muted)"
+                    "p-2 cursor-pointer border-1 subLabel2 border-gray-500/40 flex items-center gap-2 sm:text-sm rounded-2xl bg-(--color-muted)"
                   }
                 >
                   <HandCoins strokeWidth={2} />
