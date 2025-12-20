@@ -38,6 +38,7 @@ import EditExpense from "./components/EditExpense";
 import ViewTransactions from "./view/transactions/ViewTransactions";
 import { ThemeProvider, useTheme } from "next-themes";
 import ExpenseSummary from "./view/ExpenseSummary";
+import { ExpenseManager } from "./components/ExpenseManager";
 
 export default function Home() {
   const [transactions, setTransactions] = useState([]);
@@ -455,6 +456,7 @@ export default function Home() {
                   <p>Update Budgets</p>
                 </Badge>
                 <Badge
+                  onClick={() => goTo("expenseManager")}
                   variant={"secondary"}
                   className={
                     "p-2 border-1 subLabel2 border-gray-500/40 flex items-center gap-2 sm:text-sm rounded-2xl bg-(--color-muted)"
@@ -464,8 +466,8 @@ export default function Home() {
                   <div>Manage Expenses</div>
                 </Badge>
               </div>
-              <div className="pointer-events-none absolute top-0 bottom-0 left-0 w-8 sm:w-16 z-20 bg-gradient-to-r from-white/90 to-transparent dark:from-[black]/40 dark:to-transparent" />
-              <div className="pointer-events-none absolute top-0 bottom-0 right-0 w-8 sm:w-16 z-20 bg-gradient-to-l from-white/90 to-transparent dark:from-[black]/40 dark:to-transparent" />
+              <div className="absolute top-0 bottom-0 left-0 w-8 sm:w-16 z-20 bg-gradient-to-r from-white/90 to-transparent dark:from-[black]/40 dark:to-transparent" />
+              <div className="absolute top-0 bottom-0 right-0 w-8 sm:w-16 z-20 bg-gradient-to-l from-white/90 to-transparent dark:from-[black]/40 dark:to-transparent" />
             </div>
           </div>
           <div className="bg-(--background) z-20 px-6 sm:px-16 lg:px-16  ">
@@ -757,6 +759,19 @@ export default function Home() {
       >
         <div className="">
           <ExpenseSummary transactions={transactions} goBack={goBack} />
+        </div>
+      </div>
+      <div
+        className={`
+    fixed inset-x-0 bottom-0 z-40] 
+    h-full w-full bg-background 
+    transition-transform duration-300 ease-in-out
+    rounded-t-2xl shadow-lg
+    ${view == "expenseManager" ? "translate-y-0" : "translate-y-full"}
+  `}
+      >
+        <div className="">
+          <ExpenseManager transactions={transactions} goBack={goBack} />
         </div>
       </div>
     </Suspense>
