@@ -439,26 +439,29 @@ export default function Home() {
                 <Badge
                   variant={"secondary"}
                   className={
-                    "p-2 border-1 border-(--border-color) sm:text-sm rounded-2xl bg-(--color-muted)"
+                    "p-2 border-1 subLabel2 border-gray-500/40 flex items-center gap-2 sm:text-sm rounded-2xl bg-(--color-muted)"
                   }
                 >
-                  <Plus /> Add Expenses
+                  <Plus strokeWidth={2} />
+                  <div>Add Expenses</div>
                 </Badge>
                 <Badge
                   variant={"secondary"}
                   className={
-                    "p-2 border-1 border-(--border-color) sm:text-sm rounded-2xl bg-(--color-muted)"
+                    "p-2 border-1 subLabel2 border-gray-500/40 flex items-center gap-2 sm:text-sm rounded-2xl bg-(--color-muted)"
                   }
                 >
-                  <ChartGantt /> Update Budgets
+                  <ChartGantt strokeWidth={2} />
+                  <p>Update Budgets</p>
                 </Badge>
                 <Badge
                   variant={"secondary"}
                   className={
-                    "p-2 border-1 border-(--border-color) sm:text-sm rounded-2xl bg-(--color-muted) "
+                    "p-2 border-1 subLabel2 border-gray-500/40 flex items-center gap-2 sm:text-sm rounded-2xl bg-(--color-muted)"
                   }
                 >
-                  <HandCoins /> Modify Fixed Expenses
+                  <HandCoins strokeWidth={2} />
+                  <div>Manage Expenses</div>
                 </Badge>
               </div>
               <div className="pointer-events-none absolute top-0 bottom-0 left-0 w-8 sm:w-16 z-20 bg-gradient-to-r from-white/90 to-transparent dark:from-[black]/40 dark:to-transparent" />
