@@ -78,10 +78,17 @@ export default function Home() {
 
   useEffect(() => {
     if (curMonth == null || curYear == null) return;
-    const mm = String(curMonth + 1).padStart(2, "0");
+    const mm = curMonth + 1;
 
-    const start = `${curYear}-${mm}-01T00:00:00.000Z`;
-    const end = `${curYear}-${mm}-31T23:59:59.999Z`;
+    const startDate = new Date(curYear, mm - 1, 1, 0, 0, 0);
+    const endDate = new Date(curYear, mm, 0, 23, 59, 59, 999);
+
+    const start = new Date(
+      startDate.getTime() - 5.5 * 60 * 60 * 1000
+    ).toISOString();
+    const end = new Date(
+      endDate.getTime() - 5.5 * 60 * 60 * 1000
+    ).toISOString();
 
     const q = query(
       ref(db, `expenses`),
@@ -142,10 +149,17 @@ export default function Home() {
 
   useEffect(() => {
     if (curMonth == null || curYear == null) return;
-    const mm = String(curMonth + 1).padStart(2, "0");
+    const mm = curMonth + 1;
 
-    const start = `${curYear}-${mm}-01T00:00:00.000Z`;
-    const end = `${curYear}-${mm}-31T23:59:59.999Z`;
+    const startDate = new Date(curYear, mm - 1, 1, 0, 0, 0);
+    const endDate = new Date(curYear, mm, 0, 23, 59, 59, 999);
+
+    const start = new Date(
+      startDate.getTime() - 5.5 * 60 * 60 * 1000
+    ).toISOString();
+    const end = new Date(
+      endDate.getTime() - 5.5 * 60 * 60 * 1000
+    ).toISOString();
 
     const q = query(
       ref(db, `bills`),
