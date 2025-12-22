@@ -39,6 +39,7 @@ import ViewTransactions from "./view/transactions/ViewTransactions";
 import { ThemeProvider, useTheme } from "next-themes";
 import ExpenseSummary from "./view/ExpenseSummary";
 import { ExpenseManager } from "./components/ExpenseManager";
+import { get } from "firebase/database";
 
 export default function Home() {
   const [transactions, setTransactions] = useState([]);
@@ -50,6 +51,8 @@ export default function Home() {
   const [history, setHistory] = useState([]);
   const [curYear, setCurYear] = useState(null);
   const [curMonth, setCurMonth] = useState(null);
+  const [budget, setBudget] = useState(0);
+
   useEffect(() => {
     // Calculate today's expenses
     const today = new Date();
@@ -74,6 +77,25 @@ export default function Home() {
     let year = new Date().getFullYear();
     setCurMonth(month);
     setCurYear(year);
+  }, []);
+
+  // GET Budget
+
+  useEffect(() => {
+    const myRef = ref(db, "/budget");
+    get(myRef)
+      .then((snapshot) => {
+        if (snapshot.exists()) {
+          console.log("BUDGET VALUE", snapshot.val().val);
+          setBudget(snapshot.val()?.val); // This is your value
+        } else {
+          console.log("No data available");
+          setBudget(0);
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+      });
   }, []);
 
   useEffect(() => {
@@ -829,7 +851,13 @@ export default function Home() {
   `}
       >
         <div className="">
-          <ExpenseManager bills={bills} setBills={setBills} goBack={goBack} />
+          <ExpenseManager
+            setBudget={setBudget}
+            budget={budget}
+            bills={bills}
+            setBills={setBills}
+            goBack={goBack}
+          />
         </div>
       </div>
     </Suspense>

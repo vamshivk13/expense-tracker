@@ -11,11 +11,13 @@ import {
 } from "@/components/ui/card";
 import {
   ArrowLeft,
+  ArrowRight,
   Calendar1,
   Check,
   Cross,
   Delete,
   DeleteIcon,
+  Edit,
   LucideDelete,
   Plus,
   Receipt,
@@ -31,10 +33,13 @@ import { Separator } from "@/components/ui/separator";
 import { Badge } from "@/components/ui/badge";
 import { AddExpenseBill } from "./AddExpenseBill";
 import { Calendar } from "@/components/ui/calendar";
+import { Button } from "@/components/ui/button";
 
-export function ExpenseManager({ bills, setBills, goBack }) {
+export function ExpenseManager({ bills, budget, setBudget, setBills, goBack }) {
   const [billsByDate, setBillsByDate] = React.useState(bills);
   const [date, setDate] = React.useState(new Date());
+  const [currentBudget, setCurrentBudget] = React.useState(budget);
+  const [isBudgetEditMode, setIsBudgetEditMode] = React.useState(false);
 
   function handleDeleteBill(id) {
     setBills((prev) => {
@@ -45,6 +50,15 @@ export function ExpenseManager({ bills, setBills, goBack }) {
     remove(billsRef).catch((err) =>
       console.error("Failed to delete expense:", err)
     );
+  }
+
+  function handleEditBudget() {
+    setBudget(currentBudget);
+    const budgetRef = ref(db, "budget/");
+    update(budgetRef, { val: currentBudget }).catch((err) =>
+      console.log("budget error", err)
+    );
+    setIsBudgetEditMode(false);
   }
 
   function handleIsPaidBill(id) {
@@ -119,11 +133,11 @@ export function ExpenseManager({ bills, setBills, goBack }) {
   return (
     <div
       className={
-        "flex flex-col h-dvh gap-5 sm:container mx-auto px-6 sm:px-16 lg:px-16 py-3"
+        "flex flex-col h-dvh gap-5 sm:container mx-auto px-4 sm:px-16 lg:px-16 py-3"
       }
     >
       <div className="flex flex-col h-full gap-4 text-lg bg-background py-4 w-full">
-        <div className="flex gap-2 col-span-3 items-center ">
+        <div className="flex gap-2 px-2 col-span-3 items-center ">
           <ArrowLeft className=" " onClick={() => goBack()} />
           <div className="mx-auto subLabel px-4 py-2 rounded-full border-[0.3px] border-blue-400">
             Expenses Manager
@@ -137,13 +151,60 @@ export function ExpenseManager({ bills, setBills, goBack }) {
         >
           <CardContent>
             <div className="flex justify-between items-center">
-              <div className="flex flex-col max-w-full my-3 gap-2">
-                <div className="subLabel2">Total Amount</div>
-                <div className="mainHeading !text-foreground">
-                  {getFormattedAmount(
-                    bills.reduce((acc, bill) => {
-                      return acc + Number(bill.amount);
-                    }, 0)
+              <div className="flex flex-col max-w-full my-3 gap-4">
+                <div className="flex flex-col gap-2">
+                  <div className="belowLabel uppercase">Total Amount</div>
+                  <div className="mainHeading">
+                    {getFormattedAmount(
+                      bills.reduce((acc, bill) => {
+                        return acc + Number(bill.amount);
+                      }, 0)
+                    )}
+                  </div>
+                </div>
+                <div className="flex flex-col gap-2">
+                  <div className="belowLabel uppercase flex gap-2 items-center">
+                    <p>Total Budget</p>
+                    <Edit
+                      onClick={() => setIsBudgetEditMode((prev) => !prev)}
+                      className="text-gray-700"
+                      strokeWidth={1}
+                      size={13}
+                    />
+                  </div>
+                  {isBudgetEditMode ? (
+                    <form
+                      onSubmit={(e) => {
+                        e.preventDefault();
+                        handleEditBudget();
+                      }}
+                      className="flex gap-2 items-center cursor-pointer"
+                      id="category"
+                    >
+                      <p>₹</p>
+                      <input
+                        placeholder="0"
+                        type="number"
+                        className={
+                          "text-sm p-1 mainHeading w-full border-b-1 resize-none min-h-2 focus-visible:ring-0 focus-visible:ring-offset-0 focus:outline-none"
+                        }
+                        value={currentBudget}
+                        onChange={(e) => setCurrentBudget(e.target.value)}
+                      />
+                      <Button
+                        onClick={() => {
+                          handleEditBudget();
+                        }}
+                        variant={"outline"}
+                        className={"h-8 w-8 rounded-full"}
+                      >
+                        <ArrowRight />
+                      </Button>
+                    </form>
+                  ) : (
+                    <div className="mainHeading ">
+                      {getFormattedAmount(budget)}
+                    </div>
                   )}
                 </div>
               </div>
