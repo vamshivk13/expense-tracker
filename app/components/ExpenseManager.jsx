@@ -137,7 +137,7 @@ export function ExpenseManager({ bills, budget, setBudget, setBills, goBack }) {
       }
     >
       <div className="flex flex-col h-full gap-4 text-lg bg-background py-4 w-full">
-        <div className="flex gap-2 px-2 col-span-3 items-center ">
+        <div className="flex gap-2 pt-2 px-2 col-span-3 items-center ">
           <ArrowLeft className=" " onClick={() => goBack()} />
           <div className="mx-auto subLabel px-4 py-2 rounded-full border-[0.3px] border-blue-400">
             Expenses Manager
