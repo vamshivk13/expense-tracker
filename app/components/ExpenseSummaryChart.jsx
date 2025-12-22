@@ -123,16 +123,105 @@ function formatCurrencyShort(value, symbol = "₹") {
   return `${symbol}${v.toLocaleString()}`;
 }
 
+function getWeeklyExpenseBuckets(transactions) {
+  function toLocalDate(input) {
+    if (input instanceof Date) return new Date(input); // copy
+    if (typeof input === "string") {
+      const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(input);
+      if (m) {
+        const [, y, mo, da] = m;
+        return new Date(Number(y), Number(mo) - 1, Number(da)); // local midnight
+      }
+      return new Date(input);
+    }
+    return new Date(input);
+  }
+
+  function startOfLocalDay(d) {
+    const copy = new Date(d);
+    copy.setHours(0, 0, 0, 0);
+    return copy;
+  }
+
+  function startOfWeekMonday(d) {
+    const day = d.getDay(); // 0=Sun,1=Mon,...6=Sat
+    const diff = day === 0 ? -6 : 1 - day; // move back to Monday
+    const start = startOfLocalDay(d);
+    start.setDate(start.getDate() + diff);
+    return start;
+  }
+
+  function addDays(d, days) {
+    const copy = new Date(d);
+    copy.setDate(copy.getDate() + days);
+    return copy;
+  }
+
+  function formatLocalYYYYMMDD(d) {
+    const y = d.getFullYear();
+    const m = String(d.getMonth() + 1).padStart(2, "0");
+    const da = String(d.getDate()).padStart(2, "0");
+    return `${m}-${da}`;
+  }
+
+  const bucketsMap = new Map();
+
+  for (const tx of transactions || []) {
+    const parsed = toLocalDate(tx?.date);
+    if (isNaN(parsed.getTime())) continue; // skip invalid date
+
+    const amount = Number(tx?.amount);
+    if (!Number.isFinite(amount)) continue; // skip invalid amount
+
+    const weekStart = startOfWeekMonday(parsed);
+    const weekEnd = startOfLocalDay(addDays(weekStart, 6));
+
+    const key = `${formatLocalYYYYMMDD(weekStart)} to ${formatLocalYYYYMMDD(
+      weekEnd
+    )}`;
+
+    let bucket = bucketsMap.get(key);
+    if (!bucket) {
+      bucket = { key: key, totalAmount: 0, transactions: [] };
+      bucketsMap.set(key, bucket);
+    }
+
+    bucket.totalAmount += amount;
+    bucket.transactions.push(tx);
+  }
+
+  return Array.from(bucketsMap.values()).sort((a, b) => {
+    const aStart = a.key.slice(0, 10);
+    const bStart = b.key.slice(0, 10);
+    return aStart < bStart ? -1 : aStart > bStart ? 1 : 0;
+  });
+}
+
 export function ExpenseSummaryChart({ transactions }) {
-  const [activeChart, setActiveChart] = React.useState("dayAmount");
+  const [activeChart, setActiveChart] = React.useState("totalAmount");
   const [transactionsByDate, setTransactionsByDate] = React.useState([]);
-  const total = React.useMemo(
-    () => ({
-      day: getCurrentWeekExpenseTotal(transactions, 1),
-      week: transactions.reduce((acc, curr) => acc + curr.amount, 0),
-    }),
-    [transactions]
-  );
+  const [transactionsByWeek, setTransactionsByWeek] = React.useState([]);
+  const [lineChartData, setLineChartData] = React.useState([]);
+  console.log("DATA", lineChartData);
+  const [lineChartMode, setLineChartMode] = React.useState([
+    "Monthly View",
+    "Weekly Spikes",
+  ]);
+
+  React.useEffect(() => {
+    console.log("MODE CHANGED", lineChartMode);
+    if (lineChartMode[0] == "Monthly View") {
+      setLineChartData(transactionsByDate);
+    } else if (lineChartMode[0] == "Weekly Spikes") {
+      setLineChartData(transactionsByWeek);
+    }
+  }, [lineChartMode[0], transactionsByWeek, transactionsByDate]);
+
+  React.useEffect(() => {
+    const weeklyTransactions = getWeeklyExpenseBuckets(transactions);
+    console.log("WEEKLY TRANSACTIONS", weeklyTransactions);
+    setTransactionsByWeek(weeklyTransactions);
+  }, [transactions]);
 
   React.useEffect(() => {
     console.log(
@@ -161,7 +250,7 @@ export function ExpenseSummaryChart({ transactions }) {
       groupedTransactions.push({
         key: date,
         transactions: transactionsByDate[date],
-        dayAmount: transactionsByDate[date].reduce(
+        totalAmount: transactionsByDate[date].reduce(
           (acc, curr) => acc + curr.amount,
           0
         ),
@@ -171,33 +260,28 @@ export function ExpenseSummaryChart({ transactions }) {
     setTransactionsByDate(groupedTransactions);
   }, [transactions]);
 
-  const yMin = Math.min(...transactionsByDate?.map((d) => d.dayAmount));
-  const yMax = Math.max(...transactionsByDate?.map((d) => d.dayAmount));
+  const yMin = Math.min(...lineChartData?.map((d) => d.totalAmount));
+  const yMax = Math.max(...lineChartData?.map((d) => d.totalAmount));
   const nice = niceMinMax(yMin, yMax, 3);
 
   return (
     <Card className="py-4 bg-background w-full sm:py-0 border-none outline-none shadow-none">
       <CardHeader className="border-none flex flex-col items-stretch border-b !p-0 sm:flex-row">
-        <div className="!p-0 flex flex-1 flex-col justify-center gap-1 px-6 pb-3 sm:pb-0">
-          <CardTitle className={"!p-0 mainLabel"}>Expense History</CardTitle>
+        <div className="!p-0 flex flex-1 mb-2 justify-center items-center gap-1 px-6 pb-3 sm:pb-0">
+          <CardTitle className={"mainLabel"}>Expense History</CardTitle>
+          <div
+            onClick={() => {
+              setLineChartMode((prev) => {
+                const prev1 = [...prev];
+                const toRear = prev1.shift();
+                return [...prev1, toRear];
+              });
+            }}
+            className="subLabel cursor-pointer select-none text-gray-600 border-b-[1px] border-gray-500 ml-auto"
+          >
+            {lineChartMode[0]}
+          </div>
         </div>
-        {/* <div className="flex">
-          {["day"].map((key) => {
-            const chart = key;
-            return (
-              <button
-                key={chart}
-                data-active={activeChart === chart + "Amount"}
-                className="data-[active=true]:bg-muted/50 flex flex-1 flex-col justify-center gap-1 border-t px-6 py-4 text-left even:border-l sm:border-t-0 sm:border-l sm:px-8 sm:py-6"
-                onClick={() => setActiveChart("totalAmount")}
-              >
-                <span className="text-muted-foreground text-xs">
-                  {chartConfig[chart].label}
-                </span>
-              </button>
-            );
-          })}
-        </div> */}
       </CardHeader>
       <CardContent className="px-0 w-full sm:p-6 border-none shadow-none outline-none">
         <ChartContainer
@@ -206,7 +290,7 @@ export function ExpenseSummaryChart({ transactions }) {
         >
           <LineChart
             accessibilityLayer
-            data={[...transactionsByDate]}
+            data={[...lineChartData]}
             margin={{
               left: 22,
               right: 0,
@@ -216,8 +300,8 @@ export function ExpenseSummaryChart({ transactions }) {
             <XAxis
               dataKey="key"
               ticks={[
-                transactionsByDate[0]?.key,
-                transactionsByDate[transactionsByDate.length - 1]?.key,
+                lineChartData[0]?.key,
+                lineChartData[lineChartData.length - 1]?.key,
               ]}
               tickLine={true}
               axisLine={false}
@@ -228,10 +312,15 @@ export function ExpenseSummaryChart({ transactions }) {
               // display={"none"}
               tickFormatter={(value) => {
                 const date = new Date(value);
-                return new Date(date).toLocaleDateString(undefined, {
-                  month: "short",
-                  day: "2-digit",
-                });
+
+                if (!isNaN(date.getTime())) {
+                  return new Date(date).toLocaleDateString(undefined, {
+                    month: "short",
+                    day: "2-digit",
+                  });
+                } else {
+                  return value;
+                }
               }}
               className="subLabel2"
               interval={0}
@@ -257,7 +346,11 @@ export function ExpenseSummaryChart({ transactions }) {
                   className="w-[150px]"
                   nameKey="views"
                   labelFormatter={(value) => {
-                    return getFormattedDate(value);
+                    if (!isNaN(getFormattedDate(value)))
+                      return getFormattedDate(value);
+                    else {
+                      return value;
+                    }
                   }}
                 />
               }
