@@ -133,7 +133,7 @@ export function ExpenseManager({ bills, budget, setBudget, setBills, goBack }) {
   return (
     <div
       className={
-        "flex flex-col h-dvh gap-5 sm:container mx-auto px-4 sm:px-16 lg:px-16 py-3"
+        "flex flex-col h-dvh gap-5 sm:container mx-auto px-4 sm:px-16 lg:px-16"
       }
     >
       <div className="flex flex-col h-full gap-4 text-lg bg-background py-4 w-full">
