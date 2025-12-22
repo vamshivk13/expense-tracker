@@ -208,8 +208,8 @@ export function ExpenseManager({ bills, budget, setBudget, setBills, goBack }) {
                   )}
                 </div>
               </div>
-              <div className="flex">
-                <Calendar1 />
+              <div className="bg-background flex justify-center items-center border border-(--border-color)/60 p-3 rounded-full text-[var(--color)] dark:text-[var(--dark-color)]">
+                <Calendar1 strokeWidth={1} />
               </div>
             </div>
           </CardContent>
@@ -248,11 +248,11 @@ export function ExpenseManager({ bills, budget, setBudget, setBills, goBack }) {
                         <div className="grid grid-cols-6 items-center">
                           <div className="col-span-4 flex place-self-start items-center gap-4">
                             <div className="bg-background border border-(--border-color)/60 p-2 rounded-full text-[var(--color)] dark:text-[var(--dark-color)]">
-                              <Receipt />
+                              <Receipt strokeWidth={1} />
                             </div>
-                            <div className="mr-auto flex gap-1 flex-col">
+                            <div className="mr-auto flex gap-2 flex-col">
                               <div className="subLabel2">{bill.expense}</div>
-                              <div className="col-span-1 subLabel">
+                              <div className="col-span-1 mainHeading uppercase !text-sm">
                                 {getFormattedAmount(bill.amount)}
                               </div>
                               {bill.isPaid ? (
