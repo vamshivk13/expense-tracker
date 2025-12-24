@@ -81,6 +81,7 @@
   --gray-dialog: oklch(18.791% 0.00162 16.574);
   --border-color: #dedede;
   --border-color-light: #e8e6e6;
+  --bar-chart-color: oklch(74.95% 0.10177 276.793);
 }
 
 .dark {
@@ -117,6 +118,7 @@
   --sidebar-border: oklch(1 0 0 / 10%);
   --sidebar-ring: oklch(0.556 0 0);
   --border-color: #fbfbfb;
+  --bar-chart-color: oklch(57.267% 0.21828 270.947);
 }
 
 @layer base {

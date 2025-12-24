@@ -10,6 +10,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ArrowLeft, Badge } from "lucide-react";
 import { ExpenseSummaryChart } from "../components/ExpenseSummaryChart";
 import { useEffect, useState } from "react";
+import { ExpenseSummaryBarChart } from "../components/ExpenseSummaryBarChart";
 
 const ExpenseSummary = ({ goBack, transactions: allTransactions }) => {
   const [transactions, setTransactions] = useState(null);
@@ -156,8 +157,9 @@ const ExpenseSummary = ({ goBack, transactions: allTransactions }) => {
               </Card>
             </TabsContent>
           </Tabs>
-          <div>
+          <div className="flex gap-2 flex-col">
             <ExpenseSummaryChart transactions={allTransactions} />
+            <ExpenseSummaryBarChart transactions={allTransactions} />
           </div>
         </div>
       </div>
