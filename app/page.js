@@ -10,6 +10,7 @@ import {
   getFormattedAmount,
   getFormattedDate,
   getFormattedDateShort,
+  getFormattedDateWithWeekday,
 } from "./util/DateUtility";
 
 import { NotepadTextDashed, HandCoins } from "lucide-react";
@@ -430,13 +431,16 @@ export default function Home() {
               <div className={"border-none flex flex-col my-3 py-1 px-1 gap-5"}>
                 <div className="flex items-center justify-center">
                   <div className="flex flex-col gap-3 justify-center items-center">
+                    <div className="subLabel3 font-bold">
+                      {getFormattedDateWithWeekday(new Date())}
+                    </div>
                     <p className="subLabel2 text-center">Today's Expenses</p>
                     <div className="text-2xl flex font-bold mainLabel justify-center items-center">
-                      <div className="text-3xl tracking-wide font-semibold text-center">
-                        <span className="font-normal">₹</span>
-                        {todaysExpense}
+                      <div className="text-3xl flex tracking-wide gap-1 font-semibold items-center text-center">
+                        <span className="font-normal mainLabel">₹</span>
+                        <div>{todaysExpense}</div>
                       </div>
-                      <ChevronRight className="" size={24} strokeWidth={1} />
+                      <ChevronRight className="" size={18} strokeWidth={1} />
                     </div>
                   </div>
                 </div>
