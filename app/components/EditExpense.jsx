@@ -74,7 +74,7 @@ export default function EditExpense({
       tags: tags,
       date: date.toISOString(),
     }).catch((err) => console.error("Failed to update expense:", err));
-    goTo(null);
+    goBack();
   };
 
   const handleDeleteExpense = (expenseId) => {
@@ -86,7 +86,7 @@ export default function EditExpense({
     remove(expenseRef).catch((err) =>
       console.error("Failed to delete expense:", err)
     );
-    goTo(null);
+    goBack();
   };
 
   const openCalender = () => {};
