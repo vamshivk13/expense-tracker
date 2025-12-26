@@ -1,7 +1,14 @@
 "use client";
 
 import { TrendingUp } from "lucide-react";
-import { Bar, BarChart, CartesianGrid, LabelList, XAxis } from "recharts";
+import {
+  Bar,
+  BarChart,
+  CartesianGrid,
+  LabelList,
+  ResponsiveContainer,
+  XAxis,
+} from "recharts";
 
 import {
   Card,
@@ -69,41 +76,48 @@ export function ExpenseSummaryBarChart({ transactions }) {
         <CardTitle className={"mainLabel"}>Top Spends</CardTitle>
       </CardHeader>
       <CardContent className="px-0 w-full sm:p-6 border-none shadow-none outline-none">
-        <ChartContainer config={chartConfig}>
-          <BarChart
-            accessibilityLayer
-            data={transactionsByCategory}
-            margin={{
-              top: 20,
-              left: 10,
-              right: 10,
-            }}
-          >
-            <CartesianGrid vertical={false} />
-            <XAxis
-              className="subLabel3"
-              dataKey="category"
-              tickLine={false}
-              tickMargin={10}
-              axisLine={false}
-              tickFormatter={(value) => value}
-            />
-            <ChartTooltip
-              cursor={false}
-              content={<ChartTooltipContent hideLabel />}
-            />
-            <Bar dataKey="amount" fill="var(--color-category)" radius={4}>
-              <LabelList
-                dataKey={"amount"}
-                position="top"
-                offset={12}
-                className="fill-foreground subLabel2"
-                fontSize={12}
-                formatter={(val) => getFormattedAmount(val)}
+        <ResponsiveContainer width={"100%"} height={300}>
+          <ChartContainer config={chartConfig} className={"w-full h-full"}>
+            <BarChart
+              accessibilityLayer
+              className="h-full"
+              data={transactionsByCategory}
+              margin={{
+                top: 20,
+                left: 10,
+                right: 10,
+              }}
+            >
+              <CartesianGrid vertical={false} />
+              <XAxis
+                className="subLabel3 font-semibold"
+                dataKey="category"
+                tickLine={false}
+                tickMargin={15}
+                axisLine={false}
+                interval={0} // ⬅️ force-show all ticks
+                minTickGap={0}
+                tickFormatter={(value) =>
+                  value.length >= 10 ? value.slice(0, 10) + ".." : value
+                }
               />
-            </Bar>
-          </BarChart>
-        </ChartContainer>
+              <ChartTooltip
+                cursor={false}
+                content={<ChartTooltipContent hideLabel />}
+              />
+              <Bar dataKey="amount" fill="var(--color-category)" radius={4}>
+                <LabelList
+                  dataKey={"amount"}
+                  position="top"
+                  offset={12}
+                  className="fill-foreground subLabel2"
+                  fontSize={12}
+                  formatter={(val) => getFormattedAmount(val)}
+                />
+              </Bar>
+            </BarChart>
+          </ChartContainer>
+        </ResponsiveContainer>
       </CardContent>
     </Card>
   );
