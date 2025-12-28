@@ -10,6 +10,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import {
+  ArrowDownUp,
   ArrowLeft,
   ArrowRight,
   Calendar1,
@@ -28,7 +29,7 @@ import {
   X,
 } from "lucide-react";
 import { ref, onValue, db, remove, update, push, set } from "../firebaseConfig";
-import { getFormattedAmount } from "../util/DateUtility";
+import { getFormattedAmount, getFormattedDate } from "../util/DateUtility";
 import { Separator } from "@/components/ui/separator";
 import { Badge } from "@/components/ui/badge";
 import { AddExpenseBill } from "./AddExpenseBill";
@@ -148,12 +149,11 @@ export function ExpenseManager({ bills, budget, setBudget, setBills, goBack }) {
       }
     >
       <div className="flex flex-col h-full gap-4 text-lg bg-background w-full">
-        <div className="flex gap-2 pt-4 px-2 items-center ">
-          <ArrowLeft className=" " onClick={() => goBack()} />
+        <div className="flex gap-2 pt-4 px-2 items-center relative">
+          <ArrowLeft className="left-2 absolute" onClick={() => goBack()} />
           <div className="mx-auto subLabel px-4 py-2 rounded-full border-[0.3px] border-blue-400">
             Expenses Manager
           </div>
-          <AddExpenseBill setBills={setBills} />
         </div>
         <Card
           className={
@@ -236,9 +236,8 @@ export function ExpenseManager({ bills, budget, setBudget, setBills, goBack }) {
         </Card>
 
         <div className="!p-0 flex flex-1 mb-1 mt-2 justify-center items-center gap-1 px-6 pb-3 sm:pb-0">
-          <CardTitle className={"mainHeading uppercase !text-sm"}>
-            Monthly Bills
-          </CardTitle>
+          <AddExpenseBill setBills={setBills} />
+
           <div
             onClick={() => {
               setViewMode((prev) => {
@@ -247,9 +246,9 @@ export function ExpenseManager({ bills, budget, setBudget, setBills, goBack }) {
                 return [...prev1, toRear];
               });
             }}
-            className="subLabel cursor-pointer select-none text-gray-600 border-b-[1px] border-gray-500 ml-auto"
+            className="subLabel cursor-pointer select-none text-gray-600 ml-auto"
           >
-            {viewMode[0]}
+            <ArrowDownUp strokeWidth={1} size={16} />
           </div>
         </div>
         {billsByDate.length == 0 ? (
@@ -293,6 +292,11 @@ export function ExpenseManager({ bills, budget, setBudget, setBills, goBack }) {
                                 <div className="subLabel2">{bill.expense}</div>
                                 <div className="col-span-1 mainHeading uppercase !text-sm">
                                   {getFormattedAmount(bill.amount)}
+                                </div>
+                                <div className="subLabel3">
+                                  {viewMode[0] == "By Date"
+                                    ? bill.category
+                                    : getFormattedDate(bill.date)}
                                 </div>
                               </div>
                             </div>
