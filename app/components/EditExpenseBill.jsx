@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { Check, ChevronRight, Plus } from "lucide-react";
+import { Check, ChevronRight, Plus, Trash, X } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -10,7 +10,7 @@ import {
   DrawerContent,
   DrawerTrigger,
 } from "@/components/ui/drawer";
-import { ref, onValue, db, update, push, set } from "../firebaseConfig";
+import { ref, onValue, db, update, push, set, remove } from "../firebaseConfig";
 
 import CalenderDrawer from "./CalenderDrawer";
 import { Badge } from "@/components/ui/badge";
@@ -19,13 +19,22 @@ import { Separator } from "@/components/ui/separator";
 import { Label } from "@/components/ui/label";
 import { Categories } from "./Categories";
 
-export function AddExpenseBill({ setBills }) {
+export function EditExpenseBill({ setBills, children, currentBill }) {
   const [date, setDate] = React.useState(new Date());
   const [expense, setExpense] = React.useState("");
   const [amount, setAmount] = React.useState(null);
   const [category, setCategory] = React.useState("Other");
 
-  function handleAddExpenseBill() {
+  React.useEffect(() => {
+    if (currentBill) {
+      setDate(currentBill.date);
+      setExpense(currentBill.expense);
+      setAmount(currentBill.amount);
+      setCategory(currentBill.category);
+    }
+  }, [currentBill]);
+
+  function handleEditExpenseBill() {
     const newBill = {
       date: date,
       expense: expense,
@@ -34,15 +43,53 @@ export function AddExpenseBill({ setBills }) {
       category: category,
     };
     setBills((prev) => {
-      return [newBill, ...prev];
+      return prev.map((bill) => {
+        if (bill.id == currentBill.id) {
+          return { ...bill, ...newBill };
+        } else {
+          return bill;
+        }
+      });
     });
-    const billsRef = ref(db, "bills/");
-    const newBillsRef = push(billsRef);
-    const dataToSave = { ...newBill, date: newBill.date.toISOString() };
-    set(newBillsRef, dataToSave).catch((err) =>
+    const billsRef = ref(db, "bills/" + currentBill.id);
+    update(billsRef, { ...newBill }).catch((err) =>
       console.error("Failed to save expense:", err)
     );
   }
+
+  function handleDeleteBill(id) {
+    setBills((prev) => {
+      return prev.filter((tx) => tx.id !== id);
+    });
+
+    const billsRef = ref(db, "bills/" + id);
+    remove(billsRef).catch((err) =>
+      console.error("Failed to delete expense:", err)
+    );
+  }
+
+  function handleIsPaidBill(id) {
+    const curBill = { ...currentBill };
+
+    setBills((prev) => {
+      return prev.map((bill) => {
+        if (bill.id == id) {
+          return {
+            ...bill,
+            isPaid: !bill.isPaid,
+          };
+        } else {
+          return bill;
+        }
+      });
+    });
+
+    const billsRef = ref(db, "bills/" + id);
+    update(billsRef, { ...curBill, isPaid: !curBill.isPaid }).catch((err) =>
+      console.error("Failed to delete expense:", err)
+    );
+  }
+
   function resetFields() {
     setExpense("");
     setAmount(0);
@@ -61,15 +108,7 @@ export function AddExpenseBill({ setBills }) {
       }}
     >
       <DrawerTrigger asChild className="">
-        <Badge
-          variant={"secondary"}
-          className={
-            "p-2 cursor-pointer select-none border-1 subLabel2 border-gray-500/40 flex items-center gap-2 sm:text-sm rounded-2xl bg-background"
-          }
-        >
-          <Plus strokeWidth={2} />
-          <div>Add Bill</div>
-        </Badge>
+        {children}
       </DrawerTrigger>
       <DrawerContent className={"p-0"}>
         <div className="mx-auto h-full z-150 w-full max-w-md flex-col overflow-y-auto p-6">
@@ -179,15 +218,40 @@ export function AddExpenseBill({ setBills }) {
                 </div>
               </div>
             </div>
-            <div className="flex mt-auto justify-between">
+            <div className="flex mt-auto">
               <DrawerClose asChild>
-                <Button
-                  onClick={handleAddExpenseBill}
-                  variant="outline"
-                  className="rounded-full ml-auto h-14 w-14 subLabel bg-orange-300 flex-col font-semibold text-md active:scale-95 active:bg-secondary transition-all duration-300"
-                >
-                  <Check />
-                </Button>
+                <div className="flex ml-auto gap-1 col-span-2">
+                  <Button
+                    variant="outline"
+                    className="rounded-full ml-auto h-14 w-14 subLabel bg-green-300 flex-col font-semibold text-md active:scale-95 active:bg-secondary transition-all duration-300"
+                    onClick={(e) => {
+                      handleIsPaidBill(currentBill.id);
+                      e.stopPropogation();
+                    }}
+                  >
+                    {currentBill.isPaid ? (
+                      <X strokeWidth={2} />
+                    ) : (
+                      <Check strokeWidth={2} />
+                    )}
+                  </Button>
+                  <Button
+                    variant="outline"
+                    className="rounded-full ml-auto h-14 w-14 subLabel bg-red-300 flex-col font-semibold text-md active:scale-95 active:bg-secondary transition-all duration-300"
+                    onClick={(e) => {
+                      handleDeleteBill(currentBill.id);
+                    }}
+                  >
+                    <Trash strokeWidth={2} />
+                  </Button>
+                  <Button
+                    onClick={handleEditExpenseBill}
+                    variant="outline"
+                    className="rounded-full ml-auto h-14 w-14 subLabel bg-orange-300 flex-col font-semibold text-md active:scale-95 active:bg-secondary transition-all duration-300"
+                  >
+                    <Check />
+                  </Button>
+                </div>
               </DrawerClose>
             </div>
           </div>

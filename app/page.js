@@ -169,7 +169,6 @@ export default function Home() {
   }, [curMonth, curYear]);
 
   // Load BILLS
-
   useEffect(() => {
     if (curMonth == null || curYear == null) return;
     const mm = curMonth + 1;
@@ -199,7 +198,7 @@ export default function Home() {
         for (const key in data) {
           loadedItems.push({ id: key, data: data[key] });
         }
-        console.log("Loaded items:", loadedItems);
+        console.log("Loaded Bills:", loadedItems);
         setBills(
           loadedItems
             .map(({ id, data }) => ({
@@ -208,6 +207,7 @@ export default function Home() {
               expense: data.expense,
               date: data.date,
               isPaid: data.isPaid,
+              category: data.category || "Other",
             }))
             .sort((a, b) => new Date(b.date) - new Date(a.date))
         );

@@ -34,23 +34,25 @@ import { Badge } from "@/components/ui/badge";
 import { AddExpenseBill } from "./AddExpenseBill";
 import { Calendar } from "@/components/ui/calendar";
 import { Button } from "@/components/ui/button";
+import { EditExpenseBill } from "./EditExpenseBill";
 
 export function ExpenseManager({ bills, budget, setBudget, setBills, goBack }) {
   const [billsByDate, setBillsByDate] = React.useState(bills);
+  const [billsByCategory, setBillsByCategroy] = React.useState(bills);
   const [date, setDate] = React.useState(new Date());
   const [currentBudget, setCurrentBudget] = React.useState(budget);
   const [isBudgetEditMode, setIsBudgetEditMode] = React.useState(false);
+  const [currentData, setCurrentData] = React.useState([]);
 
-  function handleDeleteBill(id) {
-    setBills((prev) => {
-      return prev.filter((tx) => tx.id !== id);
-    });
+  const [viewMode, setViewMode] = React.useState(["By Date", "By Category"]);
 
-    const billsRef = ref(db, "bills/" + id);
-    remove(billsRef).catch((err) =>
-      console.error("Failed to delete expense:", err)
-    );
-  }
+  React.useEffect(() => {
+    if (viewMode[0] == "By Date") {
+      setCurrentData(billsByDate);
+    } else if (viewMode[0] == "By Category") {
+      setCurrentData(billsByCategory);
+    }
+  }, [viewMode[0], billsByCategory, billsByDate]);
 
   function handleEditBudget() {
     setBudget(currentBudget);
@@ -59,28 +61,6 @@ export function ExpenseManager({ bills, budget, setBudget, setBills, goBack }) {
       console.log("budget error", err)
     );
     setIsBudgetEditMode(false);
-  }
-
-  function handleIsPaidBill(id) {
-    const curBill = { ...bills.filter((tx) => tx.id == id)[0] };
-
-    setBills((prev) => {
-      return prev.map((bill) => {
-        if (bill.id == id) {
-          return {
-            ...bill,
-            isPaid: !bill.isPaid,
-          };
-        } else {
-          return bill;
-        }
-      });
-    });
-
-    const billsRef = ref(db, "bills/" + id);
-    update(billsRef, { ...curBill, isPaid: !curBill.isPaid }).catch((err) =>
-      console.error("Failed to delete expense:", err)
-    );
   }
 
   React.useEffect(() => {
@@ -104,7 +84,7 @@ export function ExpenseManager({ bills, budget, setBudget, setBills, goBack }) {
     const groupedBills = [];
     for (const date in billsByDate) {
       groupedBills.push({
-        date: date,
+        key: date,
         bills: billsByDate[date],
         totalAmount: billsByDate[date].reduce(
           (acc, curr) => acc + Number(curr.amount),
@@ -114,6 +94,34 @@ export function ExpenseManager({ bills, budget, setBudget, setBills, goBack }) {
     }
     console.log("Transactions grouped by date:", groupedBills);
     setBillsByDate(groupedBills);
+  }, [bills]);
+
+  React.useEffect(() => {
+    const sortedBills = bills.sort((a, b) => {
+      return a.category - b.category;
+    });
+
+    const billsByCategory = sortedBills.reduce((acc, transaction) => {
+      const category = transaction?.category;
+      if (!acc[category]) {
+        acc[category] = [];
+      }
+      acc[category].push(transaction);
+      return acc;
+    }, {});
+    const groupedBills = [];
+    for (const category in billsByCategory) {
+      groupedBills.push({
+        key: category,
+        bills: billsByCategory[category],
+        totalAmount: billsByCategory[category]?.reduce(
+          (acc, curr) => acc + Number(curr.amount),
+          0
+        ),
+      });
+    }
+    console.log("CATEGORY GROUPED", groupedBills);
+    setBillsByCategroy(groupedBills);
   }, [bills]);
 
   function getStatusByLocalDay(target) {
@@ -129,15 +137,18 @@ export function ExpenseManager({ bills, budget, setBudget, setBills, goBack }) {
     if (targetStart === todayStart) return "today";
     return targetStart > todayStart ? "upcoming" : "overdue";
   }
-
+  const totalBill = bills.reduce((acc, bill) => {
+    return acc + Number(bill.amount);
+  }, 0);
+  const remaining = budget - totalBill;
   return (
     <div
       className={
-        "flex flex-col h-dvh gap-5 sm:container mx-auto px-4 sm:px-16 lg:px-16"
+        "flex flex-col h-[100vh] gap-5 sm:container mx-auto px-4 sm:px-16 lg:px-16"
       }
     >
-      <div className="flex flex-col h-full gap-4 text-lg bg-background py-4 w-full">
-        <div className="flex gap-2 pt-2 px-2 col-span-3 items-center ">
+      <div className="flex flex-col h-full gap-4 text-lg bg-background w-full">
+        <div className="flex gap-2 pt-4 px-2 items-center ">
           <ArrowLeft className=" " onClick={() => goBack()} />
           <div className="mx-auto subLabel px-4 py-2 rounded-full border-[0.3px] border-blue-400">
             Expenses Manager
@@ -155,11 +166,7 @@ export function ExpenseManager({ bills, budget, setBudget, setBills, goBack }) {
                 <div className="flex flex-col gap-2">
                   <div className="belowLabel uppercase">Total Amount</div>
                   <div className="mainHeading">
-                    {getFormattedAmount(
-                      bills.reduce((acc, bill) => {
-                        return acc + Number(bill.amount);
-                      }, 0)
-                    )}
+                    {getFormattedAmount(totalBill)}
                   </div>
                 </div>
                 <div className="flex flex-col gap-2">
@@ -212,25 +219,56 @@ export function ExpenseManager({ bills, budget, setBudget, setBills, goBack }) {
                 <Calendar1 strokeWidth={1} />
               </div>
             </div>
+
+            <div
+              className={`
+    subLabel my-2 text-sm font-medium
+    ${remaining > 0 ? "text-green-600" : ""}
+    ${remaining === 0 ? "text-blue-600" : ""}
+    ${remaining < 0 ? "text-red-600" : ""}
+  `}
+            >
+              {remaining > 0 && `You're within budget. ₹${remaining} left`}
+              {remaining === 0 && "You've exactly met your budget"}
+              {remaining < 0 && `You're over budget by ₹${Math.abs(remaining)}`}
+            </div>
           </CardContent>
         </Card>
+
+        <div className="!p-0 flex flex-1 mb-1 mt-2 justify-center items-center gap-1 px-6 pb-3 sm:pb-0">
+          <CardTitle className={"mainHeading uppercase !text-sm"}>
+            Monthly Bills
+          </CardTitle>
+          <div
+            onClick={() => {
+              setViewMode((prev) => {
+                const prev1 = [...prev];
+                const toRear = prev1.shift();
+                return [...prev1, toRear];
+              });
+            }}
+            className="subLabel cursor-pointer select-none text-gray-600 border-b-[1px] border-gray-500 ml-auto"
+          >
+            {viewMode[0]}
+          </div>
+        </div>
         {billsByDate.length == 0 ? (
           <div className="subLabel2 bg-secondary/50 p-4 rounded-md text-center text-gray-700 dark:text-gray-400">
             You dont have any transactions yet, Add some to see them here.
           </div>
         ) : (
-          <div className="overflow-y-auto [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
+          <div className="overflow-y-auto h-full [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
             {/* <Calendar
             mode="single"
             selected={date}
             onSelect={setDate}
             className="rounded-lg border-none w-full"
           />  */}
-            {billsByDate.map((group) => (
+            {currentData.map((group) => (
               <div className="mt-6 flex flex-col gap-4">
                 <div className="flex mb-1 flex-col gap-2">
                   <div className="flex justify-between items-center">
-                    <div className="mainLabel2 col-span-6">{group.date}</div>
+                    <div className="mainLabel2 col-span-6">{group.key}</div>
                     <div className="font-medium col-span-2 subLabel place-self-center text-(--foreground)/90">
                       {getFormattedAmount(group.totalAmount)}
                     </div>
@@ -238,23 +276,27 @@ export function ExpenseManager({ bills, budget, setBudget, setBills, goBack }) {
                 </div>
                 {group?.bills?.map((bill) => {
                   return (
-                    <Card
-                      key={bill.id}
-                      className={
-                        "rounded-sm px-3 py-3 shadow-[0_px_1px_rgb(0,0,0,0.2)]"
-                      }
-                    >
-                      <CardContent className={"p-0"}>
-                        <div className="grid grid-cols-6 items-center">
-                          <div className="col-span-4 flex place-self-start items-center gap-4">
-                            <div className="bg-background border border-(--border-color)/60 p-2 rounded-full text-[var(--color)] dark:text-[var(--dark-color)]">
-                              <Receipt strokeWidth={1} />
-                            </div>
-                            <div className="mr-auto flex gap-2 flex-col">
-                              <div className="subLabel2">{bill.expense}</div>
-                              <div className="col-span-1 mainHeading uppercase !text-sm">
-                                {getFormattedAmount(bill.amount)}
+                    <EditExpenseBill setBills={setBills} currentBill={bill}>
+                      <Card
+                        key={bill.id}
+                        className={
+                          "rounded-sm px-3 py-3 shadow-[0_px_1px_rgb(0,0,0,0.2)]"
+                        }
+                      >
+                        <CardContent className={"p-0"}>
+                          <div className="grid grid-cols-6 items-center">
+                            <div className="col-span-4 flex place-self-start items-center gap-4">
+                              <div className="bg-background border border-(--border-color)/60 p-2 rounded-full text-[var(--color)] dark:text-[var(--dark-color)]">
+                                <Receipt strokeWidth={1} />
                               </div>
+                              <div className="mr-auto flex gap-2 flex-col">
+                                <div className="subLabel2">{bill.expense}</div>
+                                <div className="col-span-1 mainHeading uppercase !text-sm">
+                                  {getFormattedAmount(bill.amount)}
+                                </div>
+                              </div>
+                            </div>
+                            <div className="col-span-2 ml-auto">
                               {bill.isPaid ? (
                                 <div className="subLabel3 !text-green-500">
                                   Bill Paid
@@ -276,36 +318,9 @@ export function ExpenseManager({ bills, budget, setBudget, setBills, goBack }) {
                               )}
                             </div>
                           </div>
-
-                          <div className="flex ml-auto gap-1 col-span-2">
-                            <Badge
-                              onClick={() => {
-                                handleIsPaidBill(bill.id);
-                              }}
-                              className={
-                                "rounded-full bg-secondary/50 text-foreground w-8 h-8 col-span-1 subLabel2"
-                              }
-                            >
-                              {bill.isPaid ? (
-                                <X strokeWidth={2} />
-                              ) : (
-                                <Check strokeWidth={2} />
-                              )}
-                            </Badge>
-                            <Badge
-                              onClick={() => {
-                                handleDeleteBill(bill.id);
-                              }}
-                              className={
-                                "rounded-full bg-secondary/50  text-foreground w-8 h-8 subLabel2"
-                              }
-                            >
-                              <Trash strokeWidth={2} />
-                            </Badge>
-                          </div>
-                        </div>
-                      </CardContent>
-                    </Card>
+                        </CardContent>
+                      </Card>
+                    </EditExpenseBill>
                   );
                 })}
               </div>
