@@ -106,12 +106,10 @@ export default function Home() {
     const startDate = new Date(curYear, mm - 1, 1, 0, 0, 0);
     const endDate = new Date(curYear, mm, 0, 23, 59, 59, 999);
 
-    const start = new Date(
-      startDate.getTime() - 5.5 * 60 * 60 * 1000
-    ).toISOString();
-    const end = new Date(
-      endDate.getTime() - 5.5 * 60 * 60 * 1000
-    ).toISOString();
+    const start = new Date(startDate.getTime()).toISOString();
+    const end = new Date(endDate.getTime()).toISOString();
+
+    console.log("DATES", start, end);
 
     const q = query(
       ref(db, `expenses`),
