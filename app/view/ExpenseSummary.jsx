@@ -11,12 +11,14 @@ import { ArrowLeft, Badge } from "lucide-react";
 import { ExpenseSummaryChart } from "../components/ExpenseSummaryChart";
 import { useEffect, useState } from "react";
 import { ExpenseSummaryBarChart } from "../components/ExpenseSummaryBarChart";
+import { getFormattedDate } from "../util/DateUtility";
 
 const ExpenseSummary = ({ goBack, transactions: allTransactions }) => {
   const [transactions, setTransactions] = useState(null);
   const [todaysExpense, setTodaysExpense] = useState(0);
   const [weeksExpense, setWeeksExpense] = useState(0);
   const [monthlyExpense, setMonthlyExpense] = useState(0);
+  const [week, setWeek] = useState("");
 
   function getCurrentWeekExpenseTotal(
     allTransactions,
@@ -34,6 +36,15 @@ const ExpenseSummary = ({ goBack, transactions: allTransactions }) => {
     var end = new Date(start);
     end.setDate(start.getDate() + 6);
     end.setHours(23, 59, 59, 999);
+    const week =
+      String(start.getDate()).padStart(2, "0") +
+      " " +
+      start.toLocaleString("default", { month: "short" }) +
+      " to " +
+      String(end.getDate()).padStart(2, "0") +
+      " " +
+      end.toLocaleString("default", { month: "short" });
+    setWeek(week);
     var total = (allTransactions || [])
       .filter(function (tx) {
         var dt = new Date(tx && tx.date);
@@ -111,11 +122,8 @@ const ExpenseSummary = ({ goBack, transactions: allTransactions }) => {
                   </CardTitle>
                 </CardHeader>
                 <CardFooter className="flex-col items-start gap-1.5 text-sm">
-                  <div className="line-clamp-1 flex gap-2 font-medium">
-                    More Expenses than Yesterday
-                  </div>
-                  <div className="text-muted-foreground">
-                    Increase in expenses by 100 rupees
+                  <div className="line-clamp-1 flex gap-2 subLabel2 font-medium">
+                    {getFormattedDate(new Date())}
                   </div>
                 </CardFooter>
               </Card>
@@ -129,11 +137,8 @@ const ExpenseSummary = ({ goBack, transactions: allTransactions }) => {
                   </CardTitle>
                 </CardHeader>
                 <CardFooter className="flex-col items-start gap-1.5 text-sm">
-                  <div className="line-clamp-1 flex gap-2 font-medium">
-                    More Expenses than Yesterday
-                  </div>
-                  <div className="text-muted-foreground">
-                    Increase in expenses by 100 rupees
+                  <div className="subLabel2 line-clamp-1 flex gap-2 font-medium">
+                    {week}
                   </div>
                 </CardFooter>
               </Card>
@@ -147,17 +152,16 @@ const ExpenseSummary = ({ goBack, transactions: allTransactions }) => {
                   </CardTitle>
                 </CardHeader>
                 <CardFooter className="flex-col items-start gap-1.5 text-sm">
-                  <div className="line-clamp-1 flex gap-2 font-medium">
-                    More Expenses than Yesterday
-                  </div>
-                  <div className="text-muted-foreground">
-                    Increase in expenses by 100 rupees
+                  <div className="line-clamp-1 flex gap-2 font-medium subLabel2">
+                    {new Date().toLocaleString("default", { month: "long" }) +
+                      "," +
+                      new Date().getFullYear()}
                   </div>
                 </CardFooter>
               </Card>
             </TabsContent>
           </Tabs>
-          <div className="flex gap-2 flex-col">
+          <div className="flex gap-3 mt-3 flex-col">
             <ExpenseSummaryChart transactions={allTransactions} />
             <ExpenseSummaryBarChart transactions={allTransactions} />
           </div>

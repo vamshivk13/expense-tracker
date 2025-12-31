@@ -47,6 +47,12 @@ const chartConfig = {
 export function ExpenseSummaryBarChart({ transactions }) {
   const [transactionsByCategory, setTransactionsByCategory] = useState([]);
   console.log("Trans By Cat", transactions);
+
+  const chartWidth = window.innerWidth * 1; // or use actual chart container width
+  const tickCount = 5; // number of X-axis labels
+  const avgCharWidth = 7; // approx px per character for your font
+  const maxChars = Math.floor(chartWidth / tickCount / avgCharWidth);
+
   useEffect(() => {
     const byCategory = transactions.reduce((acc, cur) => {
       const cat = cur.category;
@@ -63,6 +69,9 @@ export function ExpenseSummaryBarChart({ transactions }) {
         amount,
       })
     );
+
+    //Get Top spent tags by category
+
     const transactionsByCategoryTop = transactionsByCategory
       .sort((a, b) => b.amount - a.amount)
       .slice(0, 5);
@@ -98,7 +107,9 @@ export function ExpenseSummaryBarChart({ transactions }) {
                 interval={0} // ⬅️ force-show all ticks
                 minTickGap={0}
                 tickFormatter={(value) =>
-                  value.length >= 10 ? value.slice(0, 10) + ".." : value
+                  value.length >= maxChars
+                    ? value.slice(0, maxChars) + ".."
+                    : value
                 }
               />
               <ChartTooltip
