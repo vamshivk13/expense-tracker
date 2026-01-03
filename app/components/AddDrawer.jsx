@@ -245,7 +245,7 @@ export function AddDrawer({ setTransactions, suggestedTagsProp }) {
                           </div>
                         </div>
                       </div>
-                      <div className="flex gap-1  col-span-3 overflow-x-auto [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
+                      <div className="truncate flex gap-1  col-span-3 overflow-x-auto [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
                         {suggestedTags.map((tagItem, index) => (
                           <div
                             onClick={() => {
@@ -257,7 +257,7 @@ export function AddDrawer({ setTransactions, suggestedTagsProp }) {
                               }
                             }}
                             key={tagItem}
-                            className="border bg-secondary/30 border-(--border-color) rounded-full px-2 py-1 subLabel2 hover:bg-secondary/60 cursor-pointer"
+                            className="border flex items-center bg-secondary/30 border-(--border-color) rounded-full px-2 py-1 subLabel2 hover:bg-secondary/60 cursor-pointer"
                           >
                             {tagItem}
                           </div>
