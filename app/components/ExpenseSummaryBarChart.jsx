@@ -5,6 +5,7 @@ import {
   Bar,
   BarChart,
   CartesianGrid,
+  Cell,
   LabelList,
   Pie,
   PieChart,
@@ -39,24 +40,39 @@ const chartConfig = {
   },
 };
 
-function colorFromLabel(label) {
-  const hue = hashToHue(label); // 0..360
-  const sat = 65; // saturation %
-  const light = 55; // lightness %
-  return `rgb(${hue}deg ${sat}% ${light}%)`;
-}
-
-/** Hash a string to a hue in 0..360 */
-function hashToHue(str) {
+function hashHue(str) {
   let h = 0;
   for (let i = 0; i < str.length; i++) {
-    h = (h * 31 + str.charCodeAt(i)) >>> 0; // simple fast hash
+    h = str.charCodeAt(i) + ((h << 5) - h);
   }
-  return h % 360;
+  return ((h % 360) + 360) % 360; // normalize to 0–360
 }
 
 function toKey(label) {
   return String(label);
+}
+
+function colorForCategory(name) {
+  const L = 0.7; // lightness
+  const C = 0.4; // chroma (saturation)
+  const H = hashHue(name);
+
+  return `oklch(${L} ${C} ${H})`;
+}
+
+function hashLightness(str) {
+  let h = 0;
+  for (let i = 0; i < str.length; i++) {
+    h = str.charCodeAt(i) + ((h << 5) - h);
+  }
+
+  // map hash → 0.25–0.85 lightness range
+  return 0.25 + ((h % 100) / 100) * 0.6;
+}
+
+function grayForCategory(name) {
+  const L = hashLightness(name); // 0.25–0.85
+  return `oklch(${L} 0 0)`; // chroma = 0 = grayscale
 }
 
 export function ExpenseSummaryBarChart({ transactions }) {
@@ -98,13 +114,10 @@ export function ExpenseSummaryBarChart({ transactions }) {
     for (const { category } of transactionsByCategoryTop) {
       const key = toKey(category);
       if (!config[key]) {
-        const hueDeg = hashToHue(category); // 0..360
-        const lPct = (0.7 * 100).toFixed(1) + "%";
-        const cVal = (0.3).toFixed(3); // OKLCH chroma value
         config[key] = {
           label: category,
-          color: `var(--chart-1)`,
-          // color: `oklch(${lPct} ${cVal} ${hueDeg})`,
+
+          color: grayForCategory(category),
         };
       }
     }
@@ -115,83 +128,126 @@ export function ExpenseSummaryBarChart({ transactions }) {
     console.log("BY CATEGORY", byCategory);
   }, [transactions]);
 
+  const renderLabel = ({
+    cx,
+    cy,
+    midAngle,
+    innerRadius,
+    outerRadius,
+    value,
+    name,
+  }) => {
+    const RADIAN = Math.PI / 180;
+    const radius = innerRadius + (outerRadius - innerRadius) * 0.5;
+    const x = cx + radius * Math.cos(-midAngle * RADIAN);
+    const y = cy + radius * Math.sin(-midAngle * RADIAN);
+
+    return (
+      <text
+        className="text-foreground"
+        x={x}
+        y={y}
+        textAnchor="middle"
+        fill="white"
+        dominantBaseline="central"
+        fontSize={12}
+      >
+        ₹{value}
+      </text>
+    );
+  };
+
   return (
-    <div>
-      <Card className="py-4 bg-background w-full sm:py-0 border-none outline-none shadow-none">
-        <CardHeader className="border-none flex flex-col items-stretch border-b !p-0 sm:flex-row">
-          <CardTitle className={"mainLabel"}>Top Spends</CardTitle>
-        </CardHeader>
-        <CardContent className="px-0 w-full sm:p-6 border-none shadow-none outline-none">
-          <ResponsiveContainer width={"100%"} height={300}>
-            <ChartContainer config={chartConfig} className={"w-full h-full"}>
-              <BarChart
-                accessibilityLayer
-                className="h-full"
-                data={transactionsByCategory}
-                margin={{
-                  top: 20,
-                  left: 10,
-                  right: 10,
-                }}
-              >
-                <CartesianGrid vertical={false} />
-                <XAxis
-                  className="subLabel3 font-semibold"
-                  dataKey="category"
-                  tickLine={false}
-                  tickMargin={15}
-                  axisLine={false}
-                  interval={0} // ⬅️ force-show all ticks
-                  minTickGap={0}
-                  tickFormatter={(value) =>
-                    value.length >= maxChars
-                      ? value.slice(0, maxChars) + ".."
-                      : value
-                  }
-                />
-                <ChartTooltip
-                  cursor={false}
-                  content={<ChartTooltipContent hideLabel />}
-                />
-                <Bar dataKey="amount" fill="var(--color-category)" radius={4}>
-                  <LabelList
-                    dataKey={"amount"}
-                    position="top"
-                    offset={12}
-                    className="fill-foreground subLabel2"
-                    fontSize={12}
-                    formatter={(val) => getFormattedAmount(val)}
+    <div className="py-4">
+      <CardHeader className="border-none flex flex-col items-stretch border-b !p-0 sm:flex-row">
+        <CardTitle className={"mainLabel"}>Top Spends</CardTitle>
+      </CardHeader>
+      <div className="grid grid-cols-1 sm:grid-cols-2 items-center">
+        <Card className="py-4 bg-background w-full sm:py-0 border-none outline-none shadow-none">
+          <CardContent className="px-0 w-full sm:p-6 border-none shadow-none outline-none">
+            <div className="subLabel2 text-muted-foreground flex mb-3">
+              <div className="ml-auto">Bar Chart</div>
+            </div>
+            <ResponsiveContainer width={"100%"} height={300}>
+              <ChartContainer config={chartConfig} className={"w-full h-full"}>
+                <BarChart
+                  accessibilityLayer
+                  className="h-full"
+                  data={transactionsByCategory}
+                  margin={{
+                    top: 20,
+                    left: 10,
+                    right: 10,
+                  }}
+                >
+                  <CartesianGrid vertical={false} />
+                  <XAxis
+                    className="subLabel3 font-semibold"
+                    dataKey="category"
+                    tickLine={false}
+                    tickMargin={15}
+                    axisLine={false}
+                    interval={0} // ⬅️ force-show all ticks
+                    minTickGap={0}
+                    tickFormatter={(value) =>
+                      value.length >= maxChars
+                        ? value.slice(0, maxChars) + ".."
+                        : value
+                    }
                   />
-                </Bar>
-              </BarChart>
-            </ChartContainer>
-          </ResponsiveContainer>
-        </CardContent>
-      </Card>
-      <Card className="flex flex-col">
-        <CardHeader className="items-center pb-0">
-          <CardTitle>Pie Chart - Legend</CardTitle>
-          <CardDescription>January - June 2024</CardDescription>
-        </CardHeader>
-        <CardContent className="flex-1 pb-0">
-          <ChartContainer
-            config={pieConfig}
-            className="mx-auto aspect-square max-h-[300px]"
-          >
-            <PieChart>
-              <Pie
-                data={transactionsByCategory}
-                dataKey="amount"
-                color="color"
-              />
-              <ChartLegend
-                content={<ChartLegendContent nameKey="category" />}
-                className="-translate-y-2 flex-wrap gap-2 *:basis-1/4 *:justify-center"
-              />
-            </PieChart>
-          </ChartContainer>
-        </CardContent>
-      </Card>
+                  <ChartTooltip
+                    cursor={false}
+                    content={<ChartTooltipContent hideLabel />}
+                  />
+                  <Bar dataKey="amount" fill="var(--color-category)" radius={4}>
+                    <LabelList
+                      dataKey={"amount"}
+                      position="top"
+                      offset={12}
+                      className="fill-foreground subLabel2"
+                      fontSize={12}
+                      formatter={(val) => getFormattedAmount(val)}
+                    />
+                  </Bar>
+                </BarChart>
+              </ChartContainer>
+            </ResponsiveContainer>
+          </CardContent>
+        </Card>
+        <Card className="py-4 bg-background w-full sm:py-0 border-none outline-none shadow-none">
+          <CardContent className="px-0 w-full sm:p-6 border-none shadow-none outline-none">
+            <div className="subLabel2 text-muted-foreground flex mb-3">
+              <div className="ml-auto">Pie Chart</div>
+            </div>
+            <ResponsiveContainer width={"100%"} height={300}>
+              <ChartContainer config={pieConfig} className={"w-full h-full"}>
+                <PieChart>
+                  <Pie
+                    data={transactionsByCategory}
+                    dataKey="amount"
+                    nameKey={"category"}
+                    label={renderLabel}
+                    stroke="#fff"
+                    strokeWidth={2}
+                    labelLine={false}
+                  >
+                    {transactionsByCategory.map((item) => (
+                      <Cell
+                        key={item.category}
+                        fill={pieConfig[item.category]?.color}
+                      />
+                    ))}
+                  </Pie>
+                  <ChartLegend
+                    content={<ChartLegendContent nameKey="category" />}
+                    className="-translate-y-2 flex-wrap gap-2 *:basis-1/4 *:justify-center"
+                  />
+                </PieChart>
+              </ChartContainer>
+            </ResponsiveContainer>
+          </CardContent>
+        </Card>
+      </div>
     </div>
   );
 }
