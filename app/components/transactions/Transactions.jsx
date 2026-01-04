@@ -38,11 +38,8 @@ export default function Transactions({ expense }) {
       <div className="grid gap-x-3 grid-cols-8 items-center">
         <div className=" col-span-6">
           <div className="flex items-center gap-4">
-            <div
-              style={{ borderColor: iconColor }}
-              className="flex-shrink-0 bg-background border p-2 rounded-full text-[var(--color)] dark:text-[var(--dark-color)]"
-            >
-              {Icon && <Icon color={iconColor} strokeWidth={1} />}
+            <div className="flex-shrink-0 border border-(--border-color) p-2 rounded-full text-[var(--color)] dark:text-[var(--dark-color)]">
+              {Icon && <Icon strokeWidth={1} />}
             </div>
             <div className="flex flex-col truncate gap-2">
               <div className="truncate mainLabel2 font-semibold tracking-normal">

@@ -390,7 +390,9 @@ export default function Home() {
                   }
                 >
                   <AvatarFallback
-                    className={"font-bold text-background bg-red-500"}
+                    className={
+                      "font-bold text-background dark:bg-red-800 bg-red-500"
+                    }
                   >
                     V
                   </AvatarFallback>
@@ -567,8 +569,8 @@ export default function Home() {
                 data-section={"transactions"}
               >
                 <div className="my-5 text-lg h-[55px] gap-x-3 grid grid-cols-8 items-center">
-                  <h4 className={"col-span-6 mainLabelWide2"}>
-                    your transactions
+                  <h4 className={"col-span-6 text-xl font-semi-bold"}>
+                    Your Transactions
                   </h4>
                   {transactions != null &&
                     transactions.length != 0 &&
