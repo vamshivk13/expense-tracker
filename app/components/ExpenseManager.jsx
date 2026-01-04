@@ -15,6 +15,7 @@ import {
   ArrowRight,
   Calendar1,
   Check,
+  ClipboardCopy,
   Cross,
   Delete,
   DeleteIcon,
@@ -36,6 +37,7 @@ import { AddExpenseBill } from "./AddExpenseBill";
 import { Calendar } from "@/components/ui/calendar";
 import { Button } from "@/components/ui/button";
 import { EditExpenseBill } from "./EditExpenseBill";
+import { endAt, get, orderByChild, query, startAt } from "firebase/database";
 
 export function ExpenseManager({ bills, budget, setBudget, setBills, goBack }) {
   const [billsByDate, setBillsByDate] = React.useState(bills);
@@ -63,6 +65,84 @@ export function ExpenseManager({ bills, budget, setBudget, setBills, goBack }) {
     );
     setIsBudgetEditMode(false);
   }
+
+  function handleCopyPreviousMonthBills() {
+    const curDate = new Date();
+    let curMonth = curDate.getMonth() - 1;
+
+    let curYear = curDate.getFullYear();
+    if (curMonth < 0) {
+      curMonth = 11; // December
+      curYear = curYear - 1; // Previous year
+    }
+    if (curMonth == null || curYear == null) return;
+    const mm = curMonth + 1;
+
+    const startDate = new Date(curYear, mm - 1, 1, 0, 0, 0);
+    const endDate = new Date(curYear, mm, 0, 23, 59, 59, 999);
+
+    const start = new Date(
+      startDate.getTime() - 5.5 * 60 * 60 * 1000
+    ).toISOString();
+    const end = new Date(
+      endDate.getTime() - 5.5 * 60 * 60 * 1000
+    ).toISOString();
+
+    const q = query(
+      ref(db, `bills`),
+      orderByChild("date"),
+      startAt(start),
+      endAt(end)
+    );
+
+    console.log("GETTING PREVIOUS BILLS");
+
+    get(q)
+      .then((snapshot) => {
+        const data = snapshot.val();
+        const loadedItems = [];
+        for (const key in data) {
+          loadedItems.push({ id: key, data: data[key] });
+        }
+        console.log("Loaded Bills:", loadedItems);
+
+        const curBills = loadedItems
+          .filter(
+            ({ data }) =>
+              bills.findIndex((bill) => bill.expense == data.expense) == -1
+          )
+          .map(({ id, data }) => ({
+            amount: data.amount,
+            expense: data.expense,
+            date: new Date(
+              new Date(
+                curDate.getFullYear(),
+                curDate.getMonth(),
+                new Date(data.date).getDate(),
+                new Date(data.date).getHours(),
+                new Date(data.date).getMinutes(),
+                new Date(data.date).getSeconds()
+              )
+            ).toISOString(),
+            isPaid: false,
+            category: data.category || "Other",
+          }))
+          .sort((a, b) => new Date(b.date) - new Date(a.date));
+
+        setBills((prev) => [...prev, ...curBills]);
+
+        curBills.forEach((bill) => {
+          push(ref(db, `bills`), bill).catch((err) =>
+            console.error("Failed to copy previous month bills:", err)
+          );
+        });
+      })
+      .catch((error) => {
+        console.log("Error fetching previous month bills:", error);
+      });
+  }
+
+  console.log("BILLS IN MANAGER", bills);
 
   React.useEffect(() => {
     const sortedBills = bills.sort((a, b) => {
@@ -249,6 +329,12 @@ export function ExpenseManager({ bills, budget, setBudget, setBills, goBack }) {
             className="subLabel cursor-pointer select-none text-gray-600 ml-auto"
           >
             <ArrowDownUp strokeWidth={1} size={16} />
+          </div>
+          <div
+            onClick={handleCopyPreviousMonthBills}
+            className="subLabel cursor-pointer select-none text-gray-600 ml-2"
+          >
+            <ClipboardCopy strokeWidth={1} size={16} />
           </div>
         </div>
         {billsByDate.length == 0 ? (
