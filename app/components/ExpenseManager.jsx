@@ -221,6 +221,13 @@ export function ExpenseManager({ bills, budget, setBudget, setBills, goBack }) {
   const totalBill = bills.reduce((acc, bill) => {
     return acc + Number(bill.amount);
   }, 0);
+  const totalBillPaid = bills.reduce((acc, bill) => {
+    if (bill.isPaid) return acc + Number(bill.amount);
+    else {
+      return acc;
+    }
+  }, 0);
+  const totalBillUnPaid = totalBill - totalBillPaid;
   const remaining = budget - totalBill;
   return (
     <div
@@ -311,6 +318,20 @@ export function ExpenseManager({ bills, budget, setBudget, setBills, goBack }) {
               {remaining > 0 && `You're within budget. ₹${remaining} left`}
               {remaining === 0 && "You've exactly met your budget"}
               {remaining < 0 && `You're over budget by ₹${Math.abs(remaining)}`}
+            </div>
+
+            <div
+              className={`
+    subLabel my-2 text-sm font-medium
+    ${totalBillUnPaid === 0 ? "text-green-600" : ""}
+    ${totalBillUnPaid > 0 ? "text-blue-600" : ""}
+  `}
+            >
+              {totalBillUnPaid === 0 &&
+                `All bills are paid. Total paid: ₹${totalBillPaid}`}
+
+              {totalBillUnPaid > 0 &&
+                `You've paid ₹${totalBillPaid}. ₹${totalBillUnPaid} is still due.`}
             </div>
           </CardContent>
         </Card>

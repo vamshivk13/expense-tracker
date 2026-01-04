@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { Check, ChevronRight, Plus, Trash, X } from "lucide-react";
+import { Check, ChevronRight, Plus, Save, Trash, X } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -91,10 +91,10 @@ export function EditExpenseBill({ setBills, children, currentBill }) {
   }
 
   function resetFields() {
-    setExpense("");
-    setAmount(0);
-    setCategory("Other");
-    setDate(new Date());
+    // setExpense("");
+    // setAmount(0);
+    // setCategory("Other");
+    // setDate(new Date());
   }
 
   return (
@@ -249,7 +249,7 @@ export function EditExpenseBill({ setBills, children, currentBill }) {
                     variant="outline"
                     className="rounded-full ml-auto h-14 w-14 subLabel bg-orange-300 flex-col font-semibold text-md active:scale-95 active:bg-secondary transition-all duration-300"
                   >
-                    <Check />
+                    <Save />
                   </Button>
                 </div>
               </DrawerClose>
