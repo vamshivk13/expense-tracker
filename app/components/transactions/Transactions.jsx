@@ -40,10 +40,13 @@ export default function Transactions({ expense }) {
         <div className=" col-span-6">
           <div className="flex items-center gap-4">
             <div
-              style={{ borderColor: iconColor }}
+              style={{
+                borderColor: iconColor,
+                backgroundColor: iconColor + "20",
+              }}
               className="flex-shrink-0 border border-(--border-color) p-2 rounded-full text-[var(--color)] dark:text-[var(--dark-color)]"
             >
-              {Icon && <Icon strokeWidth={1} />}
+              {Icon && <Icon color={iconColor} strokeWidth={1} />}
             </div>
             <div className="flex flex-col truncate gap-2">
               <div className="truncate mainLabel2 font-semibold tracking-normal">
@@ -73,7 +76,6 @@ export default function Transactions({ expense }) {
             className="self-start text-foreground"
           />
         </div>
-        <Separator className="mt-4 col-span-full w-full" />
       </div>
     </div>
   );
