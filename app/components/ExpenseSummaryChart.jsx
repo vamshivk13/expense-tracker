@@ -16,6 +16,7 @@ import {
   ChartTooltipContent,
 } from "@/components/ui/chart";
 import { getFormattedDate } from "../util/DateUtility";
+import { TrendingUp } from "lucide-react";
 
 export const description = "An interactive line chart";
 
@@ -265,10 +266,16 @@ export function ExpenseSummaryChart({ transactions }) {
   const nice = niceMinMax(yMin, yMax, 3);
 
   return (
-    <Card className="py-4 bg-background w-full sm:py-0 border-none outline-none shadow-none">
+    <Card className="py-4 mt-4 bg-background w-full sm:py-0 border-none outline-none shadow-none">
       <CardHeader className="border-none flex flex-col items-stretch border-b !p-0 sm:flex-row">
-        <div className="!p-0 flex flex-1 mb-2 justify-center items-center gap-1 px-6 pb-3 sm:pb-0">
-          <CardTitle className={"mainLabel"}>Expense History</CardTitle>
+        <div className="!p-0 flex flex-1 mb-2 justify-center items-start gap-1 px-6 pb-3 sm:pb-0">
+          <div className="flex flex-col gap-2">
+            <CardTitle className={"mainLabel"}>Expense History</CardTitle>
+            <CardDescription className="flex items-center subLabel2 gap-2 !text-muted-foreground mr-auto mt-2 sm:mt-0">
+              Overview of your expenses over time
+              <TrendingUp size={13} className="text-foreground" />
+            </CardDescription>
+          </div>
           <div
             onClick={() => {
               setLineChartMode((prev) => {

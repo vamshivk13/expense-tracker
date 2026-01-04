@@ -62,12 +62,10 @@ const ExpenseSummary = ({ goBack, transactions: allTransactions }) => {
 
     const week =
       start.toLocaleString("default", { month: "short" }) +
-      " (" +
+      " " +
       String(start.getDate()).padStart(2, "0") +
       "-" +
-      String(end.getDate()).padStart(2, "0") +
-      ")";
-
+      String(end.getDate()).padStart(2, "0");
     setWeek(week);
     const total = (allTransactions || []).filter(function (tx) {
       var dt = new Date(tx && tx.date);
@@ -155,7 +153,7 @@ const ExpenseSummary = ({ goBack, transactions: allTransactions }) => {
         </div>
         <div className="overflow-y-auto [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden flex flex-col gap-4">
           {isCurrentMonth && (
-            <Tabs defaultValue={"today"} className={"mt-5 rounded-md"}>
+            <Tabs defaultValue={"week"} className={"mt-5 rounded-md"}>
               <TabsList className={"flex justify-center w-full"}>
                 <TabsTrigger value="today" className={"subLabel2"}>
                   Today

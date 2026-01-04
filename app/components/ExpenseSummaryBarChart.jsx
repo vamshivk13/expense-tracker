@@ -160,8 +160,12 @@ export function ExpenseSummaryBarChart({ transactions }) {
 
   return (
     <div className="py-4">
-      <CardHeader className="bg-muted border-none flex flex-col items-stretch border-b !p-0 sm:flex-row">
+      <CardHeader className="border-none flex flex-col items-stretch border-b !p-0 sm:flex-col">
         <CardTitle className={"mainLabel"}>Top Spends</CardTitle>
+        <CardDescription className="flex items-center subLabel2 gap-2 !text-muted-foreground mr-auto mt-2 sm:mt-0">
+          Overview of your top spending categories
+          <TrendingUp size={13} className="text-foreground" />
+        </CardDescription>
       </CardHeader>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 items-center">
@@ -201,7 +205,7 @@ export function ExpenseSummaryBarChart({ transactions }) {
                     cursor={false}
                     content={<ChartTooltipContent hideLabel />}
                   />
-                  <Bar dataKey="amount" fill="var(--color-category)" radius={4}>
+                  <Bar dataKey="amount" fill="var(--color-category)" radius={2}>
                     <LabelList
                       dataKey={"amount"}
                       position="top"
@@ -216,7 +220,7 @@ export function ExpenseSummaryBarChart({ transactions }) {
             </ResponsiveContainer>
           </CardContent>
         </Card>
-        <Card className="py-4 bg-background w-full sm:py-0 border-none outline-none shadow-none">
+        <Card className="py-4 sm:block hidden bg-background w-full sm:py-0 border-none outline-none shadow-none">
           <CardContent className="px-0 w-full sm:p-6 border-none shadow-none outline-none">
             <div className="subLabel2 text-muted-foreground flex mb-3">
               <div className="ml-auto">Pie Chart</div>
