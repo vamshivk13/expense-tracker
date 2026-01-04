@@ -383,11 +383,17 @@ export default function Home() {
               className="flex px-6 sm:px-16 lg:px-16 items-center border-none justify-around gap-2 mt-3 mb-6 my-3 sticky h-[50px] z-30"
               ref={greetingRef}
             >
-              <div className="h-full aspect-square p-1/2 bg-black rounded-full">
+              <div className="h-full aspect-square p-1/2 border rounded-full">
                 <Avatar
-                  className={"min-h-full min-w-full  bg-(--foreground) p-1"}
+                  className={
+                    "min-h-full min-w-full border  bg-(--background) p-1"
+                  }
                 >
-                  <AvatarFallback className={"font-bold"}>V</AvatarFallback>
+                  <AvatarFallback
+                    className={"font-bold text-background bg-red-500"}
+                  >
+                    V
+                  </AvatarFallback>
                 </Avatar>
               </div>
               <div>

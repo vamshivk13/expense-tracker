@@ -30,6 +30,7 @@ import {
 } from "@/components/ui/chart";
 import { useEffect, useState } from "react";
 import { getFormattedAmount } from "../util/DateUtility";
+import { Separator } from "@/components/ui/separator";
 
 export const description = "A bar chart with a label";
 
@@ -159,9 +160,10 @@ export function ExpenseSummaryBarChart({ transactions }) {
 
   return (
     <div className="py-4">
-      <CardHeader className="border-none flex flex-col items-stretch border-b !p-0 sm:flex-row">
+      <CardHeader className="bg-muted border-none flex flex-col items-stretch border-b !p-0 sm:flex-row">
         <CardTitle className={"mainLabel"}>Top Spends</CardTitle>
       </CardHeader>
+
       <div className="grid grid-cols-1 sm:grid-cols-2 items-center">
         <Card className="py-4 bg-background w-full sm:py-0 border-none outline-none shadow-none">
           <CardContent className="px-0 w-full sm:p-6 border-none shadow-none outline-none">
