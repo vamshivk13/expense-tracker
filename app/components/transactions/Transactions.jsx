@@ -9,6 +9,8 @@ import { expenseCategories } from "../Categories";
 
 export default function Transactions({ expense }) {
   const [Icon, setCategoryIcon] = React.useState(null);
+  const [iconColor, setIconColor] = React.useState(null);
+
   const categoryIcons = expenseCategories;
   const [category, setCategory] = useState(expense.category || "Other");
 
@@ -22,9 +24,11 @@ export default function Transactions({ expense }) {
       const foundCategory = categoryIcons.find((cat) => cat.name === category);
       if (foundCategory) {
         setCategoryIcon(foundCategory.icon);
+        setIconColor(foundCategory.color);
       } else {
         const otherCategory = categoryIcons.find((cat) => cat.name === "Other");
         setCategoryIcon(otherCategory.icon);
+        setIconColor(otherCategory.color);
       }
     }
   }, [category]);
@@ -35,7 +39,9 @@ export default function Transactions({ expense }) {
         <div className=" col-span-6">
           <div className="flex items-center gap-4">
             <div className="flex-shrink-0 bg-background border border-(--border-color)/60 p-2 rounded-full text-[var(--color)] dark:text-[var(--dark-color)]">
-              {Icon && <Icon strokeWidth={1} />}
+              {Icon && (
+                <Icon color={iconColor} fill={iconColor} strokeWidth={1} />
+              )}
             </div>
             <div className="flex flex-col truncate gap-1">
               <div className="truncate mainLabel2 font-semibold tracking-normal">

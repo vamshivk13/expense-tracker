@@ -37,18 +37,18 @@ import {
 import { get } from "firebase/database";
 
 export const expenseCategories = [
-  { name: "Food & Dining", icon: UtensilsCrossed },
-  { name: "Groceries", icon: ShoppingCart },
-  { name: "Transportation", icon: Car },
-  { name: "Housing & Utilities", icon: Home },
-  { name: "Bills & Services", icon: Plug },
-  { name: "Health & Medical", icon: HeartPulse },
-  { name: "Education", icon: BookOpen },
-  { name: "Travel", icon: Plane },
-  { name: "Shopping", icon: ShoppingBag },
-  { name: "Savings & Investments", icon: PiggyBank },
-  { name: "Taxes", icon: Receipt },
-  { name: "Other", icon: ChartBarStacked },
+  { name: "Food & Dining", icon: UtensilsCrossed, color: "#EF4444" }, // red-500
+  { name: "Groceries", icon: ShoppingCart, color: "#22C55E" }, // green-500
+  { name: "Transportation", icon: Car, color: "#3B82F6" }, // blue-500
+  { name: "Housing & Utilities", icon: Home, color: "#F59E0B" }, // amber-500
+  { name: "Bills & Services", icon: Plug, color: "#8B5CF6" }, // violet-500
+  { name: "Health & Medical", icon: HeartPulse, color: "#EC4899" }, // pink-500
+  { name: "Education", icon: BookOpen, color: "#0EA5E9" }, // sky-500
+  { name: "Travel", icon: Plane, color: "#10B981" }, // emerald-500
+  { name: "Shopping", icon: ShoppingBag, color: "#7C3AED" }, // purple-600
+  { name: "Savings & Investments", icon: PiggyBank, color: "#16A34A" }, // green-600
+  { name: "Taxes", icon: Receipt, color: "#F97316" }, // orange-500
+  { name: "Other", icon: ChartBarStacked, color: "#6B7280" }, // gray-500
 ];
 
 export function Categories({ children, setCategory }) {
@@ -126,29 +126,36 @@ export function Categories({ children, setCategory }) {
           </div>
         </div>
         <div className="grid grid-cols-2 mt-5 sm:grid-cols-3 gap-4 overflow-x-auto [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
-          {[...expenseCategories, ...categories].map(({ name, icon: Icon }) => (
-            <DrawerClose>
-              <div
-                onClick={() => {
-                  setCategory(name);
-                }}
-                key={name}
-                className="flex rounded-full truncate items-center gap-3 p-3 border hover:bg-secondary/50 transition items"
-              >
-                {Icon == null ? (
-                  <AlignHorizontalJustifyCenter
-                    className="w-5 h-5 text-primary"
-                    strokeWidth={1}
-                  />
-                ) : (
-                  <Icon className="w-5 h-5 text-primary" strokeWidth={1} />
-                )}
-                <span className="text-sm truncate font-medium subLabel2">
-                  {name}
-                </span>
-              </div>
-            </DrawerClose>
-          ))}
+          {[...expenseCategories, ...categories].map(
+            ({ name, icon: Icon, color }) => (
+              <DrawerClose>
+                <div
+                  onClick={() => {
+                    setCategory(name);
+                  }}
+                  key={name}
+                  className="flex rounded-full truncate items-center gap-3 p-3 border hover:bg-secondary/50 transition items"
+                >
+                  {Icon == null ? (
+                    <AlignHorizontalJustifyCenter
+                      className="w-5 h-5 text-primary"
+                      strokeWidth={1}
+                    />
+                  ) : (
+                    <Icon
+                      color={color}
+                      fill={color}
+                      className="w-5 h-5 text-primary"
+                      strokeWidth={1}
+                    />
+                  )}
+                  <span className="text-sm truncate font-medium subLabel2">
+                    {name}
+                  </span>
+                </div>
+              </DrawerClose>
+            )
+          )}
         </div>
       </DrawerContent>
     </Drawer>
