@@ -235,7 +235,7 @@ export function ExpenseManager({ bills, budget, setBudget, setBills, goBack }) {
           </CardContent>
         </Card>
 
-        <div className="!p-0 flex flex-1 mb-1 mt-2 justify-center items-center gap-1 px-6 pb-3 sm:pb-0">
+        <div className="!p-0 flex  mb-1 mt-2 justify-center items-center gap-1 px-6 pb-3 sm:pb-0">
           <AddExpenseBill setBills={setBills} />
 
           <div
