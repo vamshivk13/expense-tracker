@@ -38,16 +38,17 @@ export default function Transactions({ expense }) {
       <div className="grid gap-x-3 grid-cols-8 items-center">
         <div className=" col-span-6">
           <div className="flex items-center gap-4">
-            <div className="flex-shrink-0 bg-background border border-(--border-color)/60 p-2 rounded-full text-[var(--color)] dark:text-[var(--dark-color)]">
-              {Icon && (
-                <Icon color={iconColor} fill={iconColor} strokeWidth={1} />
-              )}
+            <div
+              style={{ borderColor: iconColor }}
+              className="flex-shrink-0 bg-background border p-2 rounded-full text-[var(--color)] dark:text-[var(--dark-color)]"
+            >
+              {Icon && <Icon color={iconColor} strokeWidth={1} />}
             </div>
-            <div className="flex flex-col truncate gap-1">
+            <div className="flex flex-col truncate gap-2">
               <div className="truncate mainLabel2 font-semibold tracking-normal">
                 {expense.description}
               </div>
-              <div className="text-sm lowercase text-gray-700 dark:text-gray-400 belowLabel">
+              <div className="text-sm bg-muted mr-auto px-3 py-1 rounded-full lowercase text-gray-700 dark:text-gray-400 belowLabel">
                 {expense.category}
               </div>
             </div>
@@ -57,14 +58,11 @@ export default function Transactions({ expense }) {
           {getFormattedDate(expense.date)}
         </div> */}
         <div className="flex col-span-2 place-items-center mx-auto items-center gap-1">
-          <div className="flex flex-col text-center gap-1">
-            <div className="sm:block hidden customLabel">
+          <div className="flex flex-col text-center gap-2">
+            <div className="block customLabel text-(--foreground)">
               {getFormattedAmount(expense.amount)}
             </div>
-            <div className="sm:hidden block customLabel text-(--foreground)">
-              {getFormattedAmount(expense.amount)}
-            </div>
-            <div className="text-sm block belowLabel sm:hidden text-gray-700 dark:text-gray-400">
+            <div className="text-sm block belowLabel text-gray-700 dark:text-gray-400">
               {getFormattedDateShort(expense.date)}
             </div>
           </div>
