@@ -6,6 +6,7 @@ import {
 } from "../../util/DateUtility";
 import React, { useEffect, useState } from "react";
 import { expenseCategories } from "../Categories";
+import { Separator } from "@/components/ui/separator";
 
 export default function Transactions({ expense }) {
   const [Icon, setCategoryIcon] = React.useState(null);
@@ -38,7 +39,10 @@ export default function Transactions({ expense }) {
       <div className="grid gap-x-3 grid-cols-8 items-center">
         <div className=" col-span-6">
           <div className="flex items-center gap-4">
-            <div className="flex-shrink-0 border border-(--border-color) p-2 rounded-full text-[var(--color)] dark:text-[var(--dark-color)]">
+            <div
+              style={{ borderColor: iconColor }}
+              className="flex-shrink-0 border border-(--border-color) p-2 rounded-full text-[var(--color)] dark:text-[var(--dark-color)]"
+            >
               {Icon && <Icon strokeWidth={1} />}
             </div>
             <div className="flex flex-col truncate gap-2">
@@ -69,6 +73,7 @@ export default function Transactions({ expense }) {
             className="self-start text-foreground"
           />
         </div>
+        <Separator className="mt-4 col-span-full w-full" />
       </div>
     </div>
   );
