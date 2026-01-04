@@ -268,7 +268,7 @@ export function ExpenseSummaryChart({ transactions }) {
   return (
     <Card className="py-4 mt-4 bg-background w-full sm:py-0 border-none outline-none shadow-none">
       <CardHeader className="border-none flex flex-col items-stretch border-b !p-0 sm:flex-row">
-        <div className="!p-0 flex flex-1 mb-2 justify-center items-start gap-1 px-6 pb-3 sm:pb-0">
+        <div className="!p-0 flex flex-1 mb-2 items-start gap-1 px-6 pb-3 sm:pb-0">
           <div className="flex flex-col gap-2">
             <CardTitle className={"mainLabel"}>Expense History</CardTitle>
             <CardDescription className="flex items-center subLabel2 gap-2 !text-muted-foreground mr-auto mt-2 sm:mt-0">
@@ -284,7 +284,7 @@ export function ExpenseSummaryChart({ transactions }) {
                 return [...prev1, toRear];
               });
             }}
-            className="subLabel cursor-pointer select-none text-gray-600 border-b-[1px] border-gray-500 ml-auto"
+            className="subLabel2 cursor-pointer select-none text-gray-600 border-b-[1px] border-gray-500 ml-auto"
           >
             {lineChartMode[0]}
           </div>
