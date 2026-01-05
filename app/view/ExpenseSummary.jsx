@@ -49,11 +49,16 @@ const ExpenseSummary = ({ goBack, transactions: allTransactions }) => {
 
     end.setHours(23, 59, 59, 999);
 
-    const firstOfMonth = new Date(start.getFullYear(), start.getMonth() + 1, 1);
+    const nowDate = new Date();
+    const firstOfMonth = new Date(nowDate.getFullYear(), nowDate.getMonth(), 1);
     if (start < firstOfMonth) {
       start.setTime(firstOfMonth.getTime());
     }
-    const lastOfMonth = new Date(start.getFullYear(), start.getMonth() + 1, 0);
+    const lastOfMonth = new Date(
+      nowDate.getFullYear(),
+      nowDate.getMonth() + 1,
+      0
+    );
 
     // If end spills into next month, clamp it
     if (end > lastOfMonth) {

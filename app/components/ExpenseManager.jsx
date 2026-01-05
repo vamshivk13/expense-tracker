@@ -371,7 +371,7 @@ export function ExpenseManager({ bills, budget, setBudget, setBills, goBack }) {
             className="rounded-lg border-none w-full"
           />  */}
             {currentData.map((group) => (
-              <div className="mt-6 flex flex-col gap-4">
+              <div className="mt-6 mb-4 flex flex-col gap-4">
                 <div className="flex mb-1 flex-col gap-2">
                   <div className="flex justify-between items-center">
                     <div className="mainLabel2 col-span-6">{group.key}</div>
