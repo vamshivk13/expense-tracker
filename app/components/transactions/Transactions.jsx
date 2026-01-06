@@ -46,7 +46,7 @@ export default function Transactions({ expense }) {
               className={`
               flex-shrink-0 border border-(--border-color) p-2 rounded-full text-[var(--color)] dark:text-[var(--dark-color)]`}
             >
-              {Icon && <Icon strokeWidth={1} />}
+              {Icon && <Icon color={iconColor + "90"} strokeWidth={1} />}
             </div>
             <div className="flex flex-col truncate gap-2">
               <div className="truncate mainLabel2 font-semibold tracking-normal">
