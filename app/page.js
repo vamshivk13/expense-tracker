@@ -41,7 +41,6 @@ import { ThemeProvider, useTheme } from "next-themes";
 import ExpenseSummary from "./view/ExpenseSummary";
 import { ExpenseManager } from "./components/ExpenseManager";
 import { get } from "firebase/database";
-import { all } from "axios";
 
 export default function Home() {
   const [transactions, setTransactions] = useState([]);
