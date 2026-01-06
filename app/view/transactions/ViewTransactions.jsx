@@ -209,7 +209,14 @@ export default function ViewTransactions({
                 <div class="text-xs text-red-700/80 dark:text-red-200/70 mt-1 leading-relaxed">
                   <div>
                     Total Amount Spent on{" "}
-                    {[categoryFilter, tagFilter].filter(Boolean).join(" - ")} is
+                    {[
+                      categoryFilter,
+                      tagFilter?.toLowerCase()[0]?.toUpperCase() +
+                        tagFilter?.toLowerCase().slice(1),
+                    ]
+                      .filter(Boolean)
+                      .join(" - ")}{" "}
+                    is
                     <span className="font-bold">
                       {" " +
                         getFormattedAmount(
