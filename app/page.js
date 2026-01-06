@@ -41,6 +41,7 @@ import { ThemeProvider, useTheme } from "next-themes";
 import ExpenseSummary from "./view/ExpenseSummary";
 import { ExpenseManager } from "./components/ExpenseManager";
 import { get } from "firebase/database";
+import { all } from "axios";
 
 export default function Home() {
   const [transactions, setTransactions] = useState([]);
@@ -49,6 +50,7 @@ export default function Home() {
   const [isTransactionsLoading, setIsTransactionsLoading] = useState(true);
   const [todaysExpense, setTodaysExpense] = useState(0);
   const [suggestedTags, setSuggestedTags] = useState([]);
+  const [allTags, setAllTags] = useState([]);
   const [history, setHistory] = useState([]);
   const [curYear, setCurYear] = useState(null);
   const [curMonth, setCurMonth] = useState(null);
@@ -99,6 +101,72 @@ export default function Home() {
       });
   }, []);
 
+  // Get TAGS
+  useEffect(() => {
+    const myRef = ref(db, "/tags");
+    get(myRef)
+      .then((snapshot) => {
+        if (snapshot.exists()) {
+          console.log("TAGS VALUE", snapshot.val().tags);
+
+          setAllTags(snapshot.val()?.tags); // This is your value
+        } else {
+          console.log("No data available");
+          setAllTags([]);
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  }, []);
+
+  useEffect(() => {
+    const sortedTags = getSortedTags(transactions);
+    const finalTags = [
+      ...new Set([...sortedTags, ...allTags.map((t) => t.toUpperCase())]),
+    ];
+    setSuggestedTags(finalTags);
+    // Compare and update in database only if tags are different
+    let shouldUpdate = false;
+    if (finalTags.length !== allTags.length) {
+      shouldUpdate = true;
+    }
+    finalTags.forEach((tag) => {
+      if (
+        allTags.findIndex((t) => t.toUpperCase() == tag.toUpperCase()) == -1
+      ) {
+        shouldUpdate = true;
+      }
+    });
+    if (!shouldUpdate) return;
+    const updateTagsRef = ref(db, "/tags");
+    update(updateTagsRef, { tags: finalTags });
+  }, [allTags, transactions]);
+
+  function getSortedTags(loadedItems) {
+    const tags = loadedItems.reduce((acc, curr) => {
+      if (curr.tags && Array.isArray(curr.tags)) {
+        curr.tags.forEach((tag) => {
+          tag = tag.toUpperCase();
+          if (!acc.has(tag)) {
+            acc.set(tag, 0);
+          } else {
+            acc.set(tag, acc.get(tag) + 1);
+          }
+        });
+      }
+      return acc;
+    }, new Map());
+
+    console.log("Tags map:", tags);
+
+    const sortedTags = Array.from(tags.entries())
+      .sort((a, b) => b[1] - a[1])
+      .map((entry) => entry[0]);
+
+    return sortedTags;
+  }
+
   useEffect(() => {
     if (curMonth == null || curYear == null) return;
     const mm = curMonth + 1;
@@ -137,28 +205,6 @@ export default function Home() {
           }))
           .sort((a, b) => new Date(b.date) - new Date(a.date))
       );
-      const tags = loadedItems.reduce((acc, curr) => {
-        if (curr.data.tags && Array.isArray(curr.data.tags)) {
-          curr.data.tags.forEach((tag) => {
-            tag = tag.toUpperCase();
-            if (!acc.has(tag)) {
-              acc.set(tag, 0);
-            } else {
-              acc.set(tag, acc.get(tag) + 1);
-            }
-          });
-        }
-        return acc;
-      }, new Map());
-
-      console.log("Tags map:", tags);
-
-      const sortedTags = Array.from(tags.entries())
-        .sort((a, b) => b[1] - a[1])
-        .map((entry) => entry[0]);
-
-      console.log("Sorted tags:", sortedTags);
-      setSuggestedTags(sortedTags);
 
       setIsTransactionsLoading(false);
     });
