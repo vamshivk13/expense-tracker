@@ -7,11 +7,19 @@ import { getFormattedAmount } from "@/app/util/DateUtility";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@radix-ui/react-select";
 import { set } from "date-fns";
-import { ArrowLeft, Check, CircleSmall, Cross, X } from "lucide-react";
+import {
+  ArrowLeft,
+  Check,
+  CircleSmall,
+  Cross,
+  TrendingUp,
+  X,
+} from "lucide-react";
 import { useRouter } from "next/navigation";
 import React, { useEffect } from "react";
 
 export default function ViewTransactions({
+  suggestedTags,
   transactions,
   goTo,
   setCurrentExpense,
@@ -22,8 +30,10 @@ export default function ViewTransactions({
   curMonth,
 }) {
   const [transactionsByDate, setTransactionsByDate] = React.useState([]);
+  const [filteredTransactions, setFilteredTransactions] = React.useState([]);
   const [categoryFilter, setCategoryFilter] = React.useState(null);
-  console.log("TRANS", transactions);
+  const [tagFilter, setTagFilter] = React.useState(null);
+  const [isTagFilterOn, setIsTagFilterOn] = React.useState(false);
 
   function setTransactionsByDateState(transactions) {
     const sortedTransactions = transactions.sort((a, b) => {
@@ -59,51 +69,31 @@ export default function ViewTransactions({
   }
   useEffect(() => {
     setTransactionsByDateState(transactions);
+    setFilteredTransactions(transactions);
   }, [transactions]);
 
   useEffect(() => {
     if (categoryFilter) {
-      const filteredTransactions = transactions.filter(
+      const curFilteredTransactions = filteredTransactions.filter(
         (tx) => tx.category === categoryFilter
       );
-      const sortedTransactions = filteredTransactions.sort((a, b) => {
-        return new Date(b.date) - new Date(a.date);
-      });
-
-      const transactionsByDate = sortedTransactions.reduce(
-        (acc, transaction) => {
-          const date = new Date(transaction.date).toLocaleDateString("en-US", {
-            year: "numeric",
-            month: "long",
-            day: "numeric",
-          });
-          if (!acc[date]) {
-            acc[date] = [];
-          }
-          acc[date].push(transaction);
-          return acc;
-        },
-        {}
-      );
-
-      const groupedTransactions = [];
-      for (const date in transactionsByDate) {
-        groupedTransactions.push({
-          date: date,
-          transactions: transactionsByDate[date],
-          totalAmount: transactionsByDate[date].reduce(
-            (acc, curr) => acc + curr.amount,
-            0
-          ),
-        });
-      }
-      setTransactionsByDate(groupedTransactions);
+      setTransactionsByDateState(curFilteredTransactions);
     }
-  }, [transactions, categoryFilter]);
+  }, [filteredTransactions, categoryFilter]);
 
   function handleClearFilters() {
     setCategoryFilter(null);
     setTransactionsByDateState(transactions);
+    setFilteredTransactions(transactions);
+    setIsTagFilterOn(false);
+    setTagFilter(null);
+  }
+
+  function handleTagFilter(tag) {
+    const curFilteredTransactions = filteredTransactions.filter(
+      (tx) => tx.tags && tx.tags.includes(tag)
+    );
+    setTransactionsByDateState(curFilteredTransactions);
   }
 
   return (
@@ -126,7 +116,7 @@ export default function ViewTransactions({
           </div>
         </div>
       </div>
-      {transactionsByDate.length == 0 ? (
+      {transactionsByDate.length == 0 && !tagFilter && !categoryFilter ? (
         <div className="subLabel2 bg-secondary/50 p-4 rounded-md text-center text-gray-700 dark:text-gray-400">
           You dont have any transactions yet, Add some to see them here.
         </div>
@@ -141,8 +131,8 @@ export default function ViewTransactions({
               >
                 <div>category</div>
                 {categoryFilter && (
-                  <div className="subLabel3 flex items-center gap-1 !text-background  ml-1">
-                    <Check className="inline-block ml-1 w-3 h-3 stroke-(--background)" />
+                  <div className="subLabel3 flex items-center gap-1 !text-orange-400 ml-1">
+                    <Check className="inline-block ml-1 w-3 h-3 !text-orange-400 " />
                     {categoryFilter}
                   </div>
                 )}
@@ -150,10 +140,17 @@ export default function ViewTransactions({
             </Categories>
             <div
               className={
-                "cursor-pointer subLabel2 text-background bg-muted-foreground px-2 py-1 rounded-full"
+                "cursor-pointer flex items-center subLabel2 text-background bg-muted-foreground px-2 py-1 rounded-full"
               }
+              onClick={() => setIsTagFilterOn((prev) => !prev)}
             >
-              tag
+              <div>tag</div>
+              {tagFilter && (
+                <div className="!text-orange-400 subLabel3 flex items-center gap-1 ml-1">
+                  <Check className="inline-block ml-1 w-3 h-3 !text-orange-400 \" />
+                  {tagFilter}
+                </div>
+              )}
             </div>
             <div
               className={
@@ -170,9 +167,26 @@ export default function ViewTransactions({
               date
             </div>
           </div>
-          <div className={"cursor-pointer mb-10 mr-auto "}>
+          {isTagFilterOn && (
+            <div className="truncate flex gap-1  col-span-3 overflow-x-auto [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
+              {suggestedTags.map((tagItem) => (
+                <div
+                  onClick={() => {
+                    setTagFilter(tagItem);
+                    handleTagFilter(tagItem);
+                    setIsTagFilterOn(false);
+                  }}
+                  key={tagItem}
+                  className="border flex items-center bg-secondary/30 border-(--border-color) rounded-full px-2 py-1 subLabel2 hover:bg-secondary/60 cursor-pointer"
+                >
+                  {tagItem}
+                </div>
+              ))}
+            </div>
+          )}
+          <div className={"cursor-pointer mb-7 mr-auto "}>
             <div>
-              {categoryFilter && (
+              {(categoryFilter || tagFilter) && (
                 <div
                   onClick={handleClearFilters}
                   className="subLabel2 flex text-background bg-foreground px-2 py-1 rounded-full"
@@ -183,17 +197,30 @@ export default function ViewTransactions({
               )}
             </div>
           </div>
-          {categoryFilter && (
-            <div className="mb-4 flex gap-1 items-center subLabel2">
-              <CircleSmall strokeWidth={1} size={14}></CircleSmall>
-              <div> Total Amount Spent on {categoryFilter} is</div>
-              <div className="subLabel2 font-semibold">
-                {getFormattedAmount(
-                  transactionsByDate.reduce(
-                    (total, group) => total + group.totalAmount,
-                    0
-                  )
-                )}
+          {(categoryFilter || tagFilter) && (
+            <div class="bg-red-50 dark:bg-red-900/20 border border-red-100 dark:border-red-800/50 rounded-2xl p-4 mb-6 flex items-center gap-3">
+              <div class="bg-red-100 dark:bg-red-800/40 p-2 rounded-full text-red-600 dark:text-red-400 shrink-0">
+                <TrendingUp />
+              </div>
+              <div>
+                <h3 class="font-bold text-red-800 dark:text-red-300 text-sm">
+                  Spending Alert
+                </h3>
+                <div class="text-xs text-red-700/80 dark:text-red-200/70 mt-1 leading-relaxed">
+                  <div>
+                    Total Amount Spent on{" "}
+                    {[categoryFilter, tagFilter].filter(Boolean).join(" - ")} is
+                    <span className="font-bold">
+                      {" " +
+                        getFormattedAmount(
+                          transactionsByDate.reduce(
+                            (total, group) => total + group.totalAmount,
+                            0
+                          )
+                        )}
+                    </span>
+                  </div>
+                </div>
               </div>
             </div>
           )}

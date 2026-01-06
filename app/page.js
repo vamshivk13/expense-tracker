@@ -872,6 +872,7 @@ export default function Home() {
       >
         <div className="">
           <ViewTransactions
+            suggestedTags={suggestedTags}
             setCurMonth={setCurMonth}
             setCurYear={setCurYear}
             curMonth={curMonth}
