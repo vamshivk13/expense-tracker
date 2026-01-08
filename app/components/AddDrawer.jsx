@@ -200,7 +200,12 @@ export function AddDrawer({ setTransactions, suggestedTagsProp }) {
                       <form
                         onSubmit={(e) => {
                           e.preventDefault();
-                          if (tag && !allTags.includes(tag)) {
+                          if (
+                            tag &&
+                            !allTags
+                              .map((t) => t.toUpperCase())
+                              .includes(tag.toUpperCase())
+                          ) {
                             setAllTags((prev) => [...prev, tag]);
                             setTag("");
                           }
