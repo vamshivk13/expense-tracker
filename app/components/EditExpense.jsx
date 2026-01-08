@@ -187,9 +187,13 @@ export default function EditExpense({
         <form
           onSubmit={(e) => {
             e.preventDefault();
-            if (currentTag.trim() !== "") {
+            if (
+              currentTag.trim() !== "" &&
+              !tags
+                .map((tag) => tag.toUpperCase())
+                .includes(currentTag.trim().toUpperCase())
+            ) {
               setTags((prev) => [...prev, currentTag.trim()]);
-              setCurrentTag("");
             }
           }}
           className="flex gap-2 items-center cursor-pointer"
@@ -207,7 +211,12 @@ export default function EditExpense({
           <Button
             variant={"outline"}
             onClick={() => {
-              if (currentTag.trim() !== "") {
+              if (
+                currentTag.trim() !== "" &&
+                !tags
+                  .map((tag) => tag.toUpperCase())
+                  .includes(currentTag.trim().toUpperCase())
+              ) {
                 setTags((prev) => [...prev, currentTag.trim()]);
               }
             }}
