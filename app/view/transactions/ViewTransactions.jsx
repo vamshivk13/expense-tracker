@@ -77,9 +77,10 @@ export default function ViewTransactions({
       const curFilteredTransactions = filteredTransactions.filter(
         (tx) => tx.category === categoryFilter
       );
+      setFilteredTransactions(curFilteredTransactions);
       setTransactionsByDateState(curFilteredTransactions);
     }
-  }, [filteredTransactions, categoryFilter]);
+  }, [categoryFilter]);
 
   function handleClearFilters() {
     setCategoryFilter(null);
@@ -91,8 +92,11 @@ export default function ViewTransactions({
 
   function handleTagFilter(tag) {
     const curFilteredTransactions = filteredTransactions.filter(
-      (tx) => tx.tags && tx.tags.includes(tag)
+      (tx) =>
+        tx.tags &&
+        tx.tags.map((tg) => tg.toUpperCase()).includes(tag.toUpperCase())
     );
+    setFilteredTransactions(curFilteredTransactions);
     setTransactionsByDateState(curFilteredTransactions);
   }
 
