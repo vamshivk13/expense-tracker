@@ -204,12 +204,12 @@ const ExpenseSummary = ({ goBack, transactions: allTransactions }) => {
                         return (
                           <div
                             key={expense.key}
-                            className="flex flex-col gap-2 border select-none items-center bg-foreground text-background border-(--border-color) rounded-xl px-2 py-2 subLabel2"
+                            className="flex flex-col gap-2 border select-none items-center justify-center bg-foreground text-background border-(--border-color) rounded-xl px-2 py-2 subLabel2"
                           >
                             <div className="text-muted-foreground text-nowrap">
                               {expense.key}
                             </div>
-                            <div className="mainLabel2">
+                            <div className="mainLabel2 py-1 tabular-nums font-semibold">
                               {getFormattedAmount(expense.totalAmount)}
                             </div>
                           </div>
