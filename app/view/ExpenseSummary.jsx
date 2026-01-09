@@ -105,10 +105,12 @@ const ExpenseSummary = ({ goBack, transactions: allTransactions }) => {
 
     const transactionsByDate = weeksExpense.expenses.reduce(
       (acc, transaction) => {
-        const date = new Date(transaction.date).toLocaleDateString("en-US", {
+        let date = new Date(transaction.date).toLocaleDateString("en-US", {
           month: "short",
           day: "numeric",
         });
+
+        date = date.split(" ")[0] + " " + date.split(" ")[1].padStart(2, "0");
         if (!acc[date]) {
           acc[date] = [];
         }
@@ -197,14 +199,14 @@ const ExpenseSummary = ({ goBack, transactions: allTransactions }) => {
                     <div className="subLabel2 line-clamp-1 flex gap-2 font-medium">
                       {week}
                     </div>
-                    <div className="flex gap-2 overflow-x-auto [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
+                    <div className="flex w-full gap-2 overflow-x-auto [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
                       {currentWeeksExpenses?.map((expense) => {
                         return (
                           <div
                             key={expense.key}
                             className="flex flex-col gap-2 border select-none items-center bg-foreground text-background border-(--border-color) rounded-xl px-2 py-2 subLabel2"
                           >
-                            <div className="text-muted-foreground">
+                            <div className="text-muted-foreground text-nowrap">
                               {expense.key}
                             </div>
                             <div className="mainLabel2">
