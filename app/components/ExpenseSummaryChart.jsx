@@ -16,7 +16,13 @@ import {
   ChartTooltipContent,
 } from "@/components/ui/chart";
 import { getFormattedDate } from "../util/DateUtility";
-import { TrendingUp } from "lucide-react";
+import {
+  ChartNoAxesColumn,
+  Layers2,
+  Lightbulb,
+  Sparkles,
+  TrendingUp,
+} from "lucide-react";
 
 export const description = "An interactive line chart";
 
@@ -371,6 +377,50 @@ export function ExpenseSummaryChart({ transactions }) {
           </LineChart>
         </ChartContainer>
       </CardContent>
+
+      <div class="mt-12 bg-white dark:bg-surface-dark border border-gray-100 dark:border-gray-700 rounded-2xl p-5 shadow-sm">
+        <div class="flex items-center gap-2 mb-3">
+          <Sparkles class="text-blue-500 text-lg" />
+          <h3 class="text-sm font-bold uppercase tracking-wider text-text-primary-light dark:text-text-primary-dark">
+            Chart Insights
+          </h3>
+        </div>
+        <p class="text-xs text-text-secondary-light dark:text-text-secondary-dark leading-relaxed mb-5">
+          Your spending has increased by{" "}
+          <span class="font-bold text-red-500">8%</span> this week. However,
+          you've consistently spent below your daily average for the last 3
+          days.
+        </p>
+        <div class="grid grid-cols-3 gap-3">
+          <div class="flex flex-col items-center p-2 rounded-xl bg-surface-light dark:bg-gray-800/50 border border-gray-100/50 dark:border-gray-700/50">
+            <TrendingUp class="text-green-500 text-lg mb-1" />
+            <span class="text-[9px] font-bold text-text-secondary-light dark:text-text-secondary-dark uppercase mb-0.5">
+              Peak Day
+            </span>
+            <span class="text-[11px] font-bold text-text-primary-light dark:text-text-primary-dark">
+              Jan 04
+            </span>
+          </div>
+          <div class="flex flex-col items-center p-2 rounded-xl bg-surface-light dark:bg-gray-800/50 border border-gray-100/50 dark:border-gray-700/50">
+            <ChartNoAxesColumn class="text-blue-500 text-lg mb-1" />
+            <span class="text-[9px] font-bold text-text-secondary-light dark:text-text-secondary-dark uppercase mb-0.5">
+              Daily Avg
+            </span>
+            <span class="text-[11px] font-bold text-text-primary-light dark:text-text-primary-dark">
+              ₹165
+            </span>
+          </div>
+          <div class="flex flex-col items-center p-2 rounded-xl bg-surface-light dark:bg-gray-800/50 border border-gray-100/50 dark:border-gray-700/50">
+            <Layers2 class="text-purple-500 text-lg mb-1" />
+            <span class="text-[9px] font-bold text-text-secondary-light dark:text-text-secondary-dark uppercase mb-0.5">
+              Top Category
+            </span>
+            <span class="text-[11px] font-bold text-text-primary-light dark:text-text-primary-dark">
+              Food
+            </span>
+          </div>
+        </div>
+      </div>
     </Card>
   );
 }
