@@ -21,6 +21,7 @@ import {
   Plus,
   ArrowRight,
   AlignHorizontalJustifyCenter,
+  Coffee,
 } from "lucide-react";
 import { useEffect, useState } from "react";
 
@@ -49,6 +50,7 @@ export const expenseCategories = [
   { name: "Savings & Investments", icon: PiggyBank, color: "#16A34A" }, // green-600
   { name: "Taxes", icon: Receipt, color: "#F97316" }, // orange-500
   { name: "Other", icon: ChartBarStacked, color: "#6B7280" }, // gray-500
+  { name: "Tea & snacking", icon: Coffee, color: "#F27606" }, // amber-600
 ];
 
 export function Categories({ children, setCategory }) {
@@ -62,7 +64,16 @@ export function Categories({ children, setCategory }) {
       .then((snapshot) => {
         if (snapshot.exists()) {
           console.log("Categories", snapshot.val().categories);
-          setCategories(snapshot.val()?.categories); // This is your value
+          setCategories(
+            snapshot
+              .val()
+              ?.categories.filter(
+                (cat) =>
+                  expenseCategories.findIndex(
+                    (c) => c.name.toUpperCase() == cat.name.toUpperCase()
+                  ) == -1
+              )
+          ); // This is your value
         } else {
           console.log("No data available");
           setCategories([]);

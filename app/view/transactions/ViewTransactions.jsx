@@ -7,6 +7,7 @@ import { getFormattedAmount } from "@/app/util/DateUtility";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@radix-ui/react-select";
 import { set } from "date-fns";
+import { ta } from "date-fns/locale";
 import {
   ArrowLeft,
   Check,
@@ -73,14 +74,18 @@ export default function ViewTransactions({
   }, [transactions]);
 
   useEffect(() => {
-    if (categoryFilter) {
-      const curFilteredTransactions = filteredTransactions.filter(
-        (tx) => tx.category === categoryFilter
-      );
-      setFilteredTransactions(curFilteredTransactions);
-      setTransactionsByDateState(curFilteredTransactions);
-    }
-  }, [categoryFilter]);
+    const filteredTransactions = transactions.filter((tx) => {
+      const categoryMatch = !categoryFilter || tx.category === categoryFilter;
+
+      const tagMatch =
+        !tagFilter ||
+        tx.tags?.some((tg) => tg.toUpperCase() === tagFilter.toUpperCase());
+
+      return categoryMatch && tagMatch;
+    });
+
+    setTransactionsByDateState(filteredTransactions);
+  }, [transactions, categoryFilter, tagFilter]);
 
   function handleClearFilters() {
     setCategoryFilter(null);
@@ -91,13 +96,7 @@ export default function ViewTransactions({
   }
 
   function handleTagFilter(tag) {
-    const curFilteredTransactions = filteredTransactions.filter(
-      (tx) =>
-        tx.tags &&
-        tx.tags.map((tg) => tg.toUpperCase()).includes(tag.toUpperCase())
-    );
-    setFilteredTransactions(curFilteredTransactions);
-    setTransactionsByDateState(curFilteredTransactions);
+    setTagFilter(tag);
   }
 
   return (
