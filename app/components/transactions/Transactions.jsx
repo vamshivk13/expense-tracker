@@ -42,6 +42,7 @@ export default function Transactions({ expense }) {
             <div
               style={{
                 backgroundColor: iconColor + "20",
+                borderColor: iconColor + "40",
               }}
               className={`
               flex-shrink-0 border border-(--border-color) p-2 rounded-full text-[var(--color)] dark:text-[var(--dark-color)]`}

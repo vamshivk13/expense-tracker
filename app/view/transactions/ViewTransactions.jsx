@@ -181,7 +181,11 @@ export default function ViewTransactions({
                     setIsTagFilterOn(false);
                   }}
                   key={tagItem}
-                  className="border flex items-center bg-secondary/30 border-(--border-color) rounded-full px-2 py-1 subLabel2 hover:bg-secondary/60 cursor-pointer"
+                  className={`border flex items-center ${
+                    tagFilter === tagItem
+                      ? "bg-orange-400/20 text-orange-400"
+                      : "bg-secondary/30"
+                  } border-(--border-color) rounded-full px-2 py-1 subLabel2 hover:bg-secondary/60 cursor-pointer`}
                 >
                   {tagItem}
                 </div>
