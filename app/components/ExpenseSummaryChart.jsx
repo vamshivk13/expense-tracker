@@ -278,7 +278,7 @@ export function ExpenseSummaryChart({ transactions }) {
           <div className="!p-0 flex flex-1 mb-2 items-start gap-1 px-6 pb-3 sm:pb-0">
             <div className="flex flex-col gap-2">
               <CardTitle className={"mainLabel"}>Expense History</CardTitle>
-              <CardDescription className="flex items-center subLabel2 gap-2 !text-muted-foreground mr-auto mt-2 sm:mt-0">
+              <CardDescription className="flex items-center text-xs gap-2 !text-muted-foreground mr-auto mt-2 sm:mt-0">
                 Overview of your expenses over time
                 <TrendingUp size={13} className="text-foreground" />
               </CardDescription>
@@ -297,7 +297,7 @@ export function ExpenseSummaryChart({ transactions }) {
             </div>
           </div>
         </CardHeader>
-        <div class="mt-1 rounded-2xl  bg-gray-100 dark:bg-gray-800/40 border-none border-gray-100 dark:border-gray-700 p-2 shadow-none">
+        <div class="mt-1 rounded-2xl  bg-surface-dark dark:bg-gray-800/40 border border-gray-100 dark:border-gray-700 p-2 shadow-xs mb-2">
           <div class="grid grid-cols-3 gap-3">
             <div class="flex flex-col items-center p-2  bg-surface-light dark:bg-gray-800/50 border-none border-gray-100/50 dark:border-gray-700/50">
               <TrendingUp class="text-green-500 text-lg mb-1" />
@@ -411,7 +411,7 @@ export function ExpenseSummaryChart({ transactions }) {
         </CardContent>
       </Card>
       <div className="flex flex-col gap-3">
-        <div className="flex gap-4 rounded-full bg-red-100 dark:bg-red-800/40 border-none border-gray-100 dark:border-gray-700 px-2 py-3 items-center">
+        <div className="flex gap-4 rounded-2xl bg-gray-50 dark:bg-gray-800/40 border border-gray-100 dark:border-gray-700 px-2 py-3 items-center">
           <div class="flex items-center ml-2 gap-2">
             <Sparkles class="text-red-500 text-lg" />
           </div>

@@ -162,7 +162,7 @@ export function ExpenseSummaryBarChart({ transactions }) {
     <div className="py-4">
       <CardHeader className="border-none flex flex-col items-stretch border-b !p-0 sm:flex-col">
         <CardTitle className={"mainLabel"}>Top Spends</CardTitle>
-        <CardDescription className="flex items-center subLabel2 gap-2 !text-muted-foreground mr-auto mt-2 sm:mt-0">
+        <CardDescription className="flex items-center text-xs gap-2 !text-muted-foreground mr-auto mt-2 sm:mt-0">
           Overview of your top spending categories
           <TrendingUp size={13} className="text-foreground" />
         </CardDescription>
