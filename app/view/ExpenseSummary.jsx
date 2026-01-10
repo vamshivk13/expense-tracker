@@ -466,7 +466,7 @@ const ExpenseSummary = ({ goBack, transactions: allTransactions }) => {
                     Summary of Spending
                   </span>
                 </div>
-                <p className="text-sm text-gray-500 dark:text-gray-400">
+                <p className="rounded-md py-2 px-2 bg-gray-100 text-sm text-gray-500 dark:text-gray-400">
                   {insights?.summaryOfSpending}
                 </p>
                 <div className="mt-2 flex flex-col gap-2">
