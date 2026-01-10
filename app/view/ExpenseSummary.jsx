@@ -12,7 +12,6 @@ import { ExpenseSummaryChart } from "../components/ExpenseSummaryChart";
 import { useEffect, useState } from "react";
 import { ExpenseSummaryBarChart } from "../components/ExpenseSummaryBarChart";
 import { getFormattedAmount, getFormattedDate } from "../util/DateUtility";
-import { get } from "mongoose";
 
 const isToday = (date) => {
   const now = new Date();
