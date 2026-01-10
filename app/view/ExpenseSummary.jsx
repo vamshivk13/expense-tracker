@@ -12,6 +12,98 @@ import { ExpenseSummaryChart } from "../components/ExpenseSummaryChart";
 import { useEffect, useState } from "react";
 import { ExpenseSummaryBarChart } from "../components/ExpenseSummaryBarChart";
 import { getFormattedAmount, getFormattedDate } from "../util/DateUtility";
+import { get } from "mongoose";
+
+const isToday = (date) => {
+  const now = new Date();
+  return date.toDateString() === now.toDateString();
+};
+
+const isCurrentWeek = (date) => {
+  const now = new Date();
+  const startOfWeek = new Date(now);
+  const firstOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
+  if (startOfWeek < firstOfMonth) {
+    startOfWeek.setTime(firstOfMonth.getTime());
+  }
+  startOfWeek.setDate(now.getDate() - now.getDay());
+  startOfWeek.setHours(0, 0, 0, 0);
+  return date >= startOfWeek;
+};
+
+const isCurrentMonth = (date) => {
+  const now = new Date();
+  return (
+    date.getMonth() === now.getMonth() &&
+    date.getFullYear() === now.getFullYear()
+  );
+};
+
+function getTransactionInsights(transactions) {
+  const now = new Date();
+
+  const buckets = {
+    today: [],
+    week: [],
+    month: [],
+  };
+
+  // 1️⃣ Split transactions into buckets
+  transactions.forEach((tx) => {
+    const txDate = new Date(tx.date);
+
+    if (isToday(txDate)) buckets.today.push(tx);
+    if (isCurrentWeek(txDate)) buckets.week.push(tx);
+    if (isCurrentMonth(txDate)) buckets.month.push(tx);
+  });
+
+  // 2️⃣ Local helper inside the same function
+  const buildInsight = (label, list) => {
+    if (list.length === 0) {
+      return `No transactions recorded ${label}.`;
+    }
+
+    let total = 0;
+    const categoryMap = {};
+    const tagMap = {};
+
+    list.forEach((tx) => {
+      total += tx.amount;
+
+      categoryMap[tx.category] = (categoryMap[tx.category] || 0) + tx.amount;
+
+      tx.tags?.forEach((tag) => {
+        tagMap[tag] = (tagMap[tag] || 0) + 1;
+      });
+    });
+
+    const topCategory = Object.entries(categoryMap).sort(
+      (a, b) => b[1] - a[1]
+    )[0]?.[0];
+
+    const topTag = Object.entries(tagMap).sort((a, b) => b[1] - a[1])[0]?.[0];
+
+    let message = `You spent ₹${total} ${label}.`;
+
+    if (topCategory) {
+      message += ` Most of it was on ${topCategory}.`;
+    }
+
+    if (topTag) {
+      message += ` Common expense: ${topTag.toLowerCase()}.`;
+    }
+
+    return message;
+    ``;
+  };
+
+  // 3️⃣ Final insights
+  return {
+    today: buildInsight("today", buckets.today),
+    week: buildInsight("this week", buckets.week),
+    month: buildInsight("this month", buckets.month),
+  };
+}
 
 const ExpenseSummary = ({ goBack, transactions: allTransactions }) => {
   const [transactions, setTransactions] = useState(null);
@@ -21,6 +113,12 @@ const ExpenseSummary = ({ goBack, transactions: allTransactions }) => {
   const [monthlyExpense, setMonthlyExpense] = useState(0);
   const [week, setWeek] = useState("");
   const [isCurrentMonth, setIsCurrentMonth] = useState(false);
+  const [insightMessages, setInsightMessages] = useState({
+    today: "",
+    week: "",
+    month: "",
+  });
+  const [activeTab, setActiveTab] = useState("week");
 
   useEffect(() => {
     if (transactions && transactions.length != 0) {
@@ -142,6 +240,11 @@ const ExpenseSummary = ({ goBack, transactions: allTransactions }) => {
   }, [allTransactions]);
   console.log("curWeek", currentWeeksExpenses);
 
+  useEffect(() => {
+    if (!transactions) return;
+    setInsightMessages(getTransactionInsights(transactions));
+  }, [transactions]);
+
   return (
     <div
       className={
@@ -161,7 +264,12 @@ const ExpenseSummary = ({ goBack, transactions: allTransactions }) => {
 
         <div className="overflow-y-auto [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden flex flex-col gap-4">
           {isCurrentMonth && (
-            <Tabs defaultValue={"week"} className={"mt-5 rounded-md"}>
+            <Tabs
+              defaultValue={"week"}
+              value={activeTab}
+              onValueChange={setActiveTab}
+              className={"mt-5 rounded-md"}
+            >
               <TabsList className={"flex justify-center w-full"}>
                 <TabsTrigger value="today" className={"subLabel2"}>
                   Today
@@ -262,10 +370,7 @@ const ExpenseSummary = ({ goBack, transactions: allTransactions }) => {
               <Sparkles class="text-blue-500 text-lg" />
             </div>
             <p class="text-xs text-text-secondary-light dark:text-text-secondary-dark leading-relaxed">
-              Your spending has increased by{" "}
-              <span class="font-bold text-red-500">8%</span> this week. However,
-              you've consistently spent below your daily average for the last 3
-              days.
+              {insightMessages[activeTab]}
             </p>
           </div>
           <div className="flex gap-7 mt-3 flex-col">
