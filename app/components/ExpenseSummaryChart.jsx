@@ -272,154 +272,157 @@ export function ExpenseSummaryChart({ transactions }) {
   const nice = niceMinMax(yMin, yMax, 3);
 
   return (
-    <Card className="py-4 mt-4 bg-background w-full sm:py-0 border-none outline-none shadow-none">
-      <CardHeader className="border-none flex flex-col items-stretch border-b !p-0 sm:flex-row">
-        <div className="!p-0 flex flex-1 mb-2 items-start gap-1 px-6 pb-3 sm:pb-0">
-          <div className="flex flex-col gap-2">
-            <CardTitle className={"mainLabel"}>Expense History</CardTitle>
-            <CardDescription className="flex items-center subLabel2 gap-2 !text-muted-foreground mr-auto mt-2 sm:mt-0">
-              Overview of your expenses over time
-              <TrendingUp size={13} className="text-foreground" />
-            </CardDescription>
+    <div className="mt-4 flex flex-col gap-2">
+      <Card className="py-4  bg-background w-full sm:py-0 border-none outline-none shadow-none">
+        <CardHeader className="border-none flex flex-col items-stretch border-b !p-0 sm:flex-row">
+          <div className="!p-0 flex flex-1 mb-2 items-start gap-1 px-6 pb-3 sm:pb-0">
+            <div className="flex flex-col gap-2">
+              <CardTitle className={"mainLabel"}>Expense History</CardTitle>
+              <CardDescription className="flex items-center subLabel2 gap-2 !text-muted-foreground mr-auto mt-2 sm:mt-0">
+                Overview of your expenses over time
+                <TrendingUp size={13} className="text-foreground" />
+              </CardDescription>
+            </div>
+            <div
+              onClick={() => {
+                setLineChartMode((prev) => {
+                  const prev1 = [...prev];
+                  const toRear = prev1.shift();
+                  return [...prev1, toRear];
+                });
+              }}
+              className="subLabel2 cursor-pointer select-none text-gray-600 border-b-[1px] border-gray-500 ml-auto"
+            >
+              {lineChartMode[0]}
+            </div>
           </div>
-          <div
-            onClick={() => {
-              setLineChartMode((prev) => {
-                const prev1 = [...prev];
-                const toRear = prev1.shift();
-                return [...prev1, toRear];
-              });
-            }}
-            className="subLabel2 cursor-pointer select-none text-gray-600 border-b-[1px] border-gray-500 ml-auto"
-          >
-            {lineChartMode[0]}
+        </CardHeader>
+        <div class="mt-1 rounded-2xl  bg-gray-100 dark:bg-gray-800/40 border-none border-gray-100 dark:border-gray-700 p-2 shadow-none">
+          <div class="grid grid-cols-3 gap-3">
+            <div class="flex flex-col items-center p-2  bg-surface-light dark:bg-gray-800/50 border-none border-gray-100/50 dark:border-gray-700/50">
+              <TrendingUp class="text-green-500 text-lg mb-1" />
+              <span class="text-[9px] subLabel2 !text-muted-foreground font-bold uppercase mb-0.5">
+                Peak Day
+              </span>
+              <span class="text-[11px] font-bold subLabel2  text-text-primary-light dark:text-text-primary-dark">
+                Jan 04
+              </span>
+            </div>
+            <div class="flex flex-col items-center p-2 bg-surface-light dark:bg-gray-800/50 border-none border-gray-100/50 dark:border-gray-700/50">
+              <ChartNoAxesColumn class="text-blue-500 text-lg mb-1" />
+              <span class="text-[9px] font-bold !text-muted-foreground  uppercase mb-0.5">
+                Daily Avg
+              </span>
+              <span class="text-[11px] font-bold text-text-primary-light dark:text-text-primary-dark">
+                ₹165
+              </span>
+            </div>
+            <div class="flex flex-col items-center p-2 rounded-xl bg-surface-light dark:bg-gray-800/50 border-none border-gray-100/50 dark:border-gray-700/50">
+              <Layers2 class="text-purple-500 text-lg mb-1" />
+              <span class="text-[9px] font-bold !text-muted-foreground uppercase mb-0.5">
+                Top Category
+              </span>
+              <span class="text-[11px] font-bold text-text-primary-light dark:text-text-primary-dark">
+                Food
+              </span>
+            </div>
           </div>
         </div>
-      </CardHeader>
-      <CardContent className="px-0 w-full sm:p-6 border-none shadow-none outline-none">
-        <ChartContainer
-          config={chartConfig}
-          className="aspect-auto border-none outline-none h-[250px] w-full"
-        >
-          <LineChart
-            accessibilityLayer
-            data={[...lineChartData]}
-            margin={{
-              left: 22,
-              right: 0,
-            }}
+        <CardContent className="px-0 w-full sm:p-6 border-none shadow-none outline-none">
+          <ChartContainer
+            config={chartConfig}
+            className="aspect-auto border-none outline-none h-[250px] w-full"
           >
-            <CartesianGrid vertical={false} />
-            <XAxis
-              dataKey="key"
-              ticks={[
-                lineChartData[0]?.key,
-                lineChartData[lineChartData.length - 1]?.key,
-              ]}
-              tickLine={true}
-              axisLine={false}
-              tickMargin={8}
-              minTickGap={0}
-              padding={{ left: 0, right: 0 }}
-              domain={["dataMin", "dataMax"]} // continuous range from first to last
-              // display={"none"}
-              tickFormatter={(value) => {
-                const date = new Date(value);
-
-                if (!isNaN(date.getTime())) {
-                  return new Date(date).toLocaleDateString(undefined, {
-                    month: "short",
-                    day: "2-digit",
-                  });
-                } else {
-                  return value;
-                }
-              }}
-              className="subLabel2"
-              interval={0}
-            />
-
-            <YAxis
-              width={"50"}
+            <LineChart
+              accessibilityLayer
+              data={[...lineChartData]}
               margin={{
+                left: 22,
                 right: 0,
               }}
-              className="z-50 !p-0 !m-0"
-              padding={{ top: 0, right: 0, bottom: 0, left: 0 }}
-              orientation="right"
-              tickLine={false}
-              axisLine={false}
-              domain={[nice.min, nice.max]}
-              ticks={nice.ticks}
-              tickFormatter={(v) => formatCurrencyShort(v)}
-            />
-            <ChartTooltip
-              content={
-                <ChartTooltipContent
-                  className="w-[150px]"
-                  nameKey="views"
-                  labelFormatter={(value) => {
-                    if (!isNaN(getFormattedDate(value)))
-                      return getFormattedDate(value);
-                    else {
-                      return value;
-                    }
-                  }}
-                />
-              }
-            />
-            <Line
-              dataKey={activeChart}
-              type="monotone"
-              strokeWidth={2}
-              dot={true}
-            />
-          </LineChart>
-        </ChartContainer>
-      </CardContent>
+            >
+              <CartesianGrid vertical={false} />
+              <XAxis
+                dataKey="key"
+                ticks={[
+                  lineChartData[0]?.key,
+                  lineChartData[lineChartData.length - 1]?.key,
+                ]}
+                tickLine={true}
+                axisLine={false}
+                tickMargin={8}
+                minTickGap={0}
+                padding={{ left: 0, right: 0 }}
+                domain={["dataMin", "dataMax"]} // continuous range from first to last
+                // display={"none"}
+                tickFormatter={(value) => {
+                  const date = new Date(value);
 
-      <div class="mt-4 bg-white dark:bg-surface-dark border border-gray-100 dark:border-gray-700 rounded-sm p-2 shadow-none">
-        <div class="grid grid-cols-3 gap-3">
-          <div class="flex flex-col items-center p-2  bg-surface-light dark:bg-gray-800/50 border-none border-gray-100/50 dark:border-gray-700/50">
-            <TrendingUp class="text-green-500 text-lg mb-1" />
-            <span class="text-[9px] subLabel2 !text-muted-foreground font-bold uppercase mb-0.5">
-              Peak Day
-            </span>
-            <span class="text-[11px] font-bold subLabel2  text-text-primary-light dark:text-text-primary-dark">
-              Jan 04
-            </span>
+                  if (!isNaN(date.getTime())) {
+                    return new Date(date).toLocaleDateString(undefined, {
+                      month: "short",
+                      day: "2-digit",
+                    });
+                  } else {
+                    return value;
+                  }
+                }}
+                className="subLabel2"
+                interval={0}
+              />
+
+              <YAxis
+                width={"50"}
+                margin={{
+                  right: 0,
+                }}
+                className="z-50 !p-0 !m-0"
+                padding={{ top: 0, right: 0, bottom: 0, left: 0 }}
+                orientation="right"
+                tickLine={false}
+                axisLine={false}
+                domain={[nice.min, nice.max]}
+                ticks={nice.ticks}
+                tickFormatter={(v) => formatCurrencyShort(v)}
+              />
+              <ChartTooltip
+                content={
+                  <ChartTooltipContent
+                    className="w-[150px]"
+                    nameKey="views"
+                    labelFormatter={(value) => {
+                      if (!isNaN(getFormattedDate(value)))
+                        return getFormattedDate(value);
+                      else {
+                        return value;
+                      }
+                    }}
+                  />
+                }
+              />
+              <Line
+                dataKey={activeChart}
+                type="monotone"
+                strokeWidth={2}
+                dot={true}
+              />
+            </LineChart>
+          </ChartContainer>
+        </CardContent>
+      </Card>
+      <div className="flex flex-col gap-3">
+        <div className="flex gap-4 rounded-full bg-red-100 dark:bg-red-800/40 border-none border-gray-100 dark:border-gray-700 px-2 py-3 items-center">
+          <div class="flex items-center ml-2 gap-2">
+            <Sparkles class="text-red-500 text-lg" />
           </div>
-          <div class="flex flex-col items-center p-2 bg-surface-light dark:bg-gray-800/50 border-none border-gray-100/50 dark:border-gray-700/50">
-            <ChartNoAxesColumn class="text-blue-500 text-lg mb-1" />
-            <span class="text-[9px] font-bold !text-muted-foreground  uppercase mb-0.5">
-              Daily Avg
-            </span>
-            <span class="text-[11px] font-bold text-text-primary-light dark:text-text-primary-dark">
-              ₹165
-            </span>
-          </div>
-          <div class="flex flex-col items-center p-2 rounded-xl bg-surface-light dark:bg-gray-800/50 border-none border-gray-100/50 dark:border-gray-700/50">
-            <Layers2 class="text-purple-500 text-lg mb-1" />
-            <span class="text-[9px] font-bold !text-muted-foreground uppercase mb-0.5">
-              Top Category
-            </span>
-            <span class="text-[11px] font-bold text-text-primary-light dark:text-text-primary-dark">
-              Food
-            </span>
-          </div>
+          <p class="text-xs text-text-secondary-light dark:text-text-secondary-dark leading-relaxed">
+            Your spending has increased by{" "}
+            <span class="font-bold text-red-500">8%</span> this week. However,
+            you've consistently spent below your daily average for the last 3
+            days.
+          </p>
         </div>
       </div>
-      <div className="flex gap-4 border border-gray-100 dark:border-gray-700 px-2 py-3 items-center">
-        <div class="flex items-center ml-2 gap-2">
-          <Sparkles class="text-blue-500 text-lg" />
-        </div>
-        <p class="text-xs text-text-secondary-light dark:text-text-secondary-dark leading-relaxed">
-          Your spending has increased by{" "}
-          <span class="font-bold text-red-500">8%</span> this week. However,
-          you've consistently spent below your daily average for the last 3
-          days.
-        </p>
-      </div>
-    </Card>
+    </div>
   );
 }
