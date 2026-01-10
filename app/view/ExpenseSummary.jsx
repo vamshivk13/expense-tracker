@@ -7,11 +7,23 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { ArrowLeft, Badge, Sparkles } from "lucide-react";
+import {
+  ArrowLeft,
+  Badge,
+  Calendar,
+  Fingerprint,
+  Lightbulb,
+  LucideTrendingUp,
+  Sparkles,
+  WandSparkles,
+} from "lucide-react";
 import { ExpenseSummaryChart } from "../components/ExpenseSummaryChart";
 import { useEffect, useState } from "react";
 import { ExpenseSummaryBarChart } from "../components/ExpenseSummaryBarChart";
 import { getFormattedAmount, getFormattedDate } from "../util/DateUtility";
+import fetchInsights from "../insights/fetchInsights";
+import { set, get } from "firebase/database";
+import { db, ref } from "../firebaseConfig";
 
 const isToday = (date) => {
   const now = new Date();
@@ -116,6 +128,14 @@ const ExpenseSummary = ({ goBack, transactions: allTransactions }) => {
     today: "",
     week: "",
     month: "",
+  });
+
+  const [insights, setInsights] = useState({
+    summaryOfSpending: "",
+    suggestion: [],
+    spendingPlanForNextWeek: [],
+    transactionPatterns: [],
+    transactionsCausingHighestSpend: [],
   });
   const [activeTab, setActiveTab] = useState("week");
 
@@ -244,13 +264,72 @@ const ExpenseSummary = ({ goBack, transactions: allTransactions }) => {
     setInsightMessages(getTransactionInsights(transactions));
   }, [transactions]);
 
+  useEffect(() => {
+    if (!transactions) return;
+    // Get Insights from firebase
+    if (
+      insights?.savedAt == null ||
+      new Date(insights?.savedAt) < new Date(Date.now() - 2 * 60 * 60 * 1000)
+    )
+      console.log("FETCHING INSIGHTS");
+    get(ref(db, "/insights"))
+      .then((snapshot) => {
+        console.log("INSIGHTS GET", snapshot.val());
+        const data = snapshot.val()?.insights;
+        if (data) {
+          console.log("FETCHED INSIGHTS FROM DB", data);
+          if (
+            data.savedAt &&
+            new Date(data.savedAt) > new Date(Date.now() - 2 * 60 * 60 * 1000)
+          ) {
+            console.log("USING CACHED NOT FETCHING");
+            setInsights(data);
+          } else {
+            console.log("FETCHING NEW INSIGHTS");
+            fetchAndStoreInsights();
+          }
+        } else {
+          fetchAndStoreInsights();
+        }
+      })
+      .catch((error) => {
+        console.error("Error fetching insights from database: ", error);
+      });
+    function fetchAndStoreInsights() {
+      console.log("INSIDE FETCH AND STORE");
+      fetchInsights
+        .fetch(transactions)
+        .then((data) => {
+          setInsights({ data, savedAt: Date.now() });
+          data = data;
+          set(ref(db, "/insights"), {
+            insights: { ...data, savedAt: Date.now() },
+          }).catch((error) => {
+            console.error("Error writing insights to database: ", error);
+          });
+        })
+        .catch((error) => {
+          console.error("Error fetching insights: ", error);
+          get(ref(db, "/insights")).then((snapshot) => {
+            const data = snapshot.val()?.insights;
+            if (data) {
+              setInsights(data);
+            }
+          });
+        });
+      //save to firebase
+    }
+  }, [insights, transactions]);
+
+  console.log("INSIGHTS STATE");
+
   return (
     <div
       className={
         "flex flex-col h-dvh gap-5 sm:container mx-auto px-6 sm:px-16 lg:px-16 py-3"
       }
     >
-      <div className="flex flex-col h-full gap-4 text-lg bg-background py-4 w-full">
+      <div className="flex flex-col h-full gap-4 text-lg bg-background pt-4 w-full">
         <div className="flex gap-2 col-span-3 items-center relative">
           <ArrowLeft
             className="absolute left-2 top-[50%] translate-y-[-50%]"
@@ -375,6 +454,113 @@ const ExpenseSummary = ({ goBack, transactions: allTransactions }) => {
           <div className="flex gap-7 mt-3 flex-col">
             <ExpenseSummaryChart transactions={allTransactions} />
             <ExpenseSummaryBarChart transactions={allTransactions} />
+            <div>
+              <div className="mt-2 flex flex-col gap-2">
+                <div class="flex items-center gap-2 mb-1">
+                  <WandSparkles
+                    size={18}
+                    strokeWidth={1}
+                    class="text-blue-600 dark:text-blue-400"
+                  />
+                  <span class="text-xs font-bold text-gray-600 dark:text-gray-300 uppercase tracking-wide">
+                    Summary of Spending
+                  </span>
+                </div>
+                <p className="text-sm text-gray-500 dark:text-gray-400">
+                  {insights?.summaryOfSpending}
+                </p>
+                <div className="mt-2 flex flex-col gap-2">
+                  <div class="flex items-center gap-2 mb-1">
+                    <Lightbulb
+                      size={18}
+                      strokeWidth={1}
+                      class="text-green-600 dark:text-green-400"
+                    />
+                    <span class="text-xs font-bold text-green-800 dark:text-green-300 uppercase tracking-wide">
+                      Quick Tip
+                    </span>
+                  </div>
+                  <div class="flex flex-col gap-1 text-xs text-green-700 dark:text-green-200/80 leading-relaxed">
+                    {insights?.suggestion.map((suggestion) => (
+                      <li
+                        className="rounded-md py-2 px-2 bg-gray-100"
+                        key={suggestion}
+                      >
+                        {suggestion}
+                      </li>
+                    ))}
+                  </div>
+                </div>
+
+                <div className="mt-2 flex flex-col gap-2">
+                  <div class="flex items-center gap-2 mb-1">
+                    <Calendar
+                      size={18}
+                      strokeWidth={1}
+                      class="text-blue-600 dark:text-blue-400"
+                    />
+                    <span class="text-xs font-bold text-blue-800 dark:text-blue-300 uppercase tracking-wide">
+                      Spending Plan For Next Week
+                    </span>
+                  </div>
+                  <div class="flex flex-col gap-1 text-xs text-blue-700 dark:text-blue-200/80 leading-relaxed">
+                    {insights?.spendingPlanForNextWeek.map((plan) => (
+                      <li
+                        className="rounded-md py-2 px-2 bg-gray-100"
+                        key={plan}
+                      >
+                        {plan}
+                      </li>
+                    ))}
+                  </div>
+                </div>
+
+                <div className="mt-2 flex flex-col gap-2">
+                  <div class="flex items-center gap-2 mb-1">
+                    <Fingerprint
+                      size={18}
+                      strokeWidth={1}
+                      class="text-orange-600 dark:text-orange-400"
+                    />
+                    <span class="text-xs font-bold text-orange-800 dark:text-orange-300 uppercase tracking-wide">
+                      Transaction Patterns
+                    </span>
+                  </div>
+                  <div class="flex flex-col gap-1 text-xs text-orange-700 dark:text-orange-200/80 leading-relaxed">
+                    {insights?.transactionPatterns.map((pattern) => (
+                      <li
+                        className="rounded-md py-2 px-2 bg-gray-100"
+                        key={pattern}
+                      >
+                        {pattern}
+                      </li>
+                    ))}
+                  </div>
+                </div>
+                <div className="mt-2 flex flex-col gap-2">
+                  <div class="flex items-center gap-2 mb-1">
+                    <LucideTrendingUp
+                      size={18}
+                      strokeWidth={1}
+                      class="text-red-400 dark:text-red-400"
+                    />
+                    <span class="text-xs font-bold text-red-600 dark:text-red-300 uppercase tracking-wide">
+                      Transactions Causing Highest Spend
+                    </span>
+                  </div>
+                  <div className="flex gap-1 flex-wrap text-xs text-red-500 dark:text-red-200/80">
+                    {insights?.transactionsCausingHighestSpend.map((tx) => (
+                      <li
+                        className="border bg-red-800 dark:bg-red-200 text-background  border-(--border-color) rounded-full px-2 py-1 subLabel2 cursor-pointer"
+                        key={tx}
+                      >
+                        {tx}
+                      </li>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
