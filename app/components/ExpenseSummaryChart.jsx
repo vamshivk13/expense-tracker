@@ -297,38 +297,7 @@ export function ExpenseSummaryChart({ transactions }) {
             </div>
           </div>
         </CardHeader>
-        <div class="mt-1 rounded-2xl  bg-surface-dark dark:bg-gray-800/40 border border-gray-100 dark:border-gray-700 p-2 shadow-xs mb-2">
-          <div class="grid grid-cols-3 gap-3">
-            <div class="flex flex-col items-center p-2  bg-surface-light dark:bg-gray-800/50 border-none border-gray-100/50 dark:border-gray-700/50">
-              <TrendingUp class="text-green-500 text-lg mb-1" />
-              <span class="text-[9px] subLabel2 !text-muted-foreground font-bold uppercase mb-0.5">
-                Peak Day
-              </span>
-              <span class="text-[11px] font-bold subLabel2  text-text-primary-light dark:text-text-primary-dark">
-                Jan 04
-              </span>
-            </div>
-            <div class="flex flex-col items-center p-2 bg-surface-light dark:bg-gray-800/50 border-none border-gray-100/50 dark:border-gray-700/50">
-              <ChartNoAxesColumn class="text-blue-500 text-lg mb-1" />
-              <span class="text-[9px] font-bold !text-muted-foreground  uppercase mb-0.5">
-                Daily Avg
-              </span>
-              <span class="text-[11px] font-bold text-text-primary-light dark:text-text-primary-dark">
-                ₹165
-              </span>
-            </div>
-            <div class="flex flex-col items-center p-2 rounded-xl bg-surface-light dark:bg-gray-800/50 border-none border-gray-100/50 dark:border-gray-700/50">
-              <Layers2 class="text-purple-500 text-lg mb-1" />
-              <span class="text-[9px] font-bold !text-muted-foreground uppercase mb-0.5">
-                Top Category
-              </span>
-              <span class="text-[11px] font-bold text-text-primary-light dark:text-text-primary-dark">
-                Food
-              </span>
-            </div>
-          </div>
-        </div>
-        <CardContent className="px-0 w-full sm:p-6 border-none shadow-none outline-none">
+        <CardContent className="px-0 w-full sm:p-6 border-none shadow-xs outline-none">
           <ChartContainer
             config={chartConfig}
             className="aspect-auto border-none outline-none h-[250px] w-full"
@@ -410,8 +379,57 @@ export function ExpenseSummaryChart({ transactions }) {
           </ChartContainer>
         </CardContent>
       </Card>
-      <div className="flex flex-col gap-3">
-        <div className="flex gap-4 rounded-2xl bg-gray-50 dark:bg-gray-800/40 border border-gray-100 dark:border-gray-700 px-2 py-3 items-center">
+      <div className="flex flex-col gap-2">
+        <div class="rounded-2xl  bg-surface-dark dark:bg-gray-800/40 border border-gray-100 dark:border-gray-700 p-1 shadow-xs">
+          <div class="grid grid-cols-3 items-center gap-3">
+            <div class="flex gap-1 flex-col items-center justify-around p-1  bg-surface-light dark:bg-gray-800/50 border-none border-gray-100/50 dark:border-gray-700/50">
+              <div className="flex flex-col items-center">
+                <TrendingUp
+                  size={18}
+                  strokeWidth={1}
+                  class="text-green-500 text-lg mb-1"
+                />
+                <span class="text-[9px] subLabel2 !text-muted-foreground font-bold uppercase mb-0.5">
+                  Peak Day
+                </span>
+              </div>
+              <span class="text-[11px] font-bold subLabel2  text-text-primary-light dark:text-text-primary-dark">
+                Jan 04
+              </span>
+            </div>
+            <div class="flex gap-1 flex-col items-center justify-around p-1  bg-surface-light dark:bg-gray-800/50 border-none border-gray-100/50 dark:border-gray-700/50">
+              <div className="flex flex-col items-center">
+                <ChartNoAxesColumn
+                  size={18}
+                  strokeWidth={1}
+                  class="text-blue-500 text-lg mb-1"
+                />
+                <span class="text-[9px] font-bold !text-muted-foreground  uppercase mb-0.5">
+                  Daily Avg
+                </span>
+              </div>
+              <span class="text-[11px] font-bold text-text-primary-light dark:text-text-primary-dark">
+                ₹165
+              </span>
+            </div>
+            <div class="flex gap-1 flex-col items-center justify-around p-1  bg-surface-light dark:bg-gray-800/50 border-none border-gray-100/50 dark:border-gray-700/50">
+              <div className="flex flex-col items-center">
+                <Layers2
+                  size={18}
+                  strokeWidth={1}
+                  class="text-purple-500 text-lg mb-1"
+                />
+                <span class="text-[9px] font-bold !text-muted-foreground uppercase mb-0.5">
+                  Top Category
+                </span>
+              </div>
+              <span class="text-[11px] font-bold text-text-primary-light dark:text-text-primary-dark">
+                Food
+              </span>
+            </div>
+          </div>
+        </div>
+        <div className="flex gap-4 rounded-2xl border border-gray-100 dark:border-gray-700 px-2 py-3 items-center">
           <div class="flex items-center ml-2 gap-2">
             <Sparkles class="text-red-500 text-lg" />
           </div>
