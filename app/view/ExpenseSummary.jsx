@@ -537,7 +537,7 @@ const ExpenseSummary = ({ goBack, transactions: allTransactions }) => {
                     ))}
                   </div>
                 </div>
-                <div className="mt-2 flex flex-col gap-2">
+                {/* <div className="mt-2 flex flex-col gap-2">
                   <div class="flex items-center gap-2 mb-1">
                     <LucideTrendingUp
                       size={18}
@@ -558,7 +558,7 @@ const ExpenseSummary = ({ goBack, transactions: allTransactions }) => {
                       </li>
                     ))}
                   </div>
-                </div>
+                </div> */}
               </div>
             </div>
           </div>
