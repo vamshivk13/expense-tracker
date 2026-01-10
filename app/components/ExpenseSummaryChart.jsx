@@ -209,6 +209,9 @@ export function ExpenseSummaryChart({ transactions }) {
   const [transactionsByDate, setTransactionsByDate] = React.useState([]);
   const [transactionsByWeek, setTransactionsByWeek] = React.useState([]);
   const [lineChartData, setLineChartData] = React.useState([]);
+  const [peakDay, setPeakDay] = React.useState(null);
+  const [avgDailyExpense, setAvgDailyExpense] = React.useState(0);
+  const [topCategory, setTopCategory] = React.useState("");
   console.log("DATA", lineChartData);
   const [lineChartMode, setLineChartMode] = React.useState([
     "Monthly View",
@@ -267,12 +270,49 @@ export function ExpenseSummaryChart({ transactions }) {
     setTransactionsByDate(groupedTransactions);
   }, [transactions]);
 
+  React.useEffect(() => {
+    //Extract peak day from transactionsByDate
+    if (transactionsByDate.length > 0) {
+      const peakDay = transactionsByDate.reduce((prev, current) => {
+        return prev.totalAmount > current.totalAmount ? prev : current;
+      });
+      setPeakDay(peakDay);
+    }
+    //Extract avg daily expense from transactionsByDate
+    if (transactionsByDate.length > 0) {
+      const totalAmount = transactionsByDate.reduce(
+        (acc, curr) => acc + curr.totalAmount,
+        0
+      );
+      const avgDailyExpense = totalAmount / transactionsByDate.length;
+      setAvgDailyExpense(avgDailyExpense.toFixed(0));
+    }
+
+    // Extract top category from transactions with name and count of transactions
+    const categoryCounts = transactions.reduce((acc, transaction) => {
+      const category = transaction.category;
+      acc[category] = (acc[category] || 0) + 1;
+      return acc;
+    }, {});
+
+    if (Object.entries(categoryCounts).length == 0) return;
+
+    const topCategory = Object.entries(categoryCounts).reduce(
+      (prev, current) => {
+        return prev[1] > current[1] ? prev : current;
+      }
+    )[0];
+
+    console.log("TOP CATEGORY", topCategory);
+    setTopCategory(topCategory);
+  }, [transactionsByDate, transactions]);
+
   const yMin = Math.min(...lineChartData?.map((d) => d.totalAmount));
   const yMax = Math.max(...lineChartData?.map((d) => d.totalAmount));
   const nice = niceMinMax(yMin, yMax, 3);
 
   return (
-    <div className="mt-4 flex flex-col gap-2">
+    <div className="mt-4 flex flex-col gap-3">
       <Card className="py-4  bg-background w-full sm:py-0 border-none outline-none shadow-none">
         <CardHeader className="border-none flex flex-col items-stretch border-b !p-0 sm:flex-row">
           <div className="!p-0 flex flex-1 mb-2 items-start gap-1 px-6 pb-3 sm:pb-0">
@@ -297,7 +337,7 @@ export function ExpenseSummaryChart({ transactions }) {
             </div>
           </div>
         </CardHeader>
-        <CardContent className="px-0 w-full sm:p-6 border-none shadow-xs outline-none">
+        <CardContent className="px-0 w-full sm:p-6 border-none outline-none">
           <ChartContainer
             config={chartConfig}
             className="aspect-auto border-none outline-none h-[250px] w-full"
@@ -394,7 +434,10 @@ export function ExpenseSummaryChart({ transactions }) {
                 </span>
               </div>
               <span class="text-[11px] font-bold subLabel2  text-text-primary-light dark:text-text-primary-dark">
-                Jan 04
+                ₹{peakDay?.totalAmount}
+                {" - "}
+                {peakDay?.key.split(",")[0].split(" ")[0].slice(0, 3)}{" "}
+                {peakDay?.key.split(",")[0].split(" ")[1]}
               </span>
             </div>
             <div class="flex gap-1 flex-col items-center justify-around p-1  bg-surface-light dark:bg-gray-800/50 border-none border-gray-100/50 dark:border-gray-700/50">
@@ -409,7 +452,7 @@ export function ExpenseSummaryChart({ transactions }) {
                 </span>
               </div>
               <span class="text-[11px] font-bold text-text-primary-light dark:text-text-primary-dark">
-                ₹165
+                ₹{avgDailyExpense}
               </span>
             </div>
             <div class="flex gap-1 flex-col items-center justify-around p-1  bg-surface-light dark:bg-gray-800/50 border-none border-gray-100/50 dark:border-gray-700/50">
@@ -424,14 +467,14 @@ export function ExpenseSummaryChart({ transactions }) {
                 </span>
               </div>
               <span class="text-[11px] font-bold text-text-primary-light dark:text-text-primary-dark">
-                Food
+                {topCategory}
               </span>
             </div>
           </div>
         </div>
         <div className="flex gap-4 rounded-2xl border border-gray-100 dark:border-gray-700 px-2 py-3 items-center">
           <div class="flex items-center ml-2 gap-2">
-            <Sparkles class="text-red-500 text-lg" />
+            <Sparkles class="text-blue-500 text-lg" />
           </div>
           <p class="text-xs text-text-secondary-light dark:text-text-secondary-dark leading-relaxed">
             Your spending has increased by{" "}
