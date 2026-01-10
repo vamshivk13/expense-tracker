@@ -7,7 +7,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { ArrowLeft, Badge } from "lucide-react";
+import { ArrowLeft, Badge, Sparkles } from "lucide-react";
 import { ExpenseSummaryChart } from "../components/ExpenseSummaryChart";
 import { useEffect, useState } from "react";
 import { ExpenseSummaryBarChart } from "../components/ExpenseSummaryBarChart";
@@ -158,6 +158,7 @@ const ExpenseSummary = ({ goBack, transactions: allTransactions }) => {
             Expenses Summary
           </div>
         </div>
+
         <div className="overflow-y-auto [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden flex flex-col gap-4">
           {isCurrentMonth && (
             <Tabs defaultValue={"week"} className={"mt-5 rounded-md"}>
@@ -256,6 +257,17 @@ const ExpenseSummary = ({ goBack, transactions: allTransactions }) => {
               </CardFooter>
             </Card>
           )}
+          <div className="flex gap-4 rounded-2xl border border-gray-100 dark:border-gray-700 px-2 py-3 items-center">
+            <div class="flex items-center ml-2 gap-2">
+              <Sparkles class="text-blue-500 text-lg" />
+            </div>
+            <p class="text-xs text-text-secondary-light dark:text-text-secondary-dark leading-relaxed">
+              Your spending has increased by{" "}
+              <span class="font-bold text-red-500">8%</span> this week. However,
+              you've consistently spent below your daily average for the last 3
+              days.
+            </p>
+          </div>
           <div className="flex gap-7 mt-3 flex-col">
             <ExpenseSummaryChart transactions={allTransactions} />
             <ExpenseSummaryBarChart transactions={allTransactions} />

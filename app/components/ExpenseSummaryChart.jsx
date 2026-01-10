@@ -472,17 +472,6 @@ export function ExpenseSummaryChart({ transactions }) {
             </div>
           </div>
         </div>
-        <div className="flex gap-4 rounded-2xl border border-gray-100 dark:border-gray-700 px-2 py-3 items-center">
-          <div class="flex items-center ml-2 gap-2">
-            <Sparkles class="text-blue-500 text-lg" />
-          </div>
-          <p class="text-xs text-text-secondary-light dark:text-text-secondary-dark leading-relaxed">
-            Your spending has increased by{" "}
-            <span class="font-bold text-red-500">8%</span> this week. However,
-            you've consistently spent below your daily average for the last 3
-            days.
-          </p>
-        </div>
       </div>
     </div>
   );
