@@ -300,7 +300,7 @@ const ExpenseSummary = ({ goBack, transactions: allTransactions }) => {
       fetchInsights
         .fetch(transactions)
         .then((data) => {
-          setInsights({ data, savedAt: Date.now() });
+          setInsights({ ...data, savedAt: Date.now() });
           data = data;
           set(ref(db, "/insights"), {
             insights: { ...data, savedAt: Date.now() },
