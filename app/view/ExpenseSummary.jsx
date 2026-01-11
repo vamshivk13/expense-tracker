@@ -312,16 +312,17 @@ const ExpenseSummary = ({ goBack, transactions: allTransactions }) => {
           console.error("Error fetching insights: ", error);
           get(ref(db, "/insights")).then((snapshot) => {
             const data = snapshot.val()?.insights;
+            console.log("GET INSIGHTS AFTER ERROR", data);
             if (data) {
-              setInsights(data);
+              setInsights({ ...data, savedAt: Date.now() });
             }
           });
         });
       //save to firebase
     }
-  }, [insights, transactions]);
+  }, [transactions]);
 
-  console.log("INSIGHTS STATE");
+  console.log("INSIGHTS STATE", insights);
 
   return (
     <div
@@ -481,7 +482,7 @@ const ExpenseSummary = ({ goBack, transactions: allTransactions }) => {
                     </span>
                   </div>
                   <div class="flex flex-col gap-1 text-xs text-green-700 dark:text-green-200/80 leading-relaxed">
-                    {insights?.suggestion.map((suggestion) => (
+                    {insights?.suggestion?.map((suggestion) => (
                       <li
                         className="rounded-md py-2 px-2 bg-gray-100"
                         key={suggestion}

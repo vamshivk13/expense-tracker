@@ -19,8 +19,9 @@ Data:
 ${JSON.stringify(expenses)}
 `;
 
+    console.log("KEY", process.env.GOOGLE_API_KEY);
     const r = await fetch(
-      "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-lite:generateContent",
+      "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent",
       {
         method: "POST",
         headers: {
