@@ -31,15 +31,38 @@ const isToday = (date) => {
 };
 
 const isCurrentWeek = (date) => {
-  const now = new Date();
-  const startOfWeek = new Date(now);
-  const firstOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
-  if (startOfWeek < firstOfMonth) {
-    startOfWeek.setTime(firstOfMonth.getTime());
+  const weekStartsOn = 1;
+  var now = new Date();
+  var start = new Date(now);
+  start.setHours(0, 0, 0, 0);
+  var day = start.getDay();
+  var diff = (day + 7 - weekStartsOn) % 7;
+
+  start.setDate(start.getDate() - diff);
+
+  var end = new Date(start);
+
+  end.setDate(start.getDate() + 6);
+
+  end.setHours(23, 59, 59, 999);
+
+  const nowDate = new Date();
+  const firstOfMonth = new Date(nowDate.getFullYear(), nowDate.getMonth(), 1);
+  if (start < firstOfMonth) {
+    start.setTime(firstOfMonth.getTime());
   }
-  startOfWeek.setDate(now.getDate() - now.getDay());
-  startOfWeek.setHours(0, 0, 0, 0);
-  return date >= startOfWeek;
+  const lastOfMonth = new Date(
+    nowDate.getFullYear(),
+    nowDate.getMonth() + 1,
+    0
+  );
+
+  // If end spills into next month, clamp it
+  if (end > lastOfMonth) {
+    end.setTime(lastOfMonth.getTime());
+  }
+
+  return date >= start && date <= end;
 };
 
 const isCurrentMonth = (date) => {
