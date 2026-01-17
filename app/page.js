@@ -908,6 +908,7 @@ export default function Home() {
       >
         <div className="">
           <ExpenseManager
+            curMonth={curMonth}
             setBudget={setBudget}
             budget={budget}
             bills={bills}

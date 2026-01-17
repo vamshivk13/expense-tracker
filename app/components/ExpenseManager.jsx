@@ -39,7 +39,14 @@ import { Button } from "@/components/ui/button";
 import { EditExpenseBill } from "./EditExpenseBill";
 import { endAt, get, orderByChild, query, startAt } from "firebase/database";
 
-export function ExpenseManager({ bills, budget, setBudget, setBills, goBack }) {
+export function ExpenseManager({
+  bills,
+  budget,
+  setBudget,
+  setBills,
+  goBack,
+  curMonth,
+}) {
   const [billsByDate, setBillsByDate] = React.useState(bills);
   const [billsByCategory, setBillsByCategroy] = React.useState(bills);
   const [date, setDate] = React.useState(new Date());
@@ -68,15 +75,15 @@ export function ExpenseManager({ bills, budget, setBudget, setBills, goBack }) {
 
   function handleCopyPreviousMonthBills() {
     const curDate = new Date();
-    let curMonth = curDate.getMonth() - 1;
+    let curMth = curMonth - 1;
 
     let curYear = curDate.getFullYear();
-    if (curMonth < 0) {
-      curMonth = 11; // December
+    if (curMth < 0) {
+      curMth = 11; // December
       curYear = curYear - 1; // Previous year
     }
-    if (curMonth == null || curYear == null) return;
-    const mm = curMonth + 1;
+    if (curMth == null || curYear == null) return;
+    const mm = curMth + 1;
 
     const startDate = new Date(curYear, mm - 1, 1, 0, 0, 0);
     const endDate = new Date(curYear, mm, 0, 23, 59, 59, 999);
