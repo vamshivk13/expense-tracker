@@ -124,7 +124,7 @@ export function ExpenseManager({
             date: new Date(
               new Date(
                 curDate.getFullYear(),
-                curDate.getMonth(),
+                curMonth,
                 new Date(data.date).getDate(),
                 new Date(data.date).getHours(),
                 new Date(data.date).getMinutes(),
@@ -138,11 +138,11 @@ export function ExpenseManager({
 
         setBills((prev) => [...prev, ...curBills]);
 
-        curBills.forEach((bill) => {
-          push(ref(db, `bills`), bill).catch((err) =>
-            console.error("Failed to copy previous month bills:", err)
-          );
-        });
+        // curBills.forEach((bill) => {
+        //   push(ref(db, `bills`), bill).catch((err) =>
+        //     console.error("Failed to copy previous month bills:", err)
+        //   );
+        // });
       })
       .catch((error) => {
         console.log("Error fetching previous month bills:", error);
