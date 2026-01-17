@@ -64,11 +64,11 @@ export function AddExpenseBill({ setBills }) {
         <Badge
           variant={"secondary"}
           className={
-            "p-2 cursor-pointer select-none border-1 subLabel2 border-gray-500/40 flex items-center gap-2 sm:text-sm rounded-2xl bg-background"
+            "hover:bg-blue-600 text-white font-semibold py-3 px-4 justify-center shadow-lg shadow-blue-500/20 transition-all active:scale-95 p-2 cursor-pointer select-none border-1 subLabel2 border-gray-500/40 flex items-center gap-2 sm:text-sm rounded-2xl bg-blue-400"
           }
         >
           <Plus strokeWidth={2} />
-          <div>Add Bill</div>
+          <div clas>Add Bill</div>
         </Badge>
       </DrawerTrigger>
       <DrawerContent className={"p-0"}>
